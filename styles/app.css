@@ -1,0 +1,195 @@
+@font-face {
+    font-family: "Amsi Pro Normal";
+    src: url(../public/assets/fonts/amsi-pro-normal-regular.eot);
+    src: url(../public/assets/fonts/amsi-pro-normal-regular.eot?#iefix) format("embedded-opentype"), url(../public/assets/fonts/amsi-pro-normal-regular.woff) format("woff"), url(../public/assets/fonts/amsi-pro-normal-regular.ttf) format("truetype");
+    font-style: normal;
+    font-weight: 400
+}
+@font-face {
+    font-family: "Amsi Pro Semibold";
+    src: url(../public/assets/fonts/amsi-pro-normal-semibold.eot);
+    src: url(../public/assets/fonts/amsi-pro-normal-semibold.eot?#iefix) format("embedded-opentype"), url(../public/assets/fonts/amsi-pro-normal-semibold.woff) format("woff"), url(../public/assets/fonts/amsi-pro-normal-semibold.ttf) format("truetype");
+    font-style: normal;
+    font-weight: 500
+}
+@font-face {
+    font-family: "Amsi Pro Bold";
+    src: url(../public/assets/fonts/amsi-pro-normal-bold.eot);
+    src: url(../public/assets/fonts/amsi-pro-normal-bold.eot?#iefix) format("embedded-opentype"), url(../public/assets/fonts/amsi-pro-normal-bold.woff) format("woff"), url(../public/assets/fonts/amsi-pro-normal-bold.ttf) format("truetype");
+    font-style: normal;
+    font-weight: 600
+}
+@font-face {
+    font-family: "Amsi Pro Black";
+    src: url(../public/assets/fonts/amsi-pro-normal-black.eot);
+    src: url(../public/assets/fonts/amsi-pro-normal-black.eot?#iefix) format("embedded-opentype"), url(../public/assets/fonts/amsi-pro-normal-black.woff) format("woff"), url(../public/assets/fonts/amsi-pro-normal-black.ttf) format("truetype");
+    font-style: normal;
+    font-weight: 800
+}
+@font-face {
+    font-family: "Amsi Pro Ultra";
+    src: url(../public/assets/fonts/amsi-pro-normal-ultra.eot);
+    src: url(../public/assets/fonts/amsi-pro-normal-ultra.eot?#iefix) format("embedded-opentype"), url(../public/assets/fonts/amsi-pro-normal-ultra.woff) format("woff"), url(../public/assets/fonts/amsi-pro-normal-ultra.ttf) format("truetype");
+    font-style: normal;
+    font-weight: 900
+}
+
+.fontNormal {
+	font-family: "Amsi Pro Normal", sans-serif !important;
+    font-style: normal;
+    font-weight: 400;
+}
+.fontSemiBold {
+	font-family: "Amsi Pro Semibold", sans-serif !important;
+    font-style: normal;
+    font-weight: 600;
+}
+.fontBold {
+	font-family: "Amsi Pro Bold", sans-serif !important;
+    font-style: normal;
+    font-weight: 700;
+}
+.fontBlack {
+	font-family: "Amsi Pro Black", sans-serif !important;
+    font-style: normal;
+    font-weight: 800;
+}
+.fontUltra {
+	font-family: "Amsi Pro Ultra", sans-serif !important;
+    font-style: normal;
+    font-weight: 900;
+}
+
+body {
+	font-family: "Amsi Pro Normal", sans-serif !important;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    background: white;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    font-size: 1.2rem;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent
+}
+.h1, .h2, .h3, .h4, h1, h2, h3, h4 {
+    font-family: "Amsi Pro Ultra",sans-serif !important;
+    font-style: normal;
+    font-weight: 900;
+    letter-spacing: -.02em;
+}
+.h5, .h6, h5, h6 {
+    font-family: "Amsi Pro Normal",sans-serif !important;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: -.02em;
+}
+
+*:focus {
+	outline: none;
+}
+
+.x-shadow {
+	box-shadow: 0 6px 15px -3px rgba(22, 47, 68, 0.05), 0 4px 6px -5px rgba(0, 0, 0, 0.03);
+}
+.shadow-blue {
+	box-shadow: 0 1px 7px 0 rgba(65, 81, 104, 0.14), 0 1px 6px 0 rgba(0, 89, 255, 0.14);
+}
+.shadow-orange-100 {
+	box-shadow: 0 1px 7px 0 rgba(245, 142, 7, 0.17), 0 1px 6px 0 rgba(255, 136, 0, 0.17);
+}
+.tooltip:hover .tooltip-title {
+	display: block;
+}
+
+.rate-stars {
+	direction: rtl
+}
+.rate-stars > svg:hover,
+.rate-stars > svg:hover ~ svg,
+.rate-stars > svg:hover ~ svg,
+.rate-stars > svg:hover ~ svg,
+.rate-stars > svg:hover ~ svg,
+.rate-stars > svg:hover ~ svg {
+	opacity: .7;
+	color: rgba(245, 158, 11, 1);
+}
+
+
+::selection {
+	color: #030829;
+	background: #fff2d6;
+}
+::placeholder {
+	color: black;
+	opacity: .2;
+}
+::-webkit-input-placeholder {
+	color: black;
+	opacity: .2;
+}
+::-moz-placeholder {
+	color: black;
+	opacity: .2;
+}
+:-ms-input-placeholder {
+	color: black;
+	opacity: .2;
+}
+:-moz-placeholder {
+	color: black;
+	opacity: .2;
+}
+
+.profiles-scroll::-webkit-scrollbar {
+	display: none;
+}
+.profiles-scroll {
+	-ms-overflow-style: none;  /* IE and Edge */
+	scrollbar-width: none;  /* Firefox */
+} 
+
+/* Loading */
+.lg-lds.lds-ring {
+	display: inherit;
+	margin: 0 auto 1em;
+}
+.lds-ring {
+	display: inline-block;
+	position: relative;
+	width: 70px;
+	height: 45px;
+}
+.lds-ring div {
+	box-sizing: border-box;
+	display: block;
+	position: absolute;
+	width: 35px;
+	height: 35px;
+	/* margin: 3px; */
+	border-style: solid;
+	border-color: transparent;
+	border-radius: 50%;
+	animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+	border-color: #F97316 transparent transparent transparent;
+	left: 0;
+	right: 0;
+}
+.lds-ring div:nth-child(1) {
+	animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+	animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+	animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
