@@ -17,7 +17,7 @@ const UserNav = ({ user, isAuthPage=false }) => {
         <div className="flex items-center gap-5 user-nav">
             <Link href="/dashboard/user/account"><a className="flex items-center gap-2">
                 <div className="relative bg-zinc-100 w-7 h-7 rounded-full flex items-center justify-center">
-                    <div className="w-9 h-9 rounded-full border-2 border-blue-500 absolute -top-1 -left-1"></div>
+                    {/* <div className="w-9 h-9 rounded-full border-2 border-blue-500 absolute -top-1 -left-1"></div> */}
                     <Image 
                     className="rounded-full"
                     src={require('../../../public/images/avatar.jpg')} 
