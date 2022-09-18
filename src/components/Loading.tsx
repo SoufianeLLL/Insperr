@@ -34,7 +34,7 @@ function Loading({ text=null, width=100, height=100, borderWidth=5, color='#2fd6
                         borderWidth: `${borderWidth}px`
                     }}></div>
                 </div>
-                <div className="w-full mt-2">{text ?? 'Insperr.'}</div>
+                {text !== 'null' && <div className="w-full mt-2">{text ?? 'Insperr.'}</div>}
             </div>
         </div>
     )

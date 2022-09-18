@@ -13,9 +13,16 @@ const checkPasswordValidation = (password=null) => {
 	return false
 }
 
-
+const capitalizer = (word) => {
+	const name = word.split(" ")
+	for (let i = 0; i < name.length; i++) {
+		name[i] = name[i][0].toUpperCase() + (name[i].substr(1)).toLowerCase() + ' '
+	}
+	return name
+}
 
 export {
+	capitalizer,
 	checkEmailValidation,
 	checkPasswordValidation
 }

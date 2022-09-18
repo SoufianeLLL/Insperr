@@ -1,13 +1,13 @@
-import Layout from "@/components/Layout"
-import Link from "next/link"
+// import Link from "next/link"
 import { useState } from "react"
+import UnauthenticatedLayout from "@/components/UnauthenticatedLayout"
 
 
-const Pricing = () => {
+const PricingPage = () => {
 
 	const [isMonthly, setPeriod] = useState(true)
 
-	return <Layout>
+	return <>
 		<section className="w-full px-5 md:px-10 2xl:px-0 max-w-7xl mx-auto">
 			<div className="w-full my-10 overflow-hidden">
 				<div className="heading w-full">
@@ -162,7 +162,10 @@ const Pricing = () => {
 				</div>
 			</div>
 		</section>
-	</Layout>
+	</>
 }
 
-export default Pricing
+
+PricingPage.getLayout = (page) => <UnauthenticatedLayout>{page}</UnauthenticatedLayout>
+
+export default PricingPage

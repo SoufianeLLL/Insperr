@@ -1,51 +1,87 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Head from "next/head"
 import Link from "next/link"
-import Loading from "@/components/Loading"
+import { useRouter } from "next/router"
+import { useUser } from '@supabase/auth-helpers-react'
 import { checkEmailValidation, checkPasswordValidation } from "@/lib/validation"
+import { useForgotPasswordMutation, useSignInMutation, useSignUpMutation } from "@/lib/api/auth"
+import Loading from "@/components/Loading"
 
 
 const userFields = {
 	fullname: null,
 	email: null,
 	password: null,
-	password2: null
+	password2: null,
+	error: null
 }
 
 const UserAccess = ({ op }) => {
 
+	const { user } = useUser()
+
+	const router = useRouter()
 	const [errors, setErrors] = useState(userFields)
-	const [user, setUser] = useState(userFields)
+	const [userData, setUser] = useState(userFields)
 	const [fetching, setFetching] = useState({ isLoading: false, text: null})
+	const { mutate: signUp } = useSignUpMutation()
+	const { mutate: signIn } = useSignInMutation()
+	const { mutate: forgotPassword } = useForgotPasswordMutation()
+
+	useEffect(() => {
+		if (user) {
+			router.replace('/dashboard')
+		}
+	})
 	
 	const runAction = async (action, text) => {
 		if (action === 'signup' || action === 'register' || action === 'new') {
-			if (user?.fullname && user?.email && user?.password && user?.password2 && (user?.password === user?.password2)) {
-				// setFetching({ isLoading: true, text })
+			if (userData?.fullname && userData?.email && userData?.password && userData?.password2 && (userData?.password === userData?.password2)) {
 				setErrors({
-					email: (user?.email && checkEmailValidation(user?.email)) ? null : 'Please enter a valid email address.',
-					fullname: (user?.fullname && user?.fullname?.length > 6 && user?.fullname?.length < 20) ? null : 'Your fullname must be between 6 and 20 characters.',
-					password: (user?.password && checkPasswordValidation(user?.password)) ? null : 'Your password must contain lowercase letters, uppercase letters, numbers and must be between 8 and 15 characters.',
-					password2: user?.password2 ? (user?.password !== user?.password2 ? 'The password confirmation does not match.' : null) : 'Please enter your password confirmation.'
+					email: (userData?.email && checkEmailValidation(userData?.email)) ? null : 'Please enter a valid email address.',
+					fullname: (userData?.fullname && userData?.fullname?.length > 6 && userData?.fullname?.length < 20) ? null : 'Your fullname must be between 6 and 20 characters.',
+					password: (userData?.password && checkPasswordValidation(userData?.password)) ? null : 'Your password must contain lowercase letters, uppercase letters, numbers and must be between 8 and 15 characters.',
+					password2: userData?.password2 ? (userData?.password !== userData?.password2 ? 'The password confirmation does not match.' : null) : 'Please enter your password confirmation.',
+					error: null
 				})
 				if (!errors?.fullname && !errors?.email && !errors?.password && !errors?.password2) {
 					setFetching({ isLoading: true, text })
-					console.log('OK')
-					// setFetching({ isLoading: false, text: null })
+					signUp(
+						{
+							name: (userData?.fullname).toString(),
+							email: (userData?.email).toString(),
+							password: (userData?.password).toString(),
+						},
+						{
+							onError(error) {
+								setErrors({
+									...userFields,
+									error: error?.message
+								})
+								setFetching({ isLoading: false, text: null })
+							},
+							onSuccess() {
+								router.replace('/dashboard')
+							},
+						}
+					)
 				}
 			}
 			else {
 				setErrors({
-					fullname: user?.fullname ? null : 'Please enter your fullname.',
-					email: user?.email ? null : 'Please enter your email address.',
-					password: user?.password ? null : 'Please enter your password.',
-					password2: user?.password2 ? (user?.password !== user?.password2 ? 'The password confirmation does not match.' : null) : 'Please enter your password confirmation.'
+					fullname: userData?.fullname ? null : 'Please enter your fullname.',
+					email: userData?.email ? null : 'Please enter your email address.',
+					password: userData?.password ? null : 'Please enter your password.',
+					password2: userData?.password2 ? (userData?.password !== userData?.password2 ? 'The password confirmation does not match.' : null) : 'Please enter your password confirmation.',
+					error: null
 				})
 			}
 		}
 		else if (action === 'reset' || action === 'reset-password' || action === 'forget-password') {
-			if (user?.email) {
+			if (userData?.email) {
 				setFetching({ isLoading: true, text })
+				const res = await forgotPassword({ email: userData?.email })
+				console.log(res)
 			}
 			else {
 				setErrors({
@@ -55,8 +91,26 @@ const UserAccess = ({ op }) => {
 			}
 		}
 		else {
-			if (user?.email && user?.password) {
+			if (userData?.email && userData?.password) {
 				setFetching({ isLoading: true, text })
+				signIn(
+					{
+						email: (userData?.email).toString(),
+						password: (userData?.password).toString()
+					},
+					{
+						onError(error) {
+							setErrors({
+								...userFields,
+								error: error?.message
+							})
+							setFetching({ isLoading: false, text: null })
+						},
+						onSuccess() {
+							router.replace('/dashboard')
+						},
+					}
+				)
 			}
 			else {
 				setErrors({
@@ -83,32 +137,33 @@ const UserAccess = ({ op }) => {
 				{op === 'signup' || op === 'register' || op === 'new' ?
 				<>
 					<small className="text-zinc-400">Welcome dear! Please enter your details</small>
+					{errors?.error && <div className="text-red-500 mt-2 text-base">{errors?.error}</div>}
 					<div className="mt-6">
 						<div className="mb-6">
 							<label className="block text-sm">Full Name</label>
 							<input type="text" 
 							onChange={(e) => {
-								setUser({ ...user, fullname: e?.target?.value })
+								setUser({ ...userData, fullname: e?.target?.value })
 								setErrors({ ...errors, fullname: null })
 							}}
-							defaultValue={user?.fullname ?? null} placeholder="Enter your full name" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
+							defaultValue={userData?.fullname ?? null} placeholder="Enter your full name" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
 							{errors?.fullname && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.fullname}</span>}
 						</div>
 						<div className="mb-6">
 							<label className="block text-sm">Email</label>
 							<input type="email" 
 							onChange={(e) => {
-								setUser({ ...user, email: e?.target?.value })
+								setUser({ ...userData, email: e?.target?.value })
 								setErrors({ ...errors, email: null })
 							}}
-							defaultValue={user?.email ?? null} placeholder="Enter your email" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
+							defaultValue={userData?.email ?? null} placeholder="Enter your email" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
 							{errors?.email && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.email}</span>}
 						</div>
 						<div className="mb-6">
 							<label className="block text-sm">Password</label>
 							<input type="password" 
 							onChange={(e) => {
-								setUser({ ...user, password: e?.target?.value })
+								setUser({ ...userData, password: e?.target?.value })
 								setErrors({ ...errors, password: null })
 							}}
 							placeholder="*****" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
@@ -118,7 +173,7 @@ const UserAccess = ({ op }) => {
 							<label className="block text-sm">Confirm Password</label>
 							<input type="password" 
 							onChange={(e) => {
-								setUser({ ...user, password2: e?.target?.value })
+								setUser({ ...userData, password2: e?.target?.value })
 								setErrors({ ...errors, password2: null })
 							}}
 							placeholder="*****" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
@@ -136,15 +191,16 @@ const UserAccess = ({ op }) => {
 				: (op === 'reset' || op === 'reset-password' || op === 'forget-password') ?
 				<>
 					<small className="text-zinc-400">We're sorry! Please enter your email</small>
+					{errors?.error && <div className="text-red-500 mt-2 text-base">{errors?.error}</div>}
 					<div className="mt-6">
 						<div className="mb-6">
 							<label className="block text-sm">Email</label>
 							<input type="email" 
 							onChange={(e) => {
-								setUser({ ...user, email: e?.target?.value })
+								setUser({ ...userData, email: e?.target?.value })
 								setErrors({ ...errors, email: null })
 							}}
-							defaultValue={user?.email ?? null} placeholder="Enter your email" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
+							defaultValue={userData?.email ?? null} placeholder="Enter your email" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
 							{errors?.email && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.email}</span>}
 						</div>
 						<div className="mt-8 mb-2">
@@ -159,22 +215,23 @@ const UserAccess = ({ op }) => {
 				:
 				<>
 					<small className="text-zinc-400">Welcome back! Please enter your details</small>
+					{errors?.error && <div className="text-red-500 mt-2 text-base">{errors?.error}</div>}
 					<div className="mt-6">
 						<div className="mb-6">
 							<label className="block text-sm">Email</label>
 							<input type="email" 
 							onChange={(e) => {
-								setUser({ ...user, email: e?.target?.value })
+								setUser({ ...userData, email: e?.target?.value })
 								setErrors({ ...errors, email: null })
 							}}
-							defaultValue={user?.email ?? null} placeholder="Enter your email" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
+							defaultValue={userData?.email ?? null} placeholder="Enter your email" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
 							{errors?.email && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.email}</span>}
 						</div>
 						<div className="mb-6">
 							<label className="block text-sm">Password</label>
 							<input type="password" 
 							onChange={(e) => {
-								setUser({ ...user, password: e?.target?.value })
+								setUser({ ...userData, password: e?.target?.value })
 								setErrors({ ...errors, password: null })
 							}}
 							placeholder="*****" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
