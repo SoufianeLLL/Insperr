@@ -4,7 +4,7 @@ const searchForAuthors = async (e, authors) => {
     let fetchedAuthors = []
     if (e?.target?.value && e?.target?.value?.length > 4) {
         await authors.map((post) => {
-            if (post?.name?.toLowerCase().includes(e?.target?.value)) {
+            if (post?.name?.toLowerCase()?.includes(e?.target?.value?.toLowerCase())) {
                 fetchedAuthors.push(post)
             }
         })
@@ -24,7 +24,9 @@ const searchForAuthors = async (e, authors) => {
     }
 }
 
+const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export {
+    fetcher,
     searchForAuthors
 }

@@ -1,39 +1,21 @@
-import { useEffect, useState } from "react"
-import { GetStaticProps } from "next"
+import useSWR from "swr"
+import { useState } from "react"
 import Link from "next/link"
-import Authors from "@/utils/authors.json"
 import { capitalizer } from "@/lib/validation"
-import { searchForAuthors } from "@/lib/global"
+import { fetcher } from "@/lib/global"
 import UnauthenticatedLayout from "@/components/UnauthenticatedLayout"
 import AuthorDiv from "@/components/AuthorDiv"
 import Loading from "@/components/Loading"
 
 
-export const getStaticProps: GetStaticProps<{}> = async () => {
-	return {
-		props: { quotes: [] },
-	}
-}
-
 
 const IndexPage = () => {
 
-	const [profiles, setAuthors] = useState(null)
-	const [profilesBySearch, setAuthorsFromSearch] = useState(null)
+	const [search, setSearch] = useState('')
 	const [author, setAuthor] = useState({ name: null, quotes: null })
 
-	useEffect(() => {
-		if (!author?.name && !profilesBySearch) {
-			const n = 12
-			const timer = setTimeout(() => setAuthors(Authors
-				.map(x => ({ x, r: Math.random() }))
-				.sort((a, b) => a.r - b.r)
-				.map(a => a.x)
-				.slice(0, n)), 4000)
-			return () => clearTimeout(timer)
-		}
-	}, [profiles])
-
+	let Authors = useSWR(`/api/author?number=${12}&random=${true}&search=${search}`, fetcher)
+	
 	return <>
 		{author?.name ? 
 		<section className="w-full mt-14">
@@ -50,25 +32,25 @@ const IndexPage = () => {
 			<section className="w-full px-10 2xl:px-0 max-w-7xl mx-auto">
 				<div className="search-section relative w-full mx-auto max-w-2xl mt-20">
 					<h2 className="fontInter w-full mb-3 text-center text-2xl md:text-3xl fontSemiBold">Who said it</h2>
-					<input onChange={async (e) => setAuthorsFromSearch(await searchForAuthors(e, Authors))}  type="text" className="text-center  w-full py-4 px-7 rounded-full text-xl border-2 border-zinc-300 dark:border-zinc-600 placeholder-zinc-300 outline-none focus:ring-none bg-white pr-14" placeholder="e.g. Steve Jobs, Elon Musk ..." />
+					<input onChange={async (e) => setSearch(e?.target?.value)}  type="text" className="text-center  w-full py-4 px-7 rounded-full text-xl border-2 border-zinc-300 dark:border-zinc-600 placeholder-zinc-300 outline-none focus:ring-none bg-white pr-14" placeholder="e.g. Steve Jobs, Elon Musk ..." />
 				</div>
 				<div className="w-full mt-8">
-					{!profilesBySearch ? '' : profilesBySearch?.error ?
-						<div className="text-base mt-10 w-full text-center">{profilesBySearch?.error}</div>
-					:
+					{search && Authors ?
 					<div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 text-base">
-						{profilesBySearch?.length && profilesBySearch?.map((author) => {
-							return <AuthorDiv key={author?.authorID} onClick={() => setAuthor({ name: author?.name?.toLowerCase(), quotes: null })} 
+						{Authors?.data && Authors?.data?.map((author) => {
+							return <AuthorDiv key={author?.id} onClick={() => setAuthor({ name: author?.name?.toLowerCase(), quotes: null })} 
 							author={author?.name} classes={{ 
 								more: 'border-white', 
 								bgColor: 'bg-zinc-100', 
 								shadow: false 
 							}} />
 						})}
-					</div>}
+					</div>
+					:
+					<div className="text-base mt-10 w-full text-center">{JSON.stringify(Authors?.error)}</div>}
 				</div>
 			</section>
-			{!profilesBySearch &&
+			{!search && Authors &&
 			<>
 				<section className="w-full bg-zinc-100 mt-14 overflow-hidden">
 					<div className="w-full px-10 2xl:px-0 max-w-7xl overflow-hidden mx-auto">
@@ -77,8 +59,8 @@ const IndexPage = () => {
 								<div className="text-xl md:text-2xl font-semibold w-full">Popular Authors</div>
 							</div>
 							<div className="mt-6 w-full flex items-center overflow-x-scroll authors-scroll p-2 gap-4">
-								{(profiles && profiles?.length) ? profiles?.map((author) => {
-									return <AuthorDiv key={author?.authorID} 
+								{(Authors && Authors?.data) ? Authors?.data?.map((author) => {
+									return <AuthorDiv key={author?.id} 
 										onClick={() => setAuthor({ name: author?.name?.toLowerCase(), quotes: null })} 
 										author={author?.name} classes={{
 											more: 'border-white', 

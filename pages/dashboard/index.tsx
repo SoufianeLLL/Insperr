@@ -16,7 +16,7 @@ const DashboardPage = () => {
 									200</div>
 								<div className="w-full text-center mt-1 inline-block text-sm">
 									This month — <span className="text-primary-500">Unlimited Quotes</span></div>
-								<Link href="/dashboard/user/g"><a className="bg-primary-500 text-base inline-block text-white w-full rounded-xl mt-5 py-2 px-2 text-center hover:bg-primary-700 transition duration-200">
+								<Link href="/dashboard/user/g"><a className="bg-primary-500 text-base inline-block text-white w-full rounded-full mt-5 py-2 px-2 text-center hover:bg-primary-700 transition duration-200">
 									Generate Quotes</a></Link>
 							</div>
 						</div>
@@ -27,7 +27,7 @@ const DashboardPage = () => {
 									26,400</div>
 								<div className="w-full text-center mt-1 inline-block text-sm">
 									This month — <span className="text-primary-500">This Year: 340,049</span></div>
-								<Link href="/dashboard/user/collections"><a className="bg-slate-100 text-black text-base inline-block w-full rounded-xl mt-5 py-2 px-2 text-center hover:bg-slate-200 transition duration-200">
+								<Link href="/dashboard/user/collections"><a className="bg-slate-100 text-black text-base inline-block w-full rounded-full mt-5 py-2 px-2 text-center hover:bg-slate-200 transition duration-200">
 									Manage Collections</a></Link>
 							</div>
 						</div>
@@ -37,31 +37,31 @@ const DashboardPage = () => {
 								<div className="w-full mt-5">
 									<div className="grid grid-cols-1 md:grid-cols-2 w-full gap-2 text-sm">
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-md mr-2">Shift+B</span> Go Back to previous page
+											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+B</span> Go Back to previous page
 										</div>
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-md mr-2">Shift+D</span> Dashboard
+											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+D</span> Dashboard
 										</div>
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-md mr-2">Shift+G</span> Generate new Quotes
+											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+G</span> Generate new Quotes
 										</div>
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-md mr-2">Shift+C</span> Manage your Collections
+											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+C</span> Manage your Collections
 										</div>
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-md mr-2">Shift+U</span> User Account
+											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+U</span> User Account
 										</div>
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-md mr-2">Shift+P</span> Our Pricing
+											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+P</span> Our Pricing
 										</div>
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-md mr-2">Shift+H</span> Documentions (help)
+											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+H</span> Documentions (help)
 										</div>
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-md mr-2">Shift+A</span> API Admin
+											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+A</span> API Admin
 										</div>
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-md mr-2">Shift+S</span> Support
+											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+S</span> Support
 										</div>
 									</div>
 								</div>

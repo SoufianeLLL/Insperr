@@ -18,22 +18,23 @@ const checkPasswordValidation = (password=null) => {
 // Capitalize first letter of each word
 const capitalizer = (word) => {
 	const name = word.split(" ")
+	let correctName = ''
 	for (let i = 0; i < name.length; i++) {
-		name[i] = name[i][0].toUpperCase() + (name[i].substr(1)).toLowerCase() + ' '
+		correctName += name[i][0].toUpperCase() + (name[i].substr(1)).toLowerCase() + ' '
 	}
-	return name
+	return correctName
 }
 
 // Sort Authors names by Alphabet
 const authorsListWithAlphabet = (data) => {
-	// data.sort((a, b) => a.name.localeCompare(b.name))
+	// const sorted = data.sort((a, b) => a.name.localeCompare(b.name))
 	const sorted = data.sort((a, b) => a.name > b.name ? 1 : -1)
 	const grouped = sorted.reduce((groups, author) => {
-		const letter = author.name.charAt(0)
+		const letter = author?.name?.charAt(0)
 		groups[letter] = groups[letter] || []
 		groups[letter].push({
-			name: capitalizer(author?.name),
-			authorID: author?.authorID
+			name: author?.name ?? capitalizer(author?.name),
+			id: author?.id
 		})
 		return groups
 	}, {})

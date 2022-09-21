@@ -1,0 +1,27 @@
+generator client {
+	provider = "prisma-client-js"
+}
+
+datasource db {
+	provider = "sqlite"
+	url      = "file:database/ins.db"
+	// url      = env("DATABASE_URL")
+}
+
+model Author {
+	id         Int      @id @default(autoincrement())
+	name       String 
+	// quotes     Quote[]
+}
+
+model Topic {
+	id         Int      @id @default(autoincrement())
+	name       String 
+}
+
+model Quote {
+	id         Int      @id @default(autoincrement())
+	author_id  Int?
+	content    String 
+	// author     Author?  @relation(fields: [author_id], references: [id])
+}

@@ -2,3 +2,5 @@ node_modules
 .next
 .env
 .env.local
+# prisma/database
+prisma/database/ins.db
