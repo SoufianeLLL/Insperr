@@ -17,12 +17,16 @@ const checkPasswordValidation = (password=null) => {
 
 // Capitalize first letter of each word
 const capitalizer = (word) => {
-	const name = word.split(" ")
+	const name = (word?.replace(/ +(?= )/g,''))?.split(' ')
 	let correctName = ''
-	for (let i = 0; i < name.length; i++) {
-		correctName += name[i][0].toUpperCase() + (name[i].substr(1)).toLowerCase() + ' '
+	console.log(word, name.length)
+	if (name && name.length >= 1) {
+		for (let i = 0; i < name.length; i++) {
+			correctName += name[i][0].toUpperCase() + (name[i].substr(1)).toLowerCase() + ' '
+		}
+		return correctName
 	}
-	return correctName
+	return word
 }
 
 // Sort Authors names by Alphabet

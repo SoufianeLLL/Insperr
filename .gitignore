@@ -3,4 +3,4 @@ node_modules
 .env
 .env.local
 # prisma/database
-prisma/database/ins.db
+# prisma/database/ins.db

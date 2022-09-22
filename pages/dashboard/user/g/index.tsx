@@ -67,8 +67,8 @@ const GenerateQuotesPage = () => {
 								<div className="flex gap-6 items-center text-base">
 									<span onClick={() => setTarget({ ...target, engine: 'database' })} 
 										className={`${target?.engine?.toLocaleLowerCase() === 'database' ? 'text-primary-500 border-primary-500' : 'border-white bg-zinc-100 text-black'} cursor-pointer border-2 rounded-full px-4 py-2`}>Real Quotes</span>
-									<span onClick={() => setTarget({ ...target, engine: 'custom-ai' })} 
-										className={`${target?.engine?.toLocaleLowerCase() === 'custom-ai' ? 'text-primary-500 border-primary-500' : 'border-white bg-zinc-100 text-black'} cursor-pointer border-2 rounded-full px-4 py-2`}>Custome Quotes (made with AI)</span>
+									<span onClick={() => setTarget({ ...target, engine: 'custom' })} 
+										className={`${target?.engine?.toLocaleLowerCase() === 'custom' ? 'text-primary-500 border-primary-500' : 'border-white bg-zinc-100 text-black'} cursor-pointer border-2 rounded-full px-4 py-2`}>Custome Quotes (made with AI)</span>
 								</div>
 							</div>
 							{target?.engine?.toLocaleLowerCase() === 'database' ? 

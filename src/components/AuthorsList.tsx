@@ -1,6 +1,7 @@
 import useSWR from 'swr'
 import { useState } from 'react'
 import { fetcher } from '@/lib/global'
+import { capitalizer } from '@/lib/validation'
 import Loading from "@/components/Loading"
 
 
@@ -43,8 +44,8 @@ const AuthorList = () => {
 							<div className="letter text-4xl md:text-5xl my-5 fontBold">{targetLetter?.toUpperCase()}</div>
 							<div className="w-full text-zinc-500 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-2 gap-x-6">
 								{Authors?.data?.map((data, i) => {
-									return <div key={data?.id} onClick={() => copy(data?.name)} className="w-full mb-2 cursor-pointer hover:text-black text-base">
-										{data?.name}</div>
+									return <div key={data?.id} onClick={() => copy(capitalizer(data?.name))} className="w-full mb-2 cursor-pointer hover:text-black text-base">
+										{capitalizer(data?.name)}</div>
 								})}
 							</div>
 						</div>

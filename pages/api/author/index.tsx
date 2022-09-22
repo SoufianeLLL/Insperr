@@ -28,6 +28,7 @@ export default async function handler(req, res) {
 	}
 	else if (query?.random === 'true' && query?.number && query?.search) {
 		authors = await prisma.author.findMany({
+			take: parseInt(query?.number) ?? 10,
 			where: {
 				name: {
 					contains: query?.qearch,
