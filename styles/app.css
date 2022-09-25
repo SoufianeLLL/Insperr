@@ -107,6 +107,23 @@
 			url("../public/assets/fonts/inter/Inter-Black.woff?v=3.19") format("woff");
 }
 
+.fontRobotoLight {
+	font-family: 'Roboto Slab', serif;
+    font-style: normal;
+    font-weight: 200;
+}
+.fontRobotoNormal {
+	font-family: 'Roboto Slab', serif;
+    font-style: normal;
+    font-weight: 400;
+}
+.fontRobotoBold {
+	font-family: 'Roboto Slab', serif;
+    font-style: normal;
+    font-weight: 800;
+}
+
+
 .fontNormal {
 	font-family: "Amsi Pro Normal", sans-serif !important;
     font-style: normal;

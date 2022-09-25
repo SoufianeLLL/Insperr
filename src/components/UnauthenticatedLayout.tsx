@@ -60,8 +60,8 @@ const UnauthenticatedLayout = ({ children, title="The Most Advanced Quotes Gener
 							</div>
 							<div className="h-80 w-full mt-12"></div>
 							<div className="w-full mt-12 text-center">
-								<div className="w-auto inline-block text-white cursor-pointer mx-auto transition duration-200 transform scale-100 hover:scale-110 shadow-lg bg-primary-500 hover:bg-primary-700 py-4 px-8 text-2xl rounded-full">
-									Generate Custom Quotes</div>
+								<Link href="/user/g"><a className="w-auto inline-block text-white cursor-pointer mx-auto transition duration-200 transform scale-100 hover:scale-110 shadow-lg bg-primary-500 hover:bg-primary-700 py-4 px-8 text-2xl rounded-full">
+									Generate Custom Quotes</a></Link>
 							</div>
 						</div>}
 					</div>

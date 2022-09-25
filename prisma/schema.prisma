@@ -20,8 +20,10 @@ model Topic {
 }
 
 model Quote {
-	id         Int      @id @default(autoincrement())
-	author_id  Int?
-	content    String 
+	id          Int      @id @default(autoincrement())
+	author_id   Int?
+	author_name String
+	topics      String
+	content     String 
 	// author     Author?  @relation(fields: [author_id], references: [id])
 }

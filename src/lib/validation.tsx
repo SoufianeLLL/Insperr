@@ -1,3 +1,6 @@
+import TopicsList from "@/utils/topics.json"
+
+
 // Check if the email is valid
 const checkEmailValidation = (email=null) => {
 	if ( /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email) && email ) {
@@ -16,17 +19,37 @@ const checkPasswordValidation = (password=null) => {
 }
 
 // Capitalize first letter of each word
-const capitalizer = (word) => {
-	const name = (word?.replace(/ +(?= )/g,''))?.split(' ')
+const capitalizer = (word, dash=false) => {
+	const name = (dash ? word?.replace(/_/g,' ') : word?.replace(/ +(?= )/g,''))?.split(' ')
 	let correctName = ''
-	console.log(word, name.length)
 	if (name && name.length >= 1) {
 		for (let i = 0; i < name.length; i++) {
-			correctName += name[i][0].toUpperCase() + (name[i].substr(1)).toLowerCase() + ' '
+			if (name[i]) {
+				correctName += name[i][0].toUpperCase() + (name[i].substr(1)).toLowerCase() + ' '
+			}
 		}
 		return correctName
 	}
 	return word
+}
+
+// Create slug from the word
+const sluging = (word) => {
+	const slug = (word?.toLowerCase())?.replace(/\s/g,'_')
+	return slug
+}
+
+// Get the Topic name from the topic's quote
+const topic = (list) => {
+	let topics = [], l = list?.toString()
+	if (l) {
+		for (let i = 0; i < TopicsList.length; i++) {
+			if (l?.toLowerCase()?.indexOf(TopicsList[i]?.toLowerCase()) > -1) {
+				topics.push(TopicsList[i])
+			}
+		}
+	}
+	return topics
 }
 
 // Sort Authors names by Alphabet
@@ -51,6 +74,8 @@ const authorsListWithAlphabet = (data) => {
 }
 
 export {
+	sluging,
+	topic,
 	capitalizer,
 	checkEmailValidation,
 	authorsListWithAlphabet,

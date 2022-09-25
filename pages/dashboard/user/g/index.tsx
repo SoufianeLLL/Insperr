@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import AuthenticatedLayout from "@/components/AuthenticatedLayout"
 import Topics from "@/utils/topics.json"
 import Authors from "@/utils/authors.json"
-import AuthorDiv from "@/components/AuthorDiv"
+import AuthorContainer from "@/components/Containers/AuthorContainer"
 import Loading from "@/components/Loading"
 import { searchForAuthors } from "@/lib/global"
 
@@ -85,8 +85,7 @@ const GenerateQuotesPage = () => {
 										:
 										<div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-3 text-base">
 											{profiles?.length && profiles?.map((author) => {
-												return <AuthorDiv key={author?.authorID} onClick={() => setTarget({ ...target, author: author?.name?.toLowerCase() })} 
-												author={author?.name} classes={{ 
+												return <AuthorContainer key={author?.authorID} author={author?.name} classes={{ 
 													more: `${target?.author?.toLowerCase() === author?.name?.toLowerCase() ? 'text-primary-500 border-primary-500' : 'border-white'}`, 
 													bgColor: target?.author?.toLowerCase() !== author?.name?.toLowerCase() && 'bg-zinc-100', 
 													shadow: false 

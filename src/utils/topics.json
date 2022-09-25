@@ -1,94 +1,29 @@
 [
-    {
-        "name": "Beauty",
-        "topicID": "3192921216"
-    },
-    {
-        "name": "Inspiration",
-        "topicID": "1091737344"
-    },
-    {
-        "name": "Motivation",
-        "topicID": "3311315419"
-    },
-    {
-        "name": "Love",
-        "topicID": "3193895093"
-    },
-    {
-        "name": "Life",
-        "topicID": "2794772512"
-    },
-    {
-        "name": "Friendship",
-        "topicID": "1759329132"
-    },
-    {
-        "name": "Sad",
-        "topicID": "5709927525"
-    },
-    {
-        "name": "Philosophy",
-        "topicID": "7797058778"
-    },
-    {
-        "name": "Happiness",
-        "topicID": "7697958645"
-    },
-    {
-        "name": "Humor",
-        "topicID": "2661597407"
-    },
-    {
-        "name": "Relationship",
-        "topicID": "3436844889"
-    },
-    {
-        "name": "Truth",
-        "topicID": "6302969653"
-    },
-    {
-        "name": "Funny",
-        "topicID": "4595288560"
-    },
-    {
-        "name": "Death",
-        "topicID": "8647278046"
-    },
-    {
-        "name": "God",
-        "topicID": "7739669457"
-    },
-    {
-        "name": "Romance",
-        "topicID": "2255736446"
-    },
-    {
-        "name": "Hope",
-        "topicID": "1318290642"
-    },
-    {
-        "name": "Writing",
-        "topicID": "9307831535"
-    },
-    {
-        "name": "Religion",
-        "topicID": "5701766514"
-    },
-    {
-        "name": "Success",
-        "topicID": "7100425789"
-    },
-    {
-        "name": "Knowledge",
-        "topicID": "3457324232"
-    },
-    {
-        "name": "Education",
-        "topicID": "8061806035"
-    },
-    {
-        "name": "Music",
-        "topicID": "5225997695"
-    }
+    "Art",
+    "Beauty",
+    "Computer",
+    "Death",
+    "Education",
+    "Friendship",
+    "Games",
+    "Funny",
+    "God",
+    "Happiness",
+    "Hope",
+    "Humour",
+    "Inspiration",
+    "Knowledge",
+    "Life",
+    "Love",
+    "Motivation",
+    "Music",
+    "Philosophy",
+    "Relationship",
+    "Religion",
+    "Romance",
+    "Sad",
+    "Success",
+    "Technology",
+    "Truth",
+    "Writing"
 ]

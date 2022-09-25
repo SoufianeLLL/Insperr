@@ -15,7 +15,9 @@ class MyDocument extends Document {
 					{/* <meta name="google-site-verification" content="kXQ14NGjQLrSEZDtkm5DPIg6btYbYsw4n4_6bgxEhHw" /> */}
 					<link rel="icon" href="/images/favicon/favicon.ico" type="image/x-icon" />
 					<link href="/images/favicon/favicon.ico" rel="shortcut icon" />
-					<link href="//fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600;800&display=swap" rel="stylesheet" />
+					<link rel="preconnect" href="https://fonts.googleapis.com" />
+					<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+					<link href="//fonts.googleapis.com/css2?family=Roboto+Slab:wght@200;400;800&display=swap" rel="stylesheet" />
 				</Head>
 				<body className="dark:bg-zinc-900">
 					<Main />
