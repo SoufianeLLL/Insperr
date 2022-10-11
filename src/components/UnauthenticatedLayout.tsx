@@ -28,7 +28,9 @@ const UnauthenticatedLayout = ({ children, title="The Most Advanced Quotes Gener
 							<div className="shrink w-full">
 								<ul className="flex items-center text-base gap-8">
 									<li><Link href="/authors"><a className="inline-bloc hover:text-zinc-400 transition duration-200">
-										Free Quotes by Authors</a></Link></li>
+										Authors</a></Link></li>
+									<li><Link href="/topics"><a className="inline-bloc hover:text-zinc-400 transition duration-200">
+										Topics</a></Link></li>
 									<li><Link href="/pricing"><a className="inline-bloc hover:text-zinc-400 transition duration-200">
 										Our Pricing</a></Link></li>
 								</ul>

@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 	const prisma = new PrismaClient()
 	const query = req?.query
 
-	console.log(query)
+	// get Authors list started with specific letter
 	if (query?.letter) {
 		authors = await prisma.author.findMany({
 			where: {
@@ -15,6 +15,7 @@ export default async function handler(req, res) {
 			}
 		})
 	}
+	// get random Authors
 	else if (query?.random === 'true' && query?.number && !query?.search) {
 		const count = await prisma.author.count()
         const skip = Math.floor(Math.random() * count)
@@ -26,6 +27,7 @@ export default async function handler(req, res) {
             }
 		})
 	}
+	// get Authors list from seach query
 	else if (query?.random === 'true' && query?.number && query?.search) {
 		authors = await prisma.author.findMany({
 			take: parseInt(query?.number) ?? 10,
@@ -37,5 +39,5 @@ export default async function handler(req, res) {
 		})
 	}
 
-	res.status(200).json(authors)
+	return res.status(200).json(authors)
 }

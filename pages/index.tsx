@@ -11,14 +11,14 @@ const IndexPage = () => {
 	const [target, setTarget] = useState('custom')
 
 	let CustomQuotes = []
-	let { data: RealQuotes } = useSWR(`/api/quote?number=${20}&random=${true}&target=database`)
+	let { data: RealQuotes } = useSWR(`/api/quote?number=${20}&target=database&action=getRandomQuotes`)
 	
 	/**
 	 * Using cache supafast
 	 * 
 	 * const { cache } = useSWRConfig()
 	 * 
-	 * let RealQuotesURI = `/api/quote?number=${20}&random=${true}&target=database`, 
+	 * let RealQuotesURI = `/api/quote?number=${20}&target=database&action=getRandomQuotes`, 
 	 * RealQuotes = cache.get(RealQuotesURI) ?? useSWR(RealQuotesURI)?.data
 	 */
 

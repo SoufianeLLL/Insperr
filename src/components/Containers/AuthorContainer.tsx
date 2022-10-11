@@ -1,18 +1,23 @@
 import Image from "next/image"
-import { capitalizer } from "@/lib/validation"
+import { useState } from "react"
+import { capitalizer, sluging } from "@/lib/validation"
 
 const AuthorContainer = ({ author, classes=null }) => {
 
+	const [imgSrc, setImgSrc] = useState(`/images/photos/authors/${sluging(author)}.jpg`)
+	
 	return <>
 		<div className={`${classes} truncate overflow-hidden cursor-pointer flex items-center gap-2 flex-none`}>
-			<span className="flex-none overflow-hidden rounded-full h-8 w-8">
+			<span className="flex-none overflow-hidden rounded-full h-10 w-10">
 				<Image 
 					className="rounded-full"
-					src={require('../../../public/images/avatar.jpg')} 
+					src={imgSrc} 
+					onError={() => setImgSrc('/images/avatar.jpg')}
+					blurDataURL="/images/avatar.jpg"
 					placeholder="blur"
 					unoptimized={true} 
-					height={30}
-					width={30} />
+					height={40}
+					width={40} />
 			</span>
 			<span className="flex-none pr-2">{capitalizer(author)}</span>
 		</div>
