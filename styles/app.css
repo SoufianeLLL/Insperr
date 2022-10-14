@@ -196,6 +196,17 @@ body {
 	display: block;
 }
 
+.p-quote .content {
+	font-family: 'Roboto Slab', serif;
+    font-style: normal;
+    font-weight: 400;
+}
+/* .p-quote:hover .content {
+	font-family: 'Roboto Slab', serif;
+    font-style: normal;
+    font-weight: 400;
+} */
+
 .rate-stars {
 	direction: rtl
 }
@@ -284,6 +295,18 @@ body {
 	}
 	100% {
 		transform: rotate(360deg);
+	}
+}
+
+.skeleton {
+	animation: 1s shine linear infinite;
+	background: linear-gradient(90deg, #F4F4F5 13%, #ecedee 40%, #F4F4F5 90%);
+	background-size: 200% 100%;
+}
+
+@keyframes shine {
+	to {
+		background-position-x: -200%;
 	}
 }
 

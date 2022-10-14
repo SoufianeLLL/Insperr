@@ -1,8 +1,16 @@
+import useSWR from 'swr'
 import Link from 'next/link'
+import { useUser } from '@supabase/auth-helpers-react'
 import { withPageAuth } from '@supabase/auth-helpers-nextjs'
 import AuthenticatedLayout from '@/components/AuthenticatedLayout'
+import Loading from '@/components/Loading'
+
+
 
 const DashboardPage = () => {
+
+	const { isLoading, user } = useUser()	
+	let { data: userData } = useSWR(`/api/user?id=${user?.id}`)
 
 	return (
 		<section className="w-full px-5 md:px-10 2xl:px-0 max-w-7xl mx-auto">
@@ -13,10 +21,13 @@ const DashboardPage = () => {
 							<div className="w-full overflow-hidden">
 								<div className="w-full text-lg">Generated Quotes</div>
 								<div className="w-full text-center mt-5 inline-block text-3xl md:text-5xl lg:text-7xl fontBold">
-									200</div>
+									{isLoading && userData?.status == 200 ? 
+										<div className="mt-3 w-full"><Loading text="" scpace='0 auto' borderWidth={3} width={50} height={50} /></div> 
+									: userData?.generatedQuotes?.toLocaleString()}
+								</div>
 								<div className="w-full text-center mt-1 inline-block text-sm">
 									This month — <span className="text-primary-500">Unlimited Quotes</span></div>
-								<Link href="/dashboard/user/g"><a className="bg-primary-500 text-base inline-block text-white w-full rounded-full mt-5 py-2 px-2 text-center hover:bg-primary-700 transition duration-200">
+								<Link href="/dashboard/user/g"><a className="bg-primary-500 text-base inline-block text-white w-full rounded-lg mt-5 py-2 px-2 text-center hover:bg-primary-700 transition duration-200">
 									Generate Quotes</a></Link>
 							</div>
 						</div>
@@ -24,10 +35,13 @@ const DashboardPage = () => {
 							<div className="w-full overflow-hidden">
 								<div className="w-full text-lg">Quotes Visits</div>
 								<div className="w-full text-center mt-5 inline-block text-3xl md:text-5xl lg:text-7xl fontBold">
-									26,400</div>
+									{isLoading && userData?.status == 200 ? 
+										<div className="mt-3 w-full"><Loading text="" scpace='0 auto' borderWidth={3} width={50} height={50} /></div> 
+									: userData?.quotesVisits?.toLocaleString()}
+								</div>
 								<div className="w-full text-center mt-1 inline-block text-sm">
-									This month — <span className="text-primary-500">This Year: 340,049</span></div>
-								<Link href="/dashboard/user/collections"><a className="bg-slate-100 text-black text-base inline-block w-full rounded-full mt-5 py-2 px-2 text-center hover:bg-slate-200 transition duration-200">
+									This month — <span className="text-primary-500">This Year: {userData?.quotesVisitsYearly?.toLocaleString()}</span></div>
+								<Link href="/dashboard/user/collections"><a className="bg-slate-100 text-black text-base inline-block w-full rounded-lg mt-5 py-2 px-2 text-center hover:bg-slate-200 transition duration-200">
 									Manage Collections</a></Link>
 							</div>
 						</div>
@@ -37,31 +51,31 @@ const DashboardPage = () => {
 								<div className="w-full mt-5">
 									<div className="grid grid-cols-1 md:grid-cols-2 w-full gap-2 text-sm">
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+B</span> Go Back to previous page
+											<span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+B</span> Go Back to previous page
 										</div>
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+D</span> Dashboard
+											<span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+D</span> Dashboard
 										</div>
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+G</span> Generate new Quotes
+											<span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+G</span> Generate new Quotes
 										</div>
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+C</span> Manage your Collections
+											<span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+C</span> Manage your Collections
 										</div>
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+U</span> User Account
+											<span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+U</span> User Account
 										</div>
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+P</span> Our Pricing
+											<span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+P</span> Our Pricing
 										</div>
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+H</span> Documentions (help)
+											<span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+H</span> Documentions (help)
 										</div>
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+A</span> API Admin
+											<span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+A</span> API Admin
 										</div>
 										<div className="w-full">
-											<span className="inline-block bg-zinc-100 py-1 px-2 rounded-full mr-2">Shift+S</span> Support
+											<span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+S</span> Support
 										</div>
 									</div>
 								</div>

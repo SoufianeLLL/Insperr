@@ -19,7 +19,7 @@ const PricingPage = () => {
 				<div className="w-full mt-10">
 					<div className="w-full flex items-center justify-center gap-4">
 						<div onClick={() => setPeriod(true)} className={`${isMonthly ? 'font-bold' : 'opacity-60'} cursor-pointer text-base`}>Monthly</div>
-						<div className={`${isMonthly ? 'bg-zinc-300' : 'bg-primary-500'} w-14 h-8 cursor-pointer rounded-full relative`}>
+						<div className={`${isMonthly ? 'bg-slate-300' : 'bg-primary-500'} w-14 h-8 cursor-pointer rounded-full relative`}>
 							<span className={`${isMonthly ? 'translate-x-0' : 'translate-x-6'} transform left-1 bg-white absolute transition duration-200 top-1 h-6 w-6 rounded-full`}></span>
 						</div>
 						<div onClick={() => setPeriod(false)} className={`${!isMonthly ? 'font-bold' : 'opacity-60'} cursor-pointer text-base`}>Annual</div>
@@ -146,19 +146,19 @@ const PricingPage = () => {
 			<div className="md:px-10 w-full mt-12 grid grid-cols-1 md:grid-cols-2 gap-12">
 				<div className="w-full">
 					<div className="text-lg md:text-xl font-semibold w-full mb-2">Who is behind Insperr?</div>
-					<div className="w-full text-base text-zinc-700">Hi! I’m Jim. I’ve created Insperr to solve my own pain. As a creator, I used to create multiple social media graphics (for Twitter mostly) per day. I’ve noticed that it took me far too long time - even though I was a designer - and wondered: “How people with no design skills create graphics. I need to build sth for them”. And here, we are!</div>
+					<div className="w-full text-base text-slate-700">Hi! I’m Jim. I’ve created Insperr to solve my own pain. As a creator, I used to create multiple social media graphics (for Twitter mostly) per day. I’ve noticed that it took me far too long time - even though I was a designer - and wondered: “How people with no design skills create graphics. I need to build sth for them”. And here, we are!</div>
 				</div>
 				<div className="w-full">
 					<div className="text-lg md:text-xl font-semibold w-full mb-2">Can I cancel my plan anytime?</div>
-					<div className="w-full text-base text-zinc-700">I’m an independent fulltime creator who builts small products, like Insperr. I don’t take external funding because I want to only answer to our members & supporters. The subscriptions allow me to focus on building new features and make the product better every single day. Your support is valuable for Insperr’s future!</div>
+					<div className="w-full text-base text-slate-700">I’m an independent fulltime creator who builts small products, like Insperr. I don’t take external funding because I want to only answer to our members & supporters. The subscriptions allow me to focus on building new features and make the product better every single day. Your support is valuable for Insperr’s future!</div>
 				</div>
 				<div className="w-full">
 					<div className="text-lg md:text-xl font-semibold w-full mb-2">Do you offer discounts?</div>
-					<div className="w-full text-base text-zinc-700">We offer discounts only for our members and only on specific occasions. Then, the best way to get a discount it to follow us on Twitter and create an account. If you have a blog/newsletter, you can write a post about Insperr and get 2 months for free!</div>
+					<div className="w-full text-base text-slate-700">We offer discounts only for our members and only on specific occasions. Then, the best way to get a discount it to follow us on Twitter and create an account. If you have a blog/newsletter, you can write a post about Insperr and get 2 months for free!</div>
 				</div>
 				<div className="w-full">
 					<div className="text-lg md:text-xl font-semibold w-full mb-2">Do you offer refunds?</div>
-					<div className="w-full text-base text-zinc-700">You can request a refund for your purchase if you request it within 24 hours of the transaction.</div>
+					<div className="w-full text-base text-slate-700">You can request a refund for your purchase if you request it within 24 hours of the transaction.</div>
 				</div>
 			</div>
 		</section>

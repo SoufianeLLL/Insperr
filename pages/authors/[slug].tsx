@@ -1,18 +1,20 @@
 // import useSWR from 'swr'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useInfiniteQuery } from 'react-query'
+import { useInView } from 'react-intersection-observer'
 import { capitalizer } from '@/lib/validation'
 import UnauthenticatedLayout from "@/components/UnauthenticatedLayout"
 import QuoteContainer from '@/components/Containers/QuoteContainer'
 import Skeleton from '@/components/Skeleton'
 import Loading from "@/components/Loading"
-import { useInView } from 'react-intersection-observer'
+import ShowToast from '@/components/ShowToast'
 
 
 let take = 20
 
 const Author = ({ slug }) => {
 
+	const [Callback, setCallback] = useState({ status: null, text: null })
 	const { ref, inView } = useInView()
 
 	useEffect(() => {
@@ -38,6 +40,7 @@ const Author = ({ slug }) => {
     )
 
 	return <>
+		{(Callback?.status && Callback?.text) && <ShowToast onClick={(e) => setCallback(e)} type={Callback?.status} text={Callback?.text} />}
 		<section className="w-full px-5 md:px-10 2xl:px-0 max-w-7xl mx-auto">
 			<div className="w-full my-10">
 				<div className="heading w-full">
@@ -51,7 +54,7 @@ const Author = ({ slug }) => {
 						<div className="w-full columns-1 md:columns-2 lg:columns-3 gap-6">
 							{Quotes && Quotes?.pages.map((page) => {
 								return page.quotes.map((quote, i) => (
-									<QuoteContainer key={i} quote={quote} withPhoto={false} />
+									<QuoteContainer key={i} id={i} quote={quote} withAuthor={false} type="database" callback={(e) => setCallback(e)} />
 								))
 							})}
 						</div>

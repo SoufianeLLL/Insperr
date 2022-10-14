@@ -1,5 +1,5 @@
 
-function Loading({ text=null, width=100, height=100, borderWidth=5, color='#2fd6dd', scpace='0 auto 1em' }) {
+function Loading({ text=null, width=100, height=100, borderWidth=5, color='#1d9bf0', scpace='0 auto 1em' }) {
 
     return (
         <div className="flex h-full w-full items-center justify-center">

@@ -26,9 +26,9 @@ const AuthorList = () => {
 						})}
 					</div>
 					<div className="mt-8 w-full">
-						<div className="w-full border-t border-zinc-200 my-5 list-of-authors-started-with">
+						<div className="w-full border-t border-slate-200 my-5 list-of-authors-started-with">
 							<div className="letter text-4xl md:text-5xl my-5 fontBold">{targetLetter?.toUpperCase()}</div>
-							<div className="w-full text-zinc-500 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-2 gap-x-6">
+							<div className="w-full text-slate-500 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-2 gap-x-6">
 								{Authors?.map((author, i) => {
 									return <Link key={author?.id} href={`authors/${sluging(author?.name)}`}><a target="_blank"><div className="w-full mb-2 cursor-pointer hover:text-black text-base">
 										{capitalizer(author?.name)}</div></a></Link>

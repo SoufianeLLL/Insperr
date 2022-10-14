@@ -25,5 +25,6 @@ model Quote {
 	author_name String
 	topics      String
 	content     String 
+	published   Boolean
 	// author     Author?  @relation(fields: [author_id], references: [id])
 }

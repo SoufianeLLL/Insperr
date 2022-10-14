@@ -126,7 +126,7 @@ const UserAccess = ({ op }) => {
 		<Head>
 			<title>Insperr – The Most Advanced Quotes Generator</title>
 		</Head>
-		<div className="flex flex-wrap min-h-screen w-full content-center justify-center bg-zinc-200 py-10">
+		<div className="flex flex-wrap min-h-screen w-full content-center justify-center bg-slate-200 py-10">
 			{fetching?.isLoading ? <div className="w-full max-w-sm h-screen mx-auto text-center">
 				<Loading text={fetching?.text ?? null} width={50} height={50} /></div>
 			: 
@@ -136,7 +136,7 @@ const UserAccess = ({ op }) => {
 					Insperr.</h1>
 				{op === 'signup' || op === 'register' || op === 'new' ?
 				<>
-					<small className="text-zinc-400">Welcome dear! Please enter your details</small>
+					<small className="text-slate-400">Welcome dear! Please enter your details</small>
 					{errors?.error && <div className="text-red-500 mt-2 text-base">{errors?.error}</div>}
 					<div className="mt-6">
 						<div className="mb-6">
@@ -146,7 +146,7 @@ const UserAccess = ({ op }) => {
 								setUser({ ...userData, fullname: e?.target?.value })
 								setErrors({ ...errors, fullname: null })
 							}}
-							defaultValue={userData?.fullname ?? null} placeholder="Enter your full name" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
+							defaultValue={userData?.fullname ?? null} placeholder="Enter your full name" className="text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 							{errors?.fullname && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.fullname}</span>}
 						</div>
 						<div className="mb-6">
@@ -156,7 +156,7 @@ const UserAccess = ({ op }) => {
 								setUser({ ...userData, email: e?.target?.value })
 								setErrors({ ...errors, email: null })
 							}}
-							defaultValue={userData?.email ?? null} placeholder="Enter your email" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
+							defaultValue={userData?.email ?? null} placeholder="Enter your email" className="text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 							{errors?.email && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.email}</span>}
 						</div>
 						<div className="mb-6">
@@ -166,7 +166,7 @@ const UserAccess = ({ op }) => {
 								setUser({ ...userData, password: e?.target?.value })
 								setErrors({ ...errors, password: null })
 							}}
-							placeholder="*****" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
+							placeholder="*****" className="text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 							{errors?.password && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.password}</span>}
 						</div>
 						<div className="mb-6">
@@ -176,7 +176,7 @@ const UserAccess = ({ op }) => {
 								setUser({ ...userData, password2: e?.target?.value })
 								setErrors({ ...errors, password2: null })
 							}}
-							placeholder="*****" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
+							placeholder="*****" className="text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 							{errors?.password2 && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.password2}</span>}
 						</div>
 						<div className="mt-8 mb-2">
@@ -184,13 +184,13 @@ const UserAccess = ({ op }) => {
 						</div>
 					</div>
 					<div className="text-center">
-						<span className="text-sm text-zinc-400">You have an account?</span>
+						<span className="text-sm text-slate-400">You have an account?</span>
 						<Link href="/access?op=signin"><a className="text-sm text-primary-500 hover:text-primary-700 transition-all ml-2">Sign in</a></Link>
 					</div>
 				</>
 				: (op === 'reset' || op === 'reset-password' || op === 'forget-password') ?
 				<>
-					<small className="text-zinc-400">We're sorry! Please enter your email</small>
+					<small className="text-slate-400">We're sorry! Please enter your email</small>
 					{errors?.error && <div className="text-red-500 mt-2 text-base">{errors?.error}</div>}
 					<div className="mt-6">
 						<div className="mb-6">
@@ -200,7 +200,7 @@ const UserAccess = ({ op }) => {
 								setUser({ ...userData, email: e?.target?.value })
 								setErrors({ ...errors, email: null })
 							}}
-							defaultValue={userData?.email ?? null} placeholder="Enter your email" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
+							defaultValue={userData?.email ?? null} placeholder="Enter your email" className="text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 							{errors?.email && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.email}</span>}
 						</div>
 						<div className="mt-8 mb-2">
@@ -208,13 +208,13 @@ const UserAccess = ({ op }) => {
 						</div>
 					</div>
 					<div className="text-center">
-						<span className="text-sm text-zinc-400">Don't have account?</span>
+						<span className="text-sm text-slate-400">Don't have account?</span>
 						<Link href="/access?op=signin"><a className="text-sm text-primary-500 hover:text-primary-700 transition-all ml-2">Sign in</a></Link>
 					</div>
 				</>
 				:
 				<>
-					<small className="text-zinc-400">Welcome back! Please enter your details</small>
+					<small className="text-slate-400">Welcome back! Please enter your details</small>
 					{errors?.error && <div className="text-red-500 mt-2 text-base">{errors?.error}</div>}
 					<div className="mt-6">
 						<div className="mb-6">
@@ -224,7 +224,7 @@ const UserAccess = ({ op }) => {
 								setUser({ ...userData, email: e?.target?.value })
 								setErrors({ ...errors, email: null })
 							}}
-							defaultValue={userData?.email ?? null} placeholder="Enter your email" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
+							defaultValue={userData?.email ?? null} placeholder="Enter your email" className="text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 							{errors?.email && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.email}</span>}
 						</div>
 						<div className="mb-6">
@@ -234,7 +234,7 @@ const UserAccess = ({ op }) => {
 								setUser({ ...userData, password: e?.target?.value })
 								setErrors({ ...errors, password: null })
 							}}
-							placeholder="*****" className="text-base block w-full border-0 border-b-2 border-zinc-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-zinc-500" />
+							placeholder="*****" className="text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 							{errors?.password && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.password}</span>}
 						</div>
 						<div className="mb-3 flex flex-wrap content-center">
@@ -245,7 +245,7 @@ const UserAccess = ({ op }) => {
 						</div>
 					</div>
 					<div className="text-center">
-						<span className="text-sm text-zinc-400">Don't have account?</span>
+						<span className="text-sm text-slate-400">Don't have account?</span>
 						<Link href="/access?op=signup"><a className="text-sm text-primary-500 hover:text-primary-700 transition-all ml-2">Sign up</a></Link>
 					</div>
 				</>}

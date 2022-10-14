@@ -5,45 +5,51 @@ import UserNav from "./Auth/UserNav"
 // import Loading from "@/components/Loading"
 
 
-const UnauthenticatedLayout = ({ children, title="The Most Advanced Quotes Generator", home=false }) => {
+const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced Quotes Generator", home=false }) => {
 
 	const { user } = useUser()
 
 	return <>
 		<Head>
-			<title>Insperr – {title}</title>
+			<title>{title}</title>
 		</Head>
-		<div className="w-full onedomain-app">
+		<div className="w-full onedomain-app relative">
 			{/* {isLoading ? <div className="w-full h-screen mx-auto text-center">
 			<Loading width={50} height={50} /></div> : 
 			<> */}
-				<header className="w-full text-black">
-					<div className="w-full h-3 bg-primary-200"></div>
+				<section className="relative overflow-hidden w-full text-black pb-14">
+					<div style={{ zIndex: -1 }} className="absolute inset-y-0 w-full h-full">
+						<div className="relative h-full">
+							<svg className="absolute transform right-full translate-y-1/3 translate-x-1/4 md:translate-y-1/2 sm:translate-x-1/2 lg:translate-x-full" width="404" height="784" fill="none" viewBox="0 0 404 784"><defs><pattern id="e229dbec-10e9-49ee-8ec3-0286ca089edf" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="4" height="4" className="text-gray-200" fill="currentColor"></rect></pattern></defs><rect width="404" height="784" fill="url(#e229dbec-10e9-49ee-8ec3-0286ca089edf)"></rect></svg>
+							<svg className="absolute transform left-full -translate-y-3/4 -translate-x-1/4 sm:-translate-x-1/2 md:-translate-y-1/2 lg:-translate-x-3/4" width="404" height="784" fill="none" viewBox="0 0 404 784"><defs><pattern id="d2a68204-c383-44b1-b99f-42ccff4e5365" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="4" height="4" className="text-gray-200" fill="currentColor"></rect></pattern></defs><rect width="404" height="784" fill="url(#d2a68204-c383-44b1-b99f-42ccff4e5365)"></rect></svg>
+						</div>
+					</div>
 					<div className="w-full py-8 px-10 2xl:px-0 max-w-7xl mx-auto">
-						<div className="w-full text-lg flex items-center gap-10">
+						<header className="w-full text-lg flex items-center gap-10">
 							<div className="flex-none logo text-xl font-semibold fontInter">
-								<Link href="/"><a className="inline-bloc hover:text-zinc-400 transition duration-200">
+								<Link href="/"><a className="inline-bloc hover:text-slate-400 transition duration-200">
 									Insperr.com</a></Link>
 							</div>
 							<div className="shrink w-full">
 								<ul className="flex items-center text-base gap-8">
-									<li><Link href="/authors"><a className="inline-bloc hover:text-zinc-400 transition duration-200">
-										Authors</a></Link></li>
-									<li><Link href="/topics"><a className="inline-bloc hover:text-zinc-400 transition duration-200">
+									<li><Link href="/authors"><a className="inline-bloc hover:text-slate-400 transition duration-200">
+										Real Quotes by Authors</a></Link></li>
+									<li><Link href="/topics"><a className="inline-bloc hover:text-slate-400 transition duration-200">
 										Topics</a></Link></li>
-									<li><Link href="/pricing"><a className="inline-bloc hover:text-zinc-400 transition duration-200">
+									<li><Link href="/pricing"><a className="inline-bloc hover:text-slate-400 transition duration-200">
 										Our Pricing</a></Link></li>
 								</ul>
 							</div>
 							<div className="flex-none flex items-center text-base gap-4">
 								{user ? 
 									<UserNav user={{
+										id: user?.id,
 										fullname: user?.user_metadata?.fullname,
 										email: user?.email
 									}} isAuthPage={true} />
 								:
 								<>
-									<Link href="/access?op=signin"><a className="transition duration-200 hover:text-zinc-400">
+									<Link href="/access?op=signin"><a className="transition duration-200 hover:text-slate-400">
 										Login</a></Link>
 									<Link href="/access?op=signup"><a className="flex items-center gap-2 transition duration-200 hover:text-primary-500">
 										<div className="bg-primary-400 rounded-full w-8 h-8 flex items-center justify-center text-white">
@@ -51,14 +57,14 @@ const UnauthenticatedLayout = ({ children, title="The Most Advanced Quotes Gener
 										Create an account</a></Link>
 								</>}
 							</div>
-						</div>
+						</header>
 						{home &&
 						<div className="w-full">
 							<h1 className="text-4xl md:text-5xl lg:text-6xl leading-tight normal-case fontBold w-full mt-8 md:mt-20 text-center mx-auto max-w-3xl md:px-10 px-5">
-								The most advanced <span className="fontUltra text-primary-500">Quotes</span> generator
+								Intelligent GPT-3 <span className="fontUltra text-primary-400">Quotes</span> generator
 							</h1>
 							<div className="w-full mt-4 text-base sm:text-xl text-center px-10 max-w-3xl mx-auto">
-								Insperr is the fastest way to create your own quotes to save and share. Making beautiful quotes just became easy with AI!
+								With just lines of content in your style, Insperr leverages state-of-the-art language model GPT-3 to create human-like Insperr-Quotes in your writing style
 							</div>
 							<div className="h-80 w-full mt-12"></div>
 							<div className="w-full mt-12 text-center">
@@ -67,8 +73,8 @@ const UnauthenticatedLayout = ({ children, title="The Most Advanced Quotes Gener
 							</div>
 						</div>}
 					</div>
-				</header>
-				<main className="w-full py-7">
+				</section>
+				<main className="w-full">
 					{children}
 				</main>
 				<footer className="mt-12 mb-8 w-full max-w-7xl mx-auto px-10 2xl:px-0">
@@ -80,10 +86,10 @@ const UnauthenticatedLayout = ({ children, title="The Most Advanced Quotes Gener
 						</div>
 						<div className="w-full">
 							<div className="md:flex md:items-center md:gap-4 text-sm">
-								<Link href="/privacy"><a className="hover:text-zinc-600 md:float-none float-left mr-4 md-mr-0">Privacy</a></Link>
-								<Link href="/terms"><a className="hover:text-zinc-600 md:float-none float-left mr-4 md-mr-0">Terms of service</a></Link>
-								<Link href="/about"><a className="hover:text-zinc-600 md:float-none float-left mr-4 md-mr-0">About us</a></Link>
-								<Link href="/api"><a className="hover:text-zinc-600 md:float-none float-left mr-4 md-mr-0 flex items-center gap-2">API <span className="bg-red-500 text-white px-2 py-1 rounded-md text-xs">Premium</span></a></Link>
+								<Link href="/privacy"><a className="hover:text-slate-600 md:float-none float-left mr-4 md-mr-0">Privacy</a></Link>
+								<Link href="/terms"><a className="hover:text-slate-600 md:float-none float-left mr-4 md-mr-0">Terms of service</a></Link>
+								<Link href="/about"><a className="hover:text-slate-600 md:float-none float-left mr-4 md-mr-0">About us</a></Link>
+								<Link href="/api"><a className="hover:text-slate-600 md:float-none float-left mr-4 md-mr-0 flex items-center gap-2">API <span className="bg-red-500 text-white px-2 py-1 rounded-md text-xs">Premium</span></a></Link>
 							</div>
 						</div>
 					</div>

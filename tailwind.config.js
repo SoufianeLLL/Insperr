@@ -8,40 +8,43 @@ module.exports = {
 	darkMode: 'class', // or 'media' or 'class'
 	theme: {
 		colors: {
-			sky: colors.sky,
-			amber: colors.amber,
 			orange: colors.orange,
 			slate: colors.slate,
 			gray: colors.gray,
-			zinc: colors.zinc,
 			red: colors.red,
 			indigo: colors.indigo,
 			teal: colors.teal,
 			green: colors.green,
-			blue: colors.blue,
 			white: "#FFFFFF",
 			black: "#000000",
 		},
 		extend: {
 			colors: {
 				primary: {
-					'50': '#dcf9f9',
-					'100': '#a8eff0',
-					'200': '#70e3e7',
-					'300': '#2fd6dd',
-					'400': '#00ccd6',
-					'500': '#00c3d2',
-					'600': '#00b2bf',
-					'700': '#009da5',
-					'800': '#00898d',
-					'900': '#006562'
+					'50': '#e6f5fe',
+					'100': '#c2e7ff',
+					'200': '#9bd9ff',
+					'300': '#70c9ff',
+					'400': '#42aaf2',
+					'500': '#1d9cf0',
+					'600': '#158ee2',
+					'700': '#097cd0',
+					'800': '#016bbe',
+					'900': '#004d9f',
+					'2-50': '#e6eff9',
+					'2-100': '#c2d7f4',
+					'2-200': '#9dbeef',
+					'dark-100': '#001D35'
 				},
-				orange: {
-					'50': '#FFF7F3',
-					'200': '#FFDACA'
-				},
-				amber: {
-					'100': '#FFF2D6'
+				secondary: {
+					'50': '#fff0f1',
+					'100': '#ffdad9',
+					'200': '#f4b0a5',
+					'300': '#f09080',
+					'2-50': '#f4eded',
+					'2-100': '#e0d2d3',
+					'2-200': '#cab4b7',
+					'dark-100': '#2D1516'
 				}
 			},
 			width: {

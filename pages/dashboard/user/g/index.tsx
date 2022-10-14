@@ -1,31 +1,50 @@
 import { useEffect, useState } from "react"
 import AuthenticatedLayout from "@/components/AuthenticatedLayout"
-import Topics from "@/utils/topics.json"
-import Authors from "@/utils/authors.json"
 import AuthorContainer from "@/components/Containers/AuthorContainer"
 import Loading from "@/components/Loading"
 import { searchForAuthors } from "@/lib/global"
+import useSWR, { useSWRConfig } from "swr"
 
 
 const GenerateQuotesPage = () => {
 
+	// Get Topics list
+	const { cache } = useSWRConfig()
+	let TopicsURI = `/api/topic`, Topics = cache.get(TopicsURI) ?? useSWR(TopicsURI)?.data
+
 	const [loading, setLoading] = useState({ isLoading: false, text: null })
-	const [profiles, setAuthors] = useState(null)
 	const [target, setTarget] = useState({ 
-		phrase: null, // optional - only on Custom engine
+		phrase: null,
 		category: null,
-		author: null, 
-		engine: 'database', 
+		engine: 'custom', 
+		characters: 150,
 		quota: 1 
 	})
 	
-	const startGenerating = () => {
-		if (!loading?.isLoading && target?.category && target?.author) {
+	const startGenerating = async () => {
+		if (!loading?.isLoading && target?.category && target?.phrase) {
 			setLoading({
 				isLoading: true,
 				text: "Please sit tight, we will start generating your quotes in the next few seconds. D'ont close this window!"
 			})
-			// 
+			// Start generating
+			const res = await fetch('/api/generate', {
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					phrase: target?.phrase ?? null,
+					category: target?.category ?? null,
+					engine: target?.engine ?? 'custom', 
+					characters: target?.characters ?? 150,
+					quota: target?.quota ?? 1 
+				})
+			})
+			.then((res) => { return res?.json() })
+			.catch((e) => console.log(e))
+			console.log(res)
 		}
 	}
 
@@ -38,17 +57,14 @@ const GenerateQuotesPage = () => {
 		}
 	}
 
-	useEffect(() => {
-		if (!target?.author && !profiles) {
-			const n = 21
-			const timer = setTimeout(() => setAuthors(Authors
-				.map(x => ({ x, r: Math.random() }))
-				.sort((a, b) => a.r - b.r)
-				.map(a => a.x)
-				.slice(0, n)), 5000)
-			return () => clearTimeout(timer)
+	const changeCharacters = (action) => {
+		if (action === 'increase') {
+			setTarget({ ...target, characters: target?.characters + 10 })
 		}
-	}, [profiles])
+		else if (action === 'decrease') {
+			setTarget({ ...target, characters: target?.characters > 50 ? target?.characters - 10 : 50 })
+		}
+	}
 
 	return <>
 		<section className="w-full px-5 md:px-10 2xl:px-0 max-w-7xl mx-auto">
@@ -62,67 +78,41 @@ const GenerateQuotesPage = () => {
 					</div>
 					<div className="w-full md:flex md:items-start md:gap-5 mt-5">
 						<div className="shrink w-full bg-white p-5 rounded-xl">
-							<div className="quote-engine-col w-full">
-								<div className="w-full text-zinc-400 mb-2 text-base">The engine?</div>
-								<div className="flex gap-6 items-center text-base">
-									<span onClick={() => setTarget({ ...target, engine: 'database' })} 
-										className={`${target?.engine?.toLocaleLowerCase() === 'database' ? 'text-primary-500 border-primary-500' : 'border-white bg-zinc-100 text-black'} cursor-pointer border-2 rounded-full px-4 py-2`}>Real Quotes</span>
-									<span onClick={() => setTarget({ ...target, engine: 'custom' })} 
-										className={`${target?.engine?.toLocaleLowerCase() === 'custom' ? 'text-primary-500 border-primary-500' : 'border-white bg-zinc-100 text-black'} cursor-pointer border-2 rounded-full px-4 py-2`}>Custome Quotes (made with AI)</span>
+							<div className="search-col w-full">
+								<div className="w-full text-slate-400 mb-2 text-base">Start type something</div>
+								<input onChange={async (e) => setTarget({ ...target, phrase: e?.target?.value })} 
+								className="w-full outline-none border-0 bg-white rounded-lg p-4 text-center" 
+								placeholder="i.e Love is" type="text" name="custom-word" />
+							</div>
+							<div className="mt-8 category-col w-full">
+								<div className="w-full text-slate-400 text-base mb-2">Select topic:</div>
+								<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 w-full gap-3 text-base">
+									{Topics?.map ((topic, i) => {
+										return <div key={i} onClick={() => setTarget({ ...target, category: topic?.name?.toLowerCase() })} className={`${target?.category?.toLowerCase() === topic?.name?.toLowerCase() ? 'text-primary-500 font-semibold' : ''} cursor-pointer transition duration-200 hover:underline`}>{topic?.name}</div>
+									})}
 								</div>
 							</div>
-							{target?.engine?.toLocaleLowerCase() === 'database' ? 
-								<div className="mt-8 search-col w-full">
-									<div className="w-full text-zinc-400 mb-2 text-base">Who said it?</div>
-									<input onChange={async (e) => setAuthors(await searchForAuthors(e, Authors))} 
-									className="w-full outline-none border-0 bg-transparent rounded-lg p-4 text-center" 
-									placeholder="i.e Donald Trump" type="text" name="who-said-it" />
-									<div className="w-full mt-5">
-										{!profiles ? <div className="mt-10"><Loading text="null" width={50} height={50} /></div>
-										:
-										profiles?.error ?
-											<div className="text-base mt-10 w-full text-center">{profiles?.error}</div>
-										:
-										<div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-3 text-base">
-											{profiles?.length && profiles?.map((author) => {
-												return <AuthorContainer key={author?.authorID} author={author?.name} classes={{ 
-													more: `${target?.author?.toLowerCase() === author?.name?.toLowerCase() ? 'text-primary-500 border-primary-500' : 'border-white'}`, 
-													bgColor: target?.author?.toLowerCase() !== author?.name?.toLowerCase() && 'bg-zinc-100', 
-													shadow: false 
-												}} />
-											})}
-										</div>}
-									</div>
-								</div>
-							:
-								<div className="mt-8 search-col w-full">
-									<div className="w-full text-zinc-400 mb-2 text-base">Type a custom phrase?</div>
-									<input onChange={async (e) => setTarget({ ...target, phrase: e?.target?.value })} 
-									className="w-full outline-none border-0 bg-transparent rounded-lg p-4 text-center" 
-									placeholder="i.e Love is" type="text" name="custom-word" />
-								</div>}
 						</div>
 						<div className="flex-none md:w-1/3 w-full md:mt-0 mt-10">
-							<div className="shrink w-full bg-white p-5 rounded-xl">
-								<div className="category-col w-full">
-									<div className="w-full text-zinc-400 text-base mb-2">Select topic:</div>
-									<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 w-full gap-3 text-base">
-										{Topics?.map ((topic) => {
-											return <div onClick={() => setTarget({ ...target, category: topic?.name?.toLowerCase() })} className={`${target?.category?.toLowerCase() === topic?.name?.toLowerCase() ? 'text-primary-500 font-semibold' : ''} cursor-pointer transition duration-200 hover:underline`}>{topic?.name}</div>
-										})}
-									</div>
+							<div className="w-full flex items-center gap-3">
+								<div onClick={() => changeCharacters('decrease')} className="flex-none text-3xl bg-white py-3 px-5 cursor-pointer rounded-lg">-</div>
+								<div className="w-full shrink flex justify-center items-center">
+									<input onChange={(e) => setTarget({ ...target, characters: parseInt(e.target.value) >= 50 ? parseInt(e.target.value) : 50 })} 
+									size={target?.characters?.toString()?.length} type="text" min={1} className="border-0 inline-block w-auto outline-none bg-slate-100 py-2 text-center" value={target?.characters} defaultValue={target?.characters} /> 
+									<div className="">Chars</div>
 								</div>
+								<div onClick={() => changeCharacters('increase')} className="flex-none text-3xl bg-white py-3 px-5 cursor-pointer rounded-lg">+</div>
 							</div>
-							<div className="w-full flex items-center gap-3 mt-7">
+							<div className="w-full flex items-center gap-3 mt-8">
 								<div onClick={() => changeQuota('decrease')} className="flex-none text-3xl bg-white py-3 px-5 cursor-pointer rounded-lg">-</div>
 								<div className="w-full shrink flex justify-center items-center">
 									<input onChange={(e) => setTarget({ ...target, quota: parseInt(e.target.value) >= 1 ? parseInt(e.target.value) : 1 })} 
-									size={target?.quota?.toString()?.length} type="text" min={1} className="border-0 inline-block w-auto outline-none bg-zinc-100 py-2 text-center" value={target?.quota} defaultValue={target?.quota} /> 
+									size={target?.quota?.toString()?.length} type="text" min={1} className="border-0 inline-block w-auto outline-none bg-slate-100 py-2 text-center" value={target?.quota} defaultValue={target?.quota} /> 
 									<div className="">{target?.quota <= 1 ? 'Quote' : 'Quotes'}</div>
 								</div>
 								<div onClick={() => changeQuota('increase')} className="flex-none text-3xl bg-white py-3 px-5 cursor-pointer rounded-lg">+</div>
 							</div>
-							<div onClick={() => (target?.category && target?.author) && startGenerating()} className={`${target?.category && target?.author ? 'bg-primary-500 text-white hover:bg-primary-700' : 'bg-zinc-300 text-white'} w-full cursor-pointer transition duration-200 py-3 px-4 text-center rounded-full mt-4`}>
+							<div onClick={() => (target?.category && target?.phrase) && startGenerating()} className={`${target?.category && target?.phrase ? 'bg-primary-500 text-white hover:bg-primary-700' : 'bg-slate-300 text-white'} w-full cursor-pointer transition duration-200 py-3 px-4 text-center rounded-lg mt-4`}>
 								Start Generating!</div>
 						</div>
 					</div>

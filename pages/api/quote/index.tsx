@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client'
+import { supabaseServerClient } from '@supabase/auth-helpers-nextjs'
+
 
 export default async function handler(req, res) {
 	let quotes
@@ -19,6 +21,7 @@ export default async function handler(req, res) {
 					cursor: cursorObj,
 					take: limit,
 					where: {
+						published: true,
 						author_name: {
 							contains: name
 						}
@@ -40,6 +43,7 @@ export default async function handler(req, res) {
 					cursor: cursorObj,
 					take: limit,
 					where: {
+						published: true,
 						topics: {
 							contains: topic
 						}
@@ -51,17 +55,28 @@ export default async function handler(req, res) {
 
 
 		case 'getRandomQuotes':
-			// get random real quotes from database
+			// get random real quotes from SLite database (self hosted)
 			if (query?.target === 'database') {
 				const count = await prisma.quote.count()
 				const skip = Math.floor(Math.random() * count)
 				quotes = await prisma.quote.findMany({
 					take: limit,
 					skip: skip,
+					where: {
+						published: true,
+					},
 					orderBy: {
 						id: 'desc',
 					}
 				})
+			}
+			// get random custom quotes from Supabase (supabase.io)
+			if (query?.target === 'custom') {
+				const { data: result } = await supabaseServerClient({ req, res })
+					.from("quotes")
+					.select("*, users(fullname, id)")
+
+				quotes = result
 			}
 			break;
 	}
