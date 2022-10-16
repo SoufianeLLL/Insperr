@@ -2,39 +2,43 @@ import { supabaseServerClient } from '@supabase/auth-helpers-nextjs'
 
 export default async function handler(req, res) {
 	
-	const query = req?.body
+	const body = req?.body
+	const query = req?.query
     let saves
 
 
 	switch (query?.action) {
 		case 'Read':
 			if (query?.user_id) {
-				const { data } = await supabaseServerClient({ req, res })
+				const { data: result } = await supabaseServerClient({ req, res })
 					.from("saves")
-					.select('*')
+					.select('quotes(id, content), users(fullname, username)')
 					.eq('user_id', query?.user_id)
 					
-				saves = data
+				saves = result
 			}
 			break;
 		
 
 		case 'Insert':
-			if (query?.user_id && query?.quote_id) {
+			if (body?.user_id && body?.quote_id) {
 				// check if the user already saved the Quote
 				const { count } = await supabaseServerClient({ req, res })
 					.from("saves")
 					.select('*', { count: 'exact', head: true })
-					.eq('user_id', query?.user_id)
-					.eq('quote_id', query?.quote_id)
+					.eq('user_id', body?.user_id)
+					.eq('quote_id', body?.quote_id)
+
+				console.log(body?.user_id)
+				console.log(body?.quote_id)
 
 				if (!count) {
 					// Save the new Quote
 					await supabaseServerClient({ req, res })
 						.from('saves')
 						.insert({
-							user_id: query?.user_id,
-							quote_id: query?.quote_id
+							user_id: body?.user_id,
+							quote_id: body?.quote_id
 						})
 				}
 

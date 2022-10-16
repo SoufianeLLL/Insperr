@@ -32,17 +32,20 @@ export default async function handler(req, res) {
 		
 		if (quotes) {
 			const now = new Date()
-			let visits = 0, visitsYearly = 0
+			let visitsMonthly = 0, visitsYearly = 0
 			for (let i = quotes.length; i--;) {
-				visits += quotes[i]?.views
 				const then = new Date(rectifyFormat(quotes[i]?.created_at))
-				const date = +then + 1000*60*60*24*365 < +now
-				if (!date) {
+				const dateY = +then + 1000*60*60*24*365 < +now
+				if (!dateY) {
 					visitsYearly += quotes[i]?.views
+				}
+				const dateM = Math.abs(then.getTime() - now.getTime()) / (24 * 60 * 60 * 1000)
+				if (dateM < 30) {
+					visitsMonthly += quotes[i]?.views
 				}
 			}
 			data.generatedQuotes = quotes?.length
-			data.quotesVisits = visits
+			data.quotesVisits = visitsMonthly
 			data.quotesVisitsYearly = visitsYearly
 			data.status = 200
 		}

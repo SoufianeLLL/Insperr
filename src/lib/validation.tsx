@@ -52,6 +52,14 @@ const topic = (list) => {
 	return topics
 }
 
+// Format date 
+const dateFormat = (date) => {
+	return [date.getFullYear(), date.getMonth()+1, date.getDate()]
+		.join('-')+' '+
+		[date.getHours(), date.getMinutes(), date.getSeconds()]
+		.join(':')
+}
+
 // Sort Authors names by Alphabet
 const authorsListWithAlphabet = (data) => {
 	// const sorted = data.sort((a, b) => a.name.localeCompare(b.name))
@@ -74,8 +82,9 @@ const authorsListWithAlphabet = (data) => {
 }
 
 export {
-	sluging,
 	topic,
+	sluging,
+	dateFormat,
 	capitalizer,
 	checkEmailValidation,
 	authorsListWithAlphabet,

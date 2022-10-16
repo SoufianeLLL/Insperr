@@ -73,7 +73,7 @@ export default async function handler(req, res) {
 			// get random custom quotes from Supabase (supabase.io)
 			if (query?.target === 'custom') {
 				const { data: result } = await supabaseServerClient({ req, res })
-					.from("quotes")
+					.from("random_quotes")
 					.select("*, users(fullname, id)")
 
 				quotes = result

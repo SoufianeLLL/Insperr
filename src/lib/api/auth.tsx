@@ -69,9 +69,9 @@ export const useSignInMutation = () => {
 
 /* Sign Up */
 type SignUpData = { session: Session | null; user: User | null }
-type SignUpVariables = { name: string; email: string; password: string }
+type SignUpVariables = { username: string; name: string; email: string; password: string }
 
-export async function signUp({ name, email, password }: SignUpVariables) {
+export async function signUp({ username, name, email, password }: SignUpVariables) {
 	const { error, session, user } = await supabaseClient.auth.signUp(
 		{
 			email,
@@ -79,6 +79,7 @@ export async function signUp({ name, email, password }: SignUpVariables) {
 		},
 		{
 			data: {
+				username: username,
 				full_name: name
 			},
 		}
@@ -92,7 +93,7 @@ export async function signUp({ name, email, password }: SignUpVariables) {
 export const useSignUpMutation = () => {
 	const queryClient = useQueryClient()
 	return useMutation<SignUpData, PostgrestError, SignUpVariables>(
-		({ name, email, password }) => signUp({ name, email, password }),
+		({ username, name, email, password }) => signUp({ username, name, email, password }),
 		{
 			onSuccess: async () => {
 				await queryClient.resetQueries()

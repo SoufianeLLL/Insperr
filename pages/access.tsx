@@ -9,6 +9,7 @@ import Loading from "@/components/Loading"
 
 
 const userFields = {
+	username: null,
 	fullname: null,
 	email: null,
 	password: null,
@@ -36,18 +37,20 @@ const UserAccess = ({ op }) => {
 	
 	const runAction = async (action, text) => {
 		if (action === 'signup' || action === 'register' || action === 'new') {
-			if (userData?.fullname && userData?.email && userData?.password && userData?.password2 && (userData?.password === userData?.password2)) {
+			if (userData?.fullname && userData?.username && userData?.email && userData?.password && userData?.password2 && (userData?.password === userData?.password2)) {
 				setErrors({
 					email: (userData?.email && checkEmailValidation(userData?.email)) ? null : 'Please enter a valid email address.',
+					username: (userData?.username && userData?.username?.length > 5 && userData?.username?.length < 20) ? null : 'Your username must be between 5 and 20 characters.',
 					fullname: (userData?.fullname && userData?.fullname?.length > 6 && userData?.fullname?.length < 20) ? null : 'Your fullname must be between 6 and 20 characters.',
 					password: (userData?.password && checkPasswordValidation(userData?.password)) ? null : 'Your password must contain lowercase letters, uppercase letters, numbers and must be between 8 and 15 characters.',
 					password2: userData?.password2 ? (userData?.password !== userData?.password2 ? 'The password confirmation does not match.' : null) : 'Please enter your password confirmation.',
 					error: null
 				})
-				if (!errors?.fullname && !errors?.email && !errors?.password && !errors?.password2) {
+				if (!errors?.fullname && errors?.username && !errors?.email && !errors?.password && !errors?.password2) {
 					setFetching({ isLoading: true, text })
 					signUp(
 						{
+							username: (userData?.username).toString(),
 							name: (userData?.fullname).toString(),
 							email: (userData?.email).toString(),
 							password: (userData?.password).toString(),
@@ -69,6 +72,7 @@ const UserAccess = ({ op }) => {
 			}
 			else {
 				setErrors({
+					username: userData?.username ? null : 'Please enter your username.',
 					fullname: userData?.fullname ? null : 'Please enter your fullname.',
 					email: userData?.email ? null : 'Please enter your email address.',
 					password: userData?.password ? null : 'Please enter your password.',
@@ -139,6 +143,16 @@ const UserAccess = ({ op }) => {
 					<small className="text-slate-400">Welcome dear! Please enter your details</small>
 					{errors?.error && <div className="text-red-500 mt-2 text-base">{errors?.error}</div>}
 					<div className="mt-6">
+						<div className="mb-6">
+							<label className="block text-sm">Username</label>
+							<input type="text" 
+							onChange={(e) => {
+								setUser({ ...userData, username: e?.target?.value })
+								setErrors({ ...errors, username: null })
+							}}
+							defaultValue={userData?.username ?? null} placeholder="Enter your username" className="text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
+							{errors?.username && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.username}</span>}
+						</div>
 						<div className="mb-6">
 							<label className="block text-sm">Full Name</label>
 							<input type="text" 

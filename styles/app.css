@@ -252,7 +252,11 @@ body {
 .authors-scroll {
 	-ms-overflow-style: none;  /* IE and Edge */
 	scrollbar-width: none;  /* Firefox */
-} 
+}
+
+.nav-link:hover > div {
+	background-color: #E2E8F0;
+}
 
 /* Loading */
 .lg-lds.lds-ring {
@@ -300,7 +304,7 @@ body {
 
 .skeleton {
 	animation: 1s shine linear infinite;
-	background: linear-gradient(90deg, #F4F4F5 13%, #ecedee 40%, #F4F4F5 90%);
+	background: linear-gradient(90deg, #F1F5F9 13%, #eaeff4 40%, #F1F5F9 90%);
 	background-size: 200% 100%;
 }
 
