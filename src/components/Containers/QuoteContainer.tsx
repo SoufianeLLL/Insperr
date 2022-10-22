@@ -1,7 +1,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useUser } from "@supabase/auth-helpers-react"
+import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
 import { topic, sluging } from '@/lib/validation'
 import AuthorContainer from '@/components/Containers/AuthorContainer'
 import Loading from "@/components/Loading"
@@ -10,7 +10,8 @@ import Loading from "@/components/Loading"
 const QuoteContainer = ({ id, quote, type='custom', withAuthor=true, classes=null, callback }) => {
 
 	const router = useRouter()
-	const { isLoading, user } = useUser()
+	const { isLoading } = useSessionContext()
+	const user = useUser()
 	const [bookmarksChanges, setBookmarksChanges] = useState({ status: false, id: null })
 
 	const topics = topic(quote?.topics)

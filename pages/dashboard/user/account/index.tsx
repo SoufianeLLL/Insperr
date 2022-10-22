@@ -1,8 +1,7 @@
 import useSWR from 'swr'
 import { useEffect, useState } from "react"
 import Link from 'next/link'
-import { useUser } from "@supabase/auth-helpers-react"
-import { supabaseClient } from "@supabase/auth-helpers-nextjs"
+import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
 import { useSignOutMutation } from "@/lib/api/auth"
 import { checkEmailValidation, checkPasswordValidation, checkUsernameValidation } from "@/lib/validation"
 import Loading from '@/components/Loading'
@@ -15,7 +14,8 @@ const UserAccount = ({ q_screen, q_errors }) => {
 
 	const { mutate: signOut } = useSignOutMutation()
 
-	const { user, isLoading } = useUser() // Authenticated user
+	const { isLoading, supabaseClient } = useSessionContext()
+	const user = useUser()
 	let { isValidating: isCheckingSubscription, data: isSubscribed } = useSWR(`/api/user?action=checkUserSubscription`)
 
 	const accountLinked = user && user?.app_metadata?.providers?.includes('twitter') ? 'authenticated' : 'unauthenticated' // Check if Twitter account is linked
@@ -86,7 +86,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 			setAction({ ...action, isLoading: true })
 			// check first the current password
 			try {
-				const { error } = await supabaseClient.auth.signIn({
+				const { error } = await supabaseClient.auth.signInWithPassword({
 					email: user?.email,
 					password: action?.password,
 				})
@@ -161,7 +161,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 				}
 				else if (action?.name === 'changePassword') {
 					try {
-						const { error } = await supabaseClient.auth.update({
+						const { error } = await supabaseClient.auth.updateUser({
 							password: action?.params?.target
 						})
 						if (!error) {							
@@ -184,7 +184,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 
 	const twitterAccount = async (action) => {
 		if (action === 'connect') {
-			await supabaseClient.auth.signIn({
+			await supabaseClient.auth.signInWithOAuth({
 				provider: 'twitter'
 			})
 		}
@@ -417,7 +417,6 @@ const Btn = ({ title, description, icon=null, onClick }) => {
 }
 
 export async function getServerSideProps({ query }) {
-	// const { user } = await supabase.auth.api.getUserByCookie(req) // get Twitter session
 	return { props: {
 		q_screen: query?.screen ?? null,
 		q_errors: {

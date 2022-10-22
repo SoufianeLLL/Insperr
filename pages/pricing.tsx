@@ -1,7 +1,7 @@
 import useSWR from "swr"
 import { useState } from "react"
 import Link from "next/link"
-import { useUser } from "@supabase/auth-helpers-react"
+import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
 import { loadStripe } from "@stripe/stripe-js"
 import stripe from "@/utils/stripejs"
 import { Settings } from "@/utils/settings"
@@ -13,7 +13,8 @@ import UnauthenticatedLayout from "@/components/UnauthenticatedLayout"
 const PricingPage = ({ plans }) => {
 
 	const [loadingStripe, setLoadingStripe] = useState(false)
-	const { user, isLoading } = useUser() // Authenticated user
+	const { isLoading } = useSessionContext()
+	const user = useUser() // Authenticated user
 	const { data: subscription } = useSWR('/api/user/subscription')
 	const storage = Settings?.products
 

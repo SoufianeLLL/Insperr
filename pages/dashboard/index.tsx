@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 // import Link from 'next/link'
-import { useUser } from '@supabase/auth-helpers-react'
-import { supabaseClient, withPageAuth } from '@supabase/auth-helpers-nextjs'
+import { useSessionContext, useUser } from '@supabase/auth-helpers-react'
+import { withPageAuth } from '@supabase/auth-helpers-nextjs'
 import Loading from '@/components/Loading'
 import BlueButton from '@/components/BlueButton'
 import AuthenticatedLayout from '@/components/AuthenticatedLayout'
@@ -13,14 +13,15 @@ const APIrequests = { status: 200 }
 
 const DashboardPage = () => {
 
-	const { user, isLoading } = useUser()	
+	const { isLoading, supabaseClient } = useSessionContext()
+	const user = useUser()
 	let { isValidating: isCheckingSubscription, data: userData } = useSWR(`/api/user?action=getUserData`)
 	// let { data: APIrequests } = useSWR(`/api/requests?user_id=${user?.id}`)
 	
 	const accountLinked = user && user?.app_metadata?.providers?.includes('twitter') ? 'authenticated' : 'unauthenticated' // Check if Twitter account is linked
 
 	const connectTwitter = async () => {
-		await supabaseClient.auth.signIn({
+		await supabaseClient.auth.signInWithOAuth({
 			provider: 'twitter'
 		})
 	}

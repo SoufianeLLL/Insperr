@@ -1,8 +1,7 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs'
-import { PostgrestError, Session, User } from '@supabase/supabase-js'
+import { PostgrestError, Session, SupabaseClient, User } from '@supabase/supabase-js'
 import { useMutation, useQuery, useQueryClient, UseQueryOptions } from 'react-query'
+import supabase from './supabase'
 import { UnauthenticatedError } from './utils'
-
 
 
 /* Current Session */
@@ -39,7 +38,7 @@ type SignInData = { session: Session | null; user: User | null }
 type SignInVariables = { email: string; password: string }
 
 export async function signIn({ email, password }: SignInVariables) {
-	const { error, session, user } = await supabaseClient.auth.signIn({
+	const { error, data: { session, user } } = await supabaseClient.auth.signInWithPassword({
 		email,
 		password,
 	})
@@ -72,18 +71,16 @@ type SignUpData = { session: Session | null; user: User | null }
 type SignUpVariables = { username: string; name: string; email: string; password: string }
 
 export async function signUp({ username, name, email, password }: SignUpVariables) {
-	const { error, session, user } = await supabaseClient.auth.signUp(
-		{
-			email,
-			password,
-		},
-		{
+	const { error, data: { session, user } } = await supabaseClient.auth.signUp({
+		email,
+		password,
+		options: {
 			data: {
 				username: username,
 				fullname: name
-			},
+			}
 		}
-	)
+	})
 	if (error) {
 		throw error
 	}
@@ -149,3 +146,4 @@ export const useSignOutMutation = () => {
 		}
 	)
 }
+

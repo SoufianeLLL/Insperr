@@ -1,4 +1,4 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs'
+import { useSessionContext } from '@supabase/auth-helpers-react'
 import { Settings } from '@/utils/settings'
 
 
@@ -21,7 +21,8 @@ export default async function handler(req, res) {
 		}
 
 		const { action } = req?.query
-		const { user } = await supabaseClient.auth.api.getUserByCookie(req)
+		const { supabaseClient } = useSessionContext()
+		const { data: { user } } = await supabaseClient.auth.getUser(req.cookies["sb-access-token"])
 	
 		if (user?.id) {
 			// Check only if the user allowed Auto-Post tweets/Quotes

@@ -1,11 +1,12 @@
-import supabaseAdmin from "@/lib/api/supabase-admin"
-import { supabaseClient } from "@supabase/auth-helpers-nextjs"
+import { useSessionContext } from "@supabase/auth-helpers-react"
+import supabaseAdmin from "@/utils/supabase-admin"
 
 
 const UsersGet = async (req, res) => {
 	if (req.method === 'POST') {
 
-        const { user } = await supabaseClient.auth.api.getUserByCookie(req)
+		const { supabaseClient } = useSessionContext()
+		const { data: { user } } = await supabaseClient.auth.getUser(req.cookies["sb-access-token"])
 		const { action, params } = req.body
 
 		if (action === 'changeUsername') {
@@ -16,7 +17,7 @@ const UsersGet = async (req, res) => {
 					.eq('id', user?.id)
 	
 				if (!error) {
-					await supabaseAdmin.auth.api.updateUserById(
+					await supabaseAdmin.auth.admin.updateUserById(
 						user?.id, { user_metadata: { ...params?.user_metadata, username: params?.username } }
 					)
 					return res.status(200).json({ 
@@ -35,7 +36,7 @@ const UsersGet = async (req, res) => {
 					.eq('id', user?.id)
 	
 				if (!error) {
-					await supabaseAdmin.auth.api.updateUserById(
+					await supabaseAdmin.auth.admin.updateUserById(
 						user?.id, { email: params?.email }
 					)
 					return res.status(200).json({ 

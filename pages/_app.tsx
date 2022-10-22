@@ -64,12 +64,16 @@ const MyApp = ({ Component, pageProps }) => {
 	}
 
 	useEffect(() => {
-		const { data: { subscription } } = supabase.auth.onAuthStateChange(
+		const { data: { subscription } } = supabaseClient.auth.onAuthStateChange(
 		async (event, session) => {
-			console.log(event)
+			// console.log(event)
 			if (!session) {
-				await supabase.auth.refreshSession()
+				await supabaseClient.auth.refreshSession()
 			}
+ 			// else if (event === 'SIGNED_IN') {
+			// 	const user = await supabaseClient.auth.getUser()
+			// 	console.log(user)
+			// }
  			else if (event === 'SIGNED_OUT') {
 				router.push('/access?op=signin')
 			}

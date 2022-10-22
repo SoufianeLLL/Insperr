@@ -1,9 +1,11 @@
-import { supabaseServerClient } from '@supabase/auth-helpers-nextjs'
+import { useSessionContext } from '@supabase/auth-helpers-react'
 import prisma from '@/utils/prisma'
 
 
 export default async function handler(req, res) {
 
+	const { supabaseClient } = useSessionContext()
+	
 	const query = req?.query
 	const limit = parseInt(query?.number) ?? 9
 	let quotes
@@ -71,7 +73,7 @@ export default async function handler(req, res) {
 			}
 			// get random custom quotes from Supabase (supabase.io)
 			if (query?.target === 'custom') {
-				const { data: result } = await supabaseServerClient({ req, res })
+				const { data: result } = await supabaseClient
 					.from('random_quotes')
 					.select('*')
 

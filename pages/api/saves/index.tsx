@@ -1,9 +1,10 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs'
+import { useSessionContext } from "@supabase/auth-helpers-react"
 
 export default async function handler(req, res) {
 	if (req.method === 'GET') {
 
-		const { user } = await supabaseClient.auth.api.getUserByCookie(req)
+		const { supabaseClient } = useSessionContext()
+		const { data: { user } } = await supabaseClient.auth.getUser(req.cookies["sb-access-token"])
 		const { action, quote_id } = req?.query
 
 
@@ -11,20 +12,20 @@ export default async function handler(req, res) {
 			switch (action) {
 				case 'Read':
 					if (user?.id) {
-						const { data: _saves, error } = await supabaseClient
+						const { data: saves, error } = await supabaseClient
 							.from('saves')
 							.select('quotes(id, content, type), users(fullname, username)')
 							.eq('user_id', user?.id)
 						
-						const saves = _saves ? _saves?.map((quote) => {
-							return {
-								id: quote?.quotes?.id,
-								type: quote?.quotes?.type,
-								content: quote?.quotes?.content,
-								fullname: quote?.users?.fullname,
-								username: quote?.users?.username
-							}
-						}) : null
+						// const saves = _saves ? _saves?.map((quote) => {
+						// 	return {
+						// 		id: quote?.quotes?.id,
+						// 		type: quote?.quotes?.type,
+						// 		content: quote?.quotes?.content,
+						// 		fullname: quote?.users?.fullname,
+						// 		username: quote?.users?.username
+						// 	}
+						// }) : null
 
 						console.log(error)
 						console.log(saves)

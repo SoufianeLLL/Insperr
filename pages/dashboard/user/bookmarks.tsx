@@ -21,7 +21,6 @@ const BookmarksPage = () => {
 					✨ Recent Quotes added to your Bookmarks
 				</div>
 				<div className="mt-8 w-full">
-					{JSON.stringify(CustomQuotes)}
 					{isValidating ? 
 						<div className="w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6 py-2"><Skeleton /></div> :
 						(CustomQuotes && CustomQuotes?.length > 0) ? 

@@ -1,11 +1,12 @@
-import { supabaseClient } from "@supabase/auth-helpers-nextjs"
+import { useSessionContext } from "@supabase/auth-helpers-react"
 import stripe from "@/utils/stripejs"
 
 
 const handler = async (req, res) => {
 	if (req.method === 'GET') {
 
-		const { user } = await supabaseClient.auth.api.getUserByCookie(req)
+		const { supabaseClient } = useSessionContext()
+		const { data: { user } } = await supabaseClient.auth.getUser(req.cookies["sb-access-token"])
 		const { priceId } = req.query
 
 		let session

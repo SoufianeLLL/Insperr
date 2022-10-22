@@ -19,7 +19,7 @@ const userFields = {
 
 const UserAccess = ({ op }) => {
 
-	const { user } = useUser()
+	const user = useUser()
 
 	const router = useRouter()
 	const [errors, setErrors] = useState(userFields)
@@ -131,6 +131,7 @@ const UserAccess = ({ op }) => {
 			<title>Insperr – The Most Advanced Quotes Generator</title>
 		</Head>
 		<div className="flex flex-wrap min-h-screen w-full content-center justify-center bg-slate-200 py-10">
+			{JSON.stringify(user)}
 			{fetching?.isLoading ? <div className="w-full max-w-sm h-screen mx-auto text-center">
 				<Loading text={fetching?.text ?? null} width={50} height={50} /></div>
 			: 
