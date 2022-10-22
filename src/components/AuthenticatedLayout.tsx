@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 import { useRouter } from "next/router"
 import Head from "next/head"
-import Link from "next/link"
 import { useUser } from '@supabase/auth-helpers-react'
 import Loading from "@/components/Loading"
 import UserSidebar from "./Auth/Aside"
@@ -17,7 +16,7 @@ const AuthenticatedLayout = ({ children, title="Insperr – The Most Advanced Qu
 	useEffect(() => {        
         document.body.classList.add("bg-slate-100")
 		const keyDownHandler = (e) => {
-			if (e.shiftKey === true) {
+			if (e.shiftKey === true && router.pathname?.replace(/^\/|\/$/g, '') !== 'dashboard/user/account') {
 				switch (e?.key?.toLowerCase()) {
 					case 'b':
 						router?.back()
@@ -26,7 +25,7 @@ const AuthenticatedLayout = ({ children, title="Insperr – The Most Advanced Qu
 						router?.push('/dashboard/user/g')
 						break;
 					case 'c':
-						router?.push('/dashboard/user/collections')
+						router?.push('/dashboard/user/collection')
 						break;
 					case 'a':
 						router?.push('/dashboard/user/api')

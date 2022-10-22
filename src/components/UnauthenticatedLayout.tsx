@@ -2,12 +2,18 @@ import Head from "next/head"
 import Link from "next/link"
 import { useUser } from '@supabase/auth-helpers-react'
 import UserNav from "./Auth/UserNav"
+import { useEffect } from "react"
 // import Loading from "@/components/Loading"
 
 
 const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced Quotes Generator", home=false }) => {
 
 	const { user } = useUser()
+
+	useEffect(() => {
+		document.body.classList.add("bg-white")
+		document.body.classList.remove("bg-slate-100")
+	}, [])
 
 	return <>
 		<Head>

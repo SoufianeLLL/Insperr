@@ -2,20 +2,38 @@ import TopicsList from "@/utils/topics.json"
 
 
 // Check if the email is valid
-const checkEmailValidation = (email=null) => {
-	if ( /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email) && email ) {
-		return true
+const checkEmailValidation = (email) => {
+	const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+	if (!emailRegex) {
+		return 'Please fill out your email address'
 	}
-	return false
+	return emailRegex.test(email) ? null : 'Please enter a valid email address.'
 }
 
 // Check if the password contains at least 1 upercase letter, 
 // 1 lowercase letter, 1number and between 5-15 word
-const checkPasswordValidation = (password=null) => {
-	if ( /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$/.test(password) && password) {
-		return true
+const checkPasswordValidation = (password) => {
+	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$/
+	if (!password) {
+		return 'Please fill out your password'
 	}
-	return false
+	return passwordRegex.test(password) ? null : 'Your password must contain lowercase letters, uppercase letters, numbers and must be between 8 and 15 characters.'
+}
+
+// Check if the username contains more than 5 characters and less tha 15,
+// Not having spaces
+const checkUsernameValidation = (username) => {
+	const usernameRegex = /^(?! .* [ ]{2} )[a-zA-Z0-9_]{5,15}[a-zA-Z]+[0-9]*$/
+	if (!username) {
+		return 'Please fill out your username'
+	}
+	else if (username?.length > 15) {
+		return 'Your username must be shorter than 15 characters.'
+	}
+	else if (username?.length < 5) {
+		return 'Your username must be longer than 5 characters.'
+	}
+	return usernameRegex.test(username) ? null : 'Your username must have at least one letter, nor special characters allowed only the underscore.'
 }
 
 // Capitalize first letter of each word
@@ -87,6 +105,7 @@ export {
 	dateFormat,
 	capitalizer,
 	checkEmailValidation,
+	checkUsernameValidation,
 	authorsListWithAlphabet,
 	checkPasswordValidation
 }

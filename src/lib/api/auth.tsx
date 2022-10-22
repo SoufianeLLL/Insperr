@@ -80,7 +80,7 @@ export async function signUp({ username, name, email, password }: SignUpVariable
 		{
 			data: {
 				username: username,
-				full_name: name
+				fullname: name
 			},
 		}
 	)

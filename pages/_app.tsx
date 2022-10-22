@@ -1,17 +1,25 @@
 import { SWRConfig } from 'swr'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { ThemeProvider } from 'next-themes'
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query'
-import { UserProvider } from '@supabase/auth-helpers-react'
-import { supabaseClient } from '@supabase/auth-helpers-nextjs'
+import { SessionContextProvider } from '@supabase/auth-helpers-react'
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NotFoundError, UnauthenticatedError } from '@/lib/api/utils'
 import { fetcher } from "@/lib/global"
 
 import '../styles/app.css'
 import 'tailwindcss/tailwind.css'
+import supabase from '@/lib/api/supabase'
 
 
 const MyApp = ({ Component, pageProps }) => {
+	
+	const router = useRouter()
+
+	const [supabaseClient] = useState(() =>
+		createBrowserSupabaseClient()
+	)
 	
 	const [queryClient] = useState(() =>
 		new QueryClient({
@@ -54,6 +62,23 @@ const MyApp = ({ Component, pageProps }) => {
 		// 	return map
 		// }
 	}
+
+	useEffect(() => {
+		const { data: { subscription } } = supabase.auth.onAuthStateChange(
+		async (event, session) => {
+			console.log(event)
+			if (!session) {
+				await supabase.auth.refreshSession()
+			}
+ 			else if (event === 'SIGNED_OUT') {
+				router.push('/access?op=signin')
+			}
+		})
+	
+		return () => {
+			if (subscription) subscription.unsubscribe()
+		}
+	}, [])
   
 	const getLayout = Component.getLayout ?? ((page) => page)
 
@@ -61,16 +86,15 @@ const MyApp = ({ Component, pageProps }) => {
 		<ThemeProvider attribute="class">
 			<QueryClientProvider client={queryClient}>
 				<Hydrate state={pageProps.dehydratedState}>
-					<UserProvider supabaseClient={supabaseClient}>
+					<SessionContextProvider supabaseClient={supabaseClient} initialSession={pageProps.initialSession}>
 						<SWRConfig value={{ provider: typeof window !== 'undefined' && localStorageProvider, fetcher }}>
 							{getLayout(<Component {...pageProps} />)}
 						</SWRConfig>
-					</UserProvider>
+					</SessionContextProvider>
 				</Hydrate>
 			</QueryClientProvider>
 		</ThemeProvider>
 	)
 }
-  
 
 export default MyApp

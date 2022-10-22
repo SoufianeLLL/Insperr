@@ -1,12 +1,13 @@
 import Link from "next/link"
 import Image from "next/image"
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useSignOutMutation } from "@/lib/api/auth"
 import BlueButton from "@/components/BlueButton"
 
 
 const UserSidebar = ({ user, router }) => {
 
+	const [toggleUserMenu, setToggleUserMenu] = useState(false)
 	const { mutate: signOut } = useSignOutMutation()
 	
 	const onSignOut = useCallback(() => {
@@ -46,7 +47,7 @@ const UserSidebar = ({ user, router }) => {
 						</a></Link>
 					</li>
 					<li className="-mt-2">
-						<Link href={`/dashboard/user/${user?.user_metadata?.username}`}><a className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === `dashboard/user/${user?.user_metadata?.username}` ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
+						<Link href={`/user/@${user?.user_metadata?.username}`}><a className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === `dashboard/user/${user?.user_metadata?.username}` ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
 							<div className="pl-4 pr-6 py-3 inline-block rounded-full w-auto">
 								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeWidth="2" d="M20 15c-1 1 1.25 3.75 0 5s-4-1-5 0-1.5 3-3 3-2-2-3-3-3.75 1.25-5 0 1-4 0-5-3-1.5-3-3 2-2 3-3-1.25-3.75 0-5 4 1 5 0 1.5-3 3-3 2 2 3 3 3.75-1.25 5 0-1 4 0 5 3 1.5 3 3-2 2-3 3zM7 12l3 3 7-7"></path></svg>
 								<span className="hidden md:block float-left ml-4">Profile</span>
@@ -54,42 +55,64 @@ const UserSidebar = ({ user, router }) => {
 						</a></Link>
 					</li>
 					<li className="-mt-2">
-						<Link href="/dashboard/user/api"><a className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === 'dashboard/user/api' ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
-							<div className="pl-4 pr-6 py-3 inline-block rounded-full w-auto">
-								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeWidth="2" d="M2 5.077S3.667 2 12 2s10 3.077 10 3.077v13.846S20.333 22 12 22 2 18.923 2 18.923V5.077zM2 13s3.333 3 10 3 10-3 10-3M2 7s3.333 3 10 3 10-3 10-3"></path></svg>
-								<span className="hidden md:block float-left ml-4">API</span>
-							</div>
-						</a></Link>
-					</li>
-					<li className="-mt-2">
-						<Link href="/help/docs"><a className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === 'help/docs' ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
+						<Link href="/docs"><a className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === 'docs' ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
 							<div className="pl-4 pr-6 py-3 inline-block rounded-full w-auto">
 								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeWidth="2" d="M9 1v7L2 20v3h20v-3L15 8V1m0 17a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-6 2a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm9-7c-7-3-6 4-12 1M6 1h12"></path></svg>
 								<span className="hidden md:block float-left ml-4">Docs</span>
 							</div>
 						</a></Link>
 					</li>
-					<li>
+					<li className="-mt-2">
+						<div className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === 'dashboard/user/api' ? 'font-semibold' : ''} cursor-wait inline-block w-full opacity-20 text-black group`}>
+							<div className="pl-4 pr-6 py-3 inline-block rounded-full w-auto">
+								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeWidth="2" d="M2 5.077S3.667 2 12 2s10 3.077 10 3.077v13.846S20.333 22 12 22 2 18.923 2 18.923V5.077zM2 13s3.333 3 10 3 10-3 10-3M2 7s3.333 3 10 3 10-3 10-3"></path></svg>
+								<span className="hidden md:block float-left ml-4">API</span>
+							</div>
+						</div>
+					</li>
+					<li className="block md:hidden">
+						<BlueButton text={
+							<div className="w-full py-1 flex items-center justify-center"><svg viewBox="0 0 24 24" height="25" width="25" className="text-white w-8 h-8"><path fill="none" stroke="currentColor" strokeWidth="2" d="M12 18V6m-6 6h12"></path></svg></div>
+						} smallSize={false} url="/dashboard/user/g" />
+					</li>
+					<li className="hidden md:block">
 						<BlueButton text="Generate" smallSize={false} url="/dashboard/user/g" />
 					</li>
 				</ul>
 			</div>
-			<div className="pt-4 flex justify-between">
-				<Link href="/dashboard/user/account"><a className="px-4 py-3 w-full flex gap-2 items-center hover:bg-slate-200 rounded-full text-sm text-black text-left">
-					<div>
-						<Image 
-							className="rounded-full"
-							src={require('../../../public/images/avatar.jpg')} 
-							placeholder="blur"
-							unoptimized={true} 
-							height={40}
-							width={40} />
+			<div className="pt-4 flex justify-between relative">
+				{toggleUserMenu && 
+				<>
+					<div onClick={() => setToggleUserMenu(false)} style={{ zIndex: 1001 }} className="fixed top-0 left-0 bottom-0 right-0 w-full h-full"></div>
+					<div style={{ boxShadow: '0 0 12px 3px rgba(0, 0, 0, 0.1)', zIndex: 1002 }} className="text-base py-2 fixed lg:absolute left-4 lg:left-0 bottom-20 w-60 max-w-full bg-white rounded-lg">
+						<Link href="/dashboard/user/account"><a className="hover:bg-slate-50 transition-all py-3 px-5 w-full inline-block">Account Settings</a></Link>
+						<button onClick={() => onSignOut()} className="ring-0 hover:bg-slate-50 transition-all py-3 px-5 w-full inline-block border-t border-slate-100 text-left">Log Out @{user?.user_metadata?.username}</button>
 					</div>
-					<div>
+				</>}
+				<button onClick={() => setToggleUserMenu(true)} className="p-2 md:px-4 md:py-3 w-full flex gap-x-2 items-center hover:bg-slate-200 rounded-full text-sm text-black text-left">
+					{user?.user_metadata?.avatar_url ? 
+					<Image 
+						className="inline-block rounded-full"
+						src={user?.user_metadata?.avatar_url}
+						blurDataURL={require('../../../public/images/avatar.jpg')} 
+						placeholder="blur"
+						unoptimized={true} 
+						height={40}
+						width={40} />
+					:
+					<Image 
+						className="inline-block rounded-full"
+						src={require('../../../public/images/avatar.jpg')} 
+						placeholder="blur"
+						unoptimized={true} 
+						height={40}
+						width={40} />
+					}
+					<div className="hidden md:block">
 						<div className="font-semibold">{user?.user_metadata?.fullname}</div>
 						<div className="text-slate-600">@{user?.user_metadata?.username}</div>
 					</div>
-				</a></Link>
+				</button>
 			</div>
 		</aside>
 	</>

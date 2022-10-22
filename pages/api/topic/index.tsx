@@ -1,9 +1,9 @@
-import { PrismaClient } from '@prisma/client'
+import prisma from "@/utils/prisma"
 
 export default async function handler(req, res) {
+	
+	// const query = req?.query
 	let topics
-	const prisma = new PrismaClient()
-	const query = req?.query
 
 	// get Topics list
 	// if (query?.letter) {

@@ -3,7 +3,7 @@ import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useUser } from '@supabase/auth-helpers-react'
-import { checkEmailValidation, checkPasswordValidation } from "@/lib/validation"
+import { checkEmailValidation, checkPasswordValidation, checkUsernameValidation } from "@/lib/validation"
 import { useForgotPasswordMutation, useSignInMutation, useSignUpMutation } from "@/lib/api/auth"
 import Loading from "@/components/Loading"
 
@@ -39,14 +39,14 @@ const UserAccess = ({ op }) => {
 		if (action === 'signup' || action === 'register' || action === 'new') {
 			if (userData?.fullname && userData?.username && userData?.email && userData?.password && userData?.password2 && (userData?.password === userData?.password2)) {
 				setErrors({
-					email: (userData?.email && checkEmailValidation(userData?.email)) ? null : 'Please enter a valid email address.',
-					username: (userData?.username && userData?.username?.length > 5 && userData?.username?.length < 20) ? null : 'Your username must be between 5 and 20 characters.',
+					email: checkEmailValidation(userData?.email),
+					username: checkUsernameValidation(userData?.username),
 					fullname: (userData?.fullname && userData?.fullname?.length > 6 && userData?.fullname?.length < 20) ? null : 'Your fullname must be between 6 and 20 characters.',
-					password: (userData?.password && checkPasswordValidation(userData?.password)) ? null : 'Your password must contain lowercase letters, uppercase letters, numbers and must be between 8 and 15 characters.',
+					password: checkPasswordValidation(userData?.password),
 					password2: userData?.password2 ? (userData?.password !== userData?.password2 ? 'The password confirmation does not match.' : null) : 'Please enter your password confirmation.',
 					error: null
 				})
-				if (!errors?.fullname && errors?.username && !errors?.email && !errors?.password && !errors?.password2) {
+				if (!errors?.fullname && !errors?.username && !errors?.email && !errors?.password && !errors?.password2) {
 					setFetching({ isLoading: true, text })
 					signUp(
 						{
@@ -150,7 +150,7 @@ const UserAccess = ({ op }) => {
 								setUser({ ...userData, username: e?.target?.value })
 								setErrors({ ...errors, username: null })
 							}}
-							defaultValue={userData?.username ?? null} placeholder="Enter your username" className="text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
+							defaultValue={userData?.username ?? null} placeholder="Enter your username" className="bg-transparent text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 							{errors?.username && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.username}</span>}
 						</div>
 						<div className="mb-6">
@@ -160,7 +160,7 @@ const UserAccess = ({ op }) => {
 								setUser({ ...userData, fullname: e?.target?.value })
 								setErrors({ ...errors, fullname: null })
 							}}
-							defaultValue={userData?.fullname ?? null} placeholder="Enter your full name" className="text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
+							defaultValue={userData?.fullname ?? null} placeholder="Enter your full name" className="bg-transparent text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 							{errors?.fullname && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.fullname}</span>}
 						</div>
 						<div className="mb-6">
@@ -170,7 +170,7 @@ const UserAccess = ({ op }) => {
 								setUser({ ...userData, email: e?.target?.value })
 								setErrors({ ...errors, email: null })
 							}}
-							defaultValue={userData?.email ?? null} placeholder="Enter your email" className="text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
+							defaultValue={userData?.email ?? null} placeholder="Enter your email" className="bg-transparent text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 							{errors?.email && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.email}</span>}
 						</div>
 						<div className="mb-6">
@@ -180,7 +180,7 @@ const UserAccess = ({ op }) => {
 								setUser({ ...userData, password: e?.target?.value })
 								setErrors({ ...errors, password: null })
 							}}
-							placeholder="*****" className="text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
+							placeholder="*****" className="bg-transparent text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 							{errors?.password && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.password}</span>}
 						</div>
 						<div className="mb-6">
@@ -190,7 +190,7 @@ const UserAccess = ({ op }) => {
 								setUser({ ...userData, password2: e?.target?.value })
 								setErrors({ ...errors, password2: null })
 							}}
-							placeholder="*****" className="text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
+							placeholder="*****" className="bg-transparent text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 							{errors?.password2 && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.password2}</span>}
 						</div>
 						<div className="mt-8 mb-2">
@@ -214,7 +214,7 @@ const UserAccess = ({ op }) => {
 								setUser({ ...userData, email: e?.target?.value })
 								setErrors({ ...errors, email: null })
 							}}
-							defaultValue={userData?.email ?? null} placeholder="Enter your email" className="text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
+							defaultValue={userData?.email ?? null} placeholder="Enter your email" className="bg-transparent text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 							{errors?.email && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.email}</span>}
 						</div>
 						<div className="mt-8 mb-2">
@@ -238,7 +238,7 @@ const UserAccess = ({ op }) => {
 								setUser({ ...userData, email: e?.target?.value })
 								setErrors({ ...errors, email: null })
 							}}
-							defaultValue={userData?.email ?? null} placeholder="Enter your email" className="text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
+							defaultValue={userData?.email ?? null} placeholder="Enter your email" className="bg-transparent text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 							{errors?.email && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.email}</span>}
 						</div>
 						<div className="mb-6">
@@ -248,7 +248,7 @@ const UserAccess = ({ op }) => {
 								setUser({ ...userData, password: e?.target?.value })
 								setErrors({ ...errors, password: null })
 							}}
-							placeholder="*****" className="text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
+							placeholder="*****" className="bg-transparent text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 							{errors?.password && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.password}</span>}
 						</div>
 						<div className="mb-3 flex flex-wrap content-center">

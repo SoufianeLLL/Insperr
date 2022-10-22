@@ -15,7 +15,7 @@ const _ErrorPage = () => {
 						<h1 className="text-5xl md:text-7xl w-full inline-block">404</h1>
 						<div className="text-4xl w-full mt-3 inline-block">PAGE NOT FOUND</div>
 						<div className="mt-2 text-base">
-							Go back to <Link href="/"><a className="text-blue-600 underline">homepage</a></Link> . OneDomain.io
+							Go back to <Link href="/"><a className="text-blue-600 underline">homepage</a></Link> . Insperr.com
 						</div>
 					</div>
 				</div>

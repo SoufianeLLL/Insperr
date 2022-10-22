@@ -1,55 +1,88 @@
-import { supabaseServerClient } from '@supabase/auth-helpers-nextjs'
+import { supabaseClient } from '@supabase/auth-helpers-nextjs'
+import { Settings } from '@/utils/settings'
 
-type analytics = {
+
+type statistics = {
+	subscription,
 	generatedQuotes?: number,
-	quotesVisits?: number,
-	quotesVisitsYearly?: number,
+	tweetedQuotes?: number,
 	status?: number
 }
 
+
 export default async function handler(req, res) {
-	
-	const query = req?.query
-	const data: analytics = {
-		generatedQuotes: 0,
-		quotesVisits: 0,
-		quotesVisitsYearly: 0,
-		status: 0
-	}
+	if (req.method === 'GET') {
 
-	const rectifyFormat = (s) => {
-		let b = s.split(/\D/)
-		return b[0] + '-' + b[1] + '-' + b[2] + 'T' +
-			   b[3] + ':' + b[4] + ':' + b[5] + '.' +
-			   b[6].substr(0,3) + '+00:00';
-	}
-
-	if (query?.id) {
-		const { data: quotes } = await supabaseServerClient({ req, res })
-			.from("quotes")
-			.select("id, views, created_at")
-			.eq('type', 'custom')
-		
-		if (quotes) {
-			const now = new Date()
-			let visitsMonthly = 0, visitsYearly = 0
-			for (let i = quotes.length; i--;) {
-				const then = new Date(rectifyFormat(quotes[i]?.created_at))
-				const dateY = +then + 1000*60*60*24*365 < +now
-				if (!dateY) {
-					visitsYearly += quotes[i]?.views
-				}
-				const dateM = Math.abs(then.getTime() - now.getTime()) / (24 * 60 * 60 * 1000)
-				if (dateM < 30) {
-					visitsMonthly += quotes[i]?.views
-				}
-			}
-			data.generatedQuotes = quotes?.length
-			data.quotesVisits = visitsMonthly
-			data.quotesVisitsYearly = visitsYearly
-			data.status = 200
+		const data: statistics = {
+			subscription: null,
+			generatedQuotes: 0,
+			tweetedQuotes: 0,
+			status: 0
 		}
-	}
 
-	return res.status(200).json(data)
+		const { action } = req?.query
+		const { user } = await supabaseClient.auth.api.getUserByCookie(req)
+	
+		if (user?.id) {
+			// Check only if the user allowed Auto-Post tweets/Quotes
+			if (action === 'checkAutoPost') {
+				const { data: result } = await supabaseClient
+					.from("users")
+					.select("metadata")
+					.eq('id', user?.id)
+					.single()
+				
+				return res.status(200).json(result?.metadata?.auto_post ?? false)
+			}
+			
+			// Check only if the user has a valid subscription
+			else if (action === 'checkUserSubscription') {
+				const { data: subscription } = await supabaseClient
+					.from("subscription")
+					.select('product_id')
+					.eq('id', user?.id)
+					.eq('is_subscribed', true)
+					.single()
+				
+				// Check if the subscribed user allowed to connect to twitter 
+				const checkIfAllowed = Settings?.products?.some((o) => {return ((o['id'] === subscription?.product_id) && o['autoPost'] === true)})
+				return res.status(200).json(subscription ? (checkIfAllowed ?? false) : false)
+			}
+			
+			// Get user data
+			else if (action === 'getUserData') {
+				const { count: quotes } = await supabaseClient
+					.from('quotes')
+					.select('*', { count: 'exact', head: true })
+					.eq('user_id', user?.id)
+
+				const { count: tweetedQuotes } = await supabaseClient
+					.from('quotes')
+					.select('*', { count: 'exact', head: true })
+					.eq('user_id', user?.id)
+					.eq('tweeted', true)
+
+				const { data: subscription } = await supabaseClient
+					.from('subscription')
+					.select('*')
+					.single()
+				
+				data.subscription = subscription ?? null
+				data.generatedQuotes = quotes ?? 0
+				data.tweetedQuotes = tweetedQuotes ?? 0
+				data.status = 200
+
+				return res.status(200).json(data)
+			}
+		}
+
+		return res.status(401).json('Unauthorized')
+	}
+	else {
+		res.setHeader('Allow', 'GET')
+		return res.status(405).json({
+			error: 'NOT_ALLOWED',
+			message: 'Method Not Allowed'
+		})
+	}
 }

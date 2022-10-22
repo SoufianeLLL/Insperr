@@ -11,9 +11,7 @@ import Link from "next/link"
 const IndexPage = () => {
 
 	const [Callback, setCallback] = useState({ status: null, text: null })
-	const URL = (target) => `/api/quote?number=${20}&target=${target}&action=getRandomQuotes`
-	
-	let { data: CustomQuotes } = useSWR(URL('custom'))
+	let { isValidating, data: CustomQuotes } = useSWR(`/api/quote?number=${20}&target=custom&action=getRandomQuotes`)
 	
 	/**
 	 * Using cache supafast
@@ -49,13 +47,14 @@ const IndexPage = () => {
 					</div>
 				</div>
 				<div className="mt-8 w-full">
-					{/* <div className="w-full columns-1 md:columns-2 lg:columns-3 gap-6 py-2"> */}
-					<div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 py-2">
-						{CustomQuotes && CustomQuotes?.length > 0 ? CustomQuotes?.map((quote, i) => {
-							return <QuoteContainer key={i} id={i} quote={quote} callback={(e) => setCallback(e)} />
-						})
-						: <Skeleton />}
-					</div>
+					{isValidating ? 
+						<div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-6 py-2"><Skeleton /></div> :
+						(CustomQuotes && CustomQuotes?.length > 0) && 
+							<div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-6 py-2">
+								{CustomQuotes?.map((quote, i) => {
+									return <QuoteContainer key={i} id={i} quote={quote} callback={(e) => setCallback(e)} />
+								})}
+							</div>}
 				</div>
 			</div>
 		</section>
@@ -64,7 +63,7 @@ const IndexPage = () => {
 				<div className="text-center w-full text-primary-400 fontNormal text-xl uppercase">Get started for free</div>
 				<div className="mt-2 w-full text-center">
 					<div className="text-2xl md:text-3xl lg:text-4xl leading-tight normal-case fontSemiBold w-full">
-						Let's discover your style? <br/> Start with <span className="text-primary-500">free credits</span> now.
+						Let's discover your style? <br/> Start with <span className="text-primary-500">free</span> now.
 					</div>
 					<Link href="/access?op=signin"><a className="mt-8 w-auto inline-block text-white cursor-pointer mx-auto transition duration-200 transform scale-100 hover:scale-110 shadow-lg bg-primary-500 hover:bg-primary-700 py-4 px-8 text-xl rounded-full">
 						Get Started</a></Link>

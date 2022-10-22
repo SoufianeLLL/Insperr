@@ -1,9 +1,9 @@
-import { PrismaClient } from '@prisma/client'
+import prisma from "@/utils/prisma"
 
 export default async function handler(req, res) {
-	let authors
-	const prisma = new PrismaClient()
+
 	const query = req?.query
+	let authors
 
 	// get Authors list started with specific letter
 	if (query?.letter) {
