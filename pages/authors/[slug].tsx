@@ -28,10 +28,10 @@ const Author = ({ slug }) => {
 		'quotes',
 		async ({ pageParam = '' }) => {
 				await new Promise((res) => setTimeout(res, 1000))
-				const res = await fetch(`/api/quote?number=${take}&target=database&author=${slug}&cursor=${pageParam}&action=getQuotesByAuthorName`)
+				const res = await fetch(`/api/quote?number=${take}&author=${slug}&cursor=${pageParam}&action=getQuotesByAuthorName`)
 				const data = await res?.json()
 		        return data
-				// const { data: res } = useSWR(`/api/quote?number=${take}&target=database&author=${slug}&cursor=${pageParam}`)
+				// const { data: res } = useSWR(`/api/quote?number=${take}&author=${slug}&cursor=${pageParam}`)
 				// return res
 		},
 		{

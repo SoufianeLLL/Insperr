@@ -1,4 +1,4 @@
-import { withApiAuth, supabaseServerClient } from '@supabase/auth-helpers-nextjs'
+import { withApiAuth } from '@supabase/auth-helpers-nextjs'
 import { dateFormat } from '@/lib/validation'
 
 type analytics = {
@@ -7,23 +7,26 @@ type analytics = {
 	status?: number
 }
 
-export default withApiAuth(
-	async function ProtectedRoute ( req, res ) {
+export default withApiAuth(async function handler(req, res, supabaseServerClient) {
+
+		const { data: { user } } = await supabaseServerClient.auth.getUser()
+
 		const query = req?.query
-	    let data: analytics = {
+
+		let data: analytics = {
 			readRequests: 0,
 			createRequests: 0,
 			status: 0
 		}
 
-	    if (query?.user_id) {
+	    if (user?.id) {
 			let x = new Date(), yFormat = dateFormat(new Date(x.getFullYear(), x.getMonth()-1, x.getMonth()))
 			let createRequests = 0, readRequests = 0
 
-			const { data: createReq } = await supabaseServerClient({ req, res })
+			const { data: createReq } = await supabaseServerClient
 	            .from('requests')
 				.select('count')
-	            .eq('user_id', query?.user_id)
+	            .eq('user_id', user?.id)
 	            .eq('type', 'create')
 				.gt('created_at', yFormat)
 
@@ -31,10 +34,10 @@ export default withApiAuth(
 				createRequests += createReq[i]?.count
 			}
 
-			const { data: readReq } = await supabaseServerClient({ req, res })
+			const { data: readReq } = await supabaseServerClient
 	            .from('requests')
 				.select('count')
-	            .eq('user_id', query?.user_id)
+	            .eq('user_id', user?.id)
 	            .eq('type', 'read')
 				.gt('created_at', yFormat)
 
@@ -48,5 +51,4 @@ export default withApiAuth(
 	    }
 
 	    return res.status(200).json(data)
-	}
-)
+})

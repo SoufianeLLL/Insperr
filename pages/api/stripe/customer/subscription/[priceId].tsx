@@ -1,18 +1,17 @@
-import { useSessionContext } from "@supabase/auth-helpers-react"
+import { withApiAuth } from "@supabase/auth-helpers-nextjs"
 import stripe from "@/utils/stripejs"
 
 
-const handler = async (req, res) => {
+export default withApiAuth(async function handler(req, res, supabaseServerClient) {
 	if (req.method === 'GET') {
 
-		const { supabaseClient } = useSessionContext()
-		const { data: { user } } = await supabaseClient.auth.getUser(req.cookies["sb-access-token"])
+		const { data: { user } } = await supabaseServerClient.auth.getUser()
 		const { priceId } = req.query
 
 		let session
 
 		if (user?.id && priceId) {
-			const { data: stripe_customer, error } = await supabaseClient
+			const { data: stripe_customer, error } = await supabaseServerClient
 				.from('users')
 				.select('stripe_customer_id')
 				.eq('user_id', user?.id)
@@ -57,6 +56,4 @@ const handler = async (req, res) => {
 			message: 'Method Not Allowed'
 		})
 	}
-}
-
-export default handler
+})

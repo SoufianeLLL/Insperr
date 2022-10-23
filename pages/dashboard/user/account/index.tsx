@@ -2,24 +2,24 @@ import useSWR from 'swr'
 import { useEffect, useState } from "react"
 import Link from 'next/link'
 import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
-import { useSignOutMutation } from "@/lib/api/auth"
+// import { useSignOutMutation } from "@/lib/api/auth"
 import { checkEmailValidation, checkPasswordValidation, checkUsernameValidation } from "@/lib/validation"
 import Loading from '@/components/Loading'
 import ShowToast from "@/components/ShowToast"
 import BlueButton from "@/components/BlueButton"
 import AuthenticatedLayout from "@/components/AuthenticatedLayout"
+import { useSignOutMutation } from '@/lib/api/auth'
 
 
 const UserAccount = ({ q_screen, q_errors }) => {
 
+	const user = useUser()
+	const { isLoading, supabaseClient } = useSessionContext()
+
 	const { mutate: signOut } = useSignOutMutation()
 
-	const { isLoading, supabaseClient } = useSessionContext()
-	const user = useUser()
 	let { isValidating: isCheckingSubscription, data: isSubscribed } = useSWR(`/api/user?action=checkUserSubscription`)
-
 	const accountLinked = user && user?.app_metadata?.providers?.includes('twitter') ? 'authenticated' : 'unauthenticated' // Check if Twitter account is linked
-
 	const { isValidating: isCheckingAutoPost, data: checkAutoPost } = useSWR(`/api/user?id=${user?.id}&action=checkAutoPost`)
 
 	const [error, setError] = useState(null)
@@ -123,7 +123,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 						if (!error) {							
 							setAction({ name: null, params: null, isLoading: false, password: null })
 							// must LogOut to set the new Username
-							signOut()
+							signOut({ supabaseClient })
 						}
 					}
 					catch (e) {
@@ -151,7 +151,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 						if (!error) {							
 							setAction({ name: null, params: null, isLoading: false, password: null })
 							// must LogOut to set the new Email
-							signOut()
+							signOut({ supabaseClient })
 						}
 					}
 					catch (e) {
@@ -167,7 +167,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 						if (!error) {							
 							setAction({ name: null, params: null, isLoading: false, password: null })
 							// must LogOut to set the new Password
-							signOut()
+							signOut({ supabaseClient })
 						}
 					}
 					catch (e) {
@@ -189,7 +189,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 			})
 		}
 		else {
-			signOut()
+			signOut({ supabaseClient })
 		}
 	}
 

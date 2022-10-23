@@ -11,7 +11,7 @@ import Link from "next/link"
 const IndexPage = () => {
 
 	const [Callback, setCallback] = useState({ status: null, text: null })
-	let { isValidating, data: CustomQuotes } = useSWR(`/api/quote?number=${20}&target=custom&action=getRandomQuotes`)
+	let { isValidating, data: CustomQuotes } = useSWR(`/api/quote/auth?number=${20}&action=getRandomQuotes`)
 	
 	/**
 	 * Using cache supafast

@@ -11,7 +11,7 @@ import Loading from "@/components/Loading"
 const CollectionsPage = () => {
 
 	const [Callback, setCallback] = useState({ status: null, text: null })
-	let { isValidating, data: CustomQuotes } = useSWR(`/api/quote?number=${20}&target=custom&action=getRandomQuotes`)
+	let { isValidating, data: CustomQuotes } = useSWR(`/api/quote/auth?number=${20}&target=custom&action=getRandomQuotes`)
 	let { isValidating: isCheckingSubscription, data: isSubscribed } = useSWR(`/api/user?action=checkUserSubscription`)
 
 	return <>

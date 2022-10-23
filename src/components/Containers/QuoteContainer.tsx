@@ -44,6 +44,9 @@ const QuoteContainer = ({ id, quote, type='custom', withAuthor=true, classes=nul
 			const result = await fetch(`/api/saves?action=Delete&quote_id=${quote?.id}`)
 				.then((res) => res.json())
 
+			if (result?.status === 'success') {
+				///
+			}
 			setBookmarksChanges({ status: false, id: null })
 			callback({ status: result?.status, text: result?.message })
 		}
@@ -54,8 +57,7 @@ const QuoteContainer = ({ id, quote, type='custom', withAuthor=true, classes=nul
 	
 
 	return <>
-	{JSON.stringify(quote)}
-		<div className={`${classes} p-quote bg-white shadow hover:shadow-lg border border-slate-100 p-5 md:p-8 w-full rounded-lg relative overflow-hidden mb-6 transition duration-200`}>
+		<div className={`${classes} quote_${id} p-quote bg-white shadow hover:shadow-lg border border-slate-100 p-5 md:p-8 w-full rounded-lg relative overflow-hidden mb-6 transition duration-200`}>
 			<svg style={{ zIndex: 0 }} className="absolute top-0 left-2 text-slate-100" fill="currentColor" width="70" height="70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
 			{bookmarksChanges?.status && bookmarksChanges?.id === id ? 
 				<div className="absolute top-2 right-2 py-2 px-2"><Loading text="" width={20} height={20} borderWidth={2} scpace="0" /></div>
@@ -81,7 +83,7 @@ const QuoteContainer = ({ id, quote, type='custom', withAuthor=true, classes=nul
 					<div className="w-full mt-2">
 						{topics?.map((topic, i) => {
 							if (type === 'custom') {
-								return <div className="inline-block text-primary-500 float-left mr-3 mb-1 text-sm">{topic?.toUpperCase()}</div>
+								return <div key={i} className="inline-block text-primary-500 float-left mr-3 mb-1 text-sm">{topic?.toUpperCase()}</div>
 							} 
 							else {
 								return <Link key={i} href={`topics/${topic?.toLowerCase()}`}>

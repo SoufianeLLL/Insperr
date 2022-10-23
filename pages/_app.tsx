@@ -10,7 +10,6 @@ import { fetcher } from "@/lib/global"
 
 import '../styles/app.css'
 import 'tailwindcss/tailwind.css'
-import supabase from '@/lib/api/supabase'
 
 
 const MyApp = ({ Component, pageProps }) => {
@@ -88,15 +87,15 @@ const MyApp = ({ Component, pageProps }) => {
 
 	return (
 		<ThemeProvider attribute="class">
-			<QueryClientProvider client={queryClient}>
-				<Hydrate state={pageProps.dehydratedState}>
-					<SessionContextProvider supabaseClient={supabaseClient} initialSession={pageProps.initialSession}>
+			<SessionContextProvider supabaseClient={supabaseClient} initialSession={pageProps.initialSession}>
+				<QueryClientProvider client={queryClient}>
+					<Hydrate state={pageProps.dehydratedState}>
 						<SWRConfig value={{ provider: typeof window !== 'undefined' && localStorageProvider, fetcher }}>
 							{getLayout(<Component {...pageProps} />)}
 						</SWRConfig>
-					</SessionContextProvider>
-				</Hydrate>
-			</QueryClientProvider>
+					</Hydrate>
+				</QueryClientProvider>
+			</SessionContextProvider>
 		</ThemeProvider>
 	)
 }

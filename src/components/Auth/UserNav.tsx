@@ -1,15 +1,17 @@
 import { useCallback } from 'react'
 import Image from "next/image"
 import Link from 'next/link'
+import { useSessionContext } from '@supabase/auth-helpers-react'
 import { useSignOutMutation } from "@/lib/api/auth"
 
 
 const UserNav = ({ user, isAuthPage=false }) => {
 
+	const { supabaseClient } = useSessionContext()
 	const { mutate: signOut } = useSignOutMutation()
 	
 	const onSignOut = useCallback(() => {
-		signOut()
+		signOut({ supabaseClient })
 	}, [])
 	
 	return (

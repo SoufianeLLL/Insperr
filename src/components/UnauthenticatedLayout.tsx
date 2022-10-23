@@ -8,7 +8,7 @@ import { useEffect } from "react"
 
 const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced Quotes Generator", home=false }) => {
 
-	const { user } = useUser()
+	const user = useUser()
 
 	useEffect(() => {
 		document.body.classList.add("bg-white")

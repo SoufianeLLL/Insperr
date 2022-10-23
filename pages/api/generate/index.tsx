@@ -1,12 +1,15 @@
 import { Configuration, OpenAIApi } from 'openai'
-import { supabaseServerClient } from '@supabase/auth-helpers-nextjs'
+import { withApiAuth } from '@supabase/auth-helpers-nextjs'
 
 const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY })
 const openai = new OpenAIApi(configuration)
 
-export default async function handler(req, res) {
+
+export default withApiAuth(async function handler(req, res, supabaseServerClient) {
 	
-	const query = req?.query
+    const { data: { user } } = await supabaseServerClient.auth.getUser()
+
+    const query = req?.query
     let data
 
 	if (query?.phrase && query?.category && query?.engine && query?.quota && query?.characters) {
@@ -24,4 +27,4 @@ export default async function handler(req, res) {
 	}
 
 	return res.status(200).json(data)
-}
+})

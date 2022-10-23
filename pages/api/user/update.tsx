@@ -1,17 +1,16 @@
-import { useSessionContext } from "@supabase/auth-helpers-react"
+import { withApiAuth } from "@supabase/auth-helpers-nextjs"
 import supabaseAdmin from "@/utils/supabase-admin"
 
 
-const UsersGet = async (req, res) => {
+export default withApiAuth(async function handler(req, res, supabaseServerClient) {
 	if (req.method === 'POST') {
 
-		const { supabaseClient } = useSessionContext()
-		const { data: { user } } = await supabaseClient.auth.getUser(req.cookies["sb-access-token"])
+		const { data: { user } } = await supabaseServerClient.auth.getUser()
 		const { action, params } = req.body
 
 		if (action === 'changeUsername') {
 			if (user?.id && params?.username && params?.user_metadata) {
-				const { error } = await supabaseClient
+				const { error } = await supabaseServerClient
 					.from('users')
 					.update({ username: params?.username })
 					.eq('id', user?.id)
@@ -30,7 +29,7 @@ const UsersGet = async (req, res) => {
 	
 		else if (action === 'changeEmail') {
 			if (user?.id && params?.email) {
-				const { error } = await supabaseClient
+				const { error } = await supabaseServerClient
 					.from('users')
 					.update({ email: params?.email })
 					.eq('id', user?.id)
@@ -62,6 +61,4 @@ const UsersGet = async (req, res) => {
             message: 'Method Not Allowed'
         })
 	}
-}
-
-export default UsersGet
+})

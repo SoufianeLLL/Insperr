@@ -1,17 +1,20 @@
+import { useCallback, useState } from 'react'
 import Link from "next/link"
 import Image from "next/image"
-import { useCallback, useState } from 'react'
+import { useSessionContext } from "@supabase/auth-helpers-react"
 import { useSignOutMutation } from "@/lib/api/auth"
 import BlueButton from "@/components/BlueButton"
 
 
 const UserSidebar = ({ user, router }) => {
+	
+	const { supabaseClient } = useSessionContext()
 
 	const [toggleUserMenu, setToggleUserMenu] = useState(false)
 	const { mutate: signOut } = useSignOutMutation()
 	
 	const onSignOut = useCallback(() => {
-		signOut()
+		signOut({ supabaseClient })
 	}, [])
 
 	return <>

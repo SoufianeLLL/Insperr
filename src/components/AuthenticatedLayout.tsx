@@ -11,7 +11,7 @@ const isLoading = false
 const AuthenticatedLayout = ({ children, title="Insperr – The Most Advanced Quotes Generator" }) => {
 
 	const router = useRouter()
-	const { user } = useUser()	
+	const user = useUser()	
 
 	useEffect(() => {        
         document.body.classList.add("bg-slate-100")

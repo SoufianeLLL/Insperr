@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useUser } from '@supabase/auth-helpers-react'
+import { useSessionContext, useUser } from '@supabase/auth-helpers-react'
 import { checkEmailValidation, checkPasswordValidation, checkUsernameValidation } from "@/lib/validation"
 import { useForgotPasswordMutation, useSignInMutation, useSignUpMutation } from "@/lib/api/auth"
 import Loading from "@/components/Loading"
@@ -20,18 +20,20 @@ const userFields = {
 const UserAccess = ({ op }) => {
 
 	const user = useUser()
+	const { supabaseClient } = useSessionContext()
 
 	const router = useRouter()
 	const [errors, setErrors] = useState(userFields)
 	const [userData, setUser] = useState(userFields)
 	const [fetching, setFetching] = useState({ isLoading: false, text: null})
+	
 	const { mutate: signUp } = useSignUpMutation()
 	const { mutate: signIn } = useSignInMutation()
 	const { mutate: forgotPassword } = useForgotPasswordMutation()
 
 	useEffect(() => {
 		if (user) {
-			router.replace('/dashboard')
+			router.push('/dashboard')
 		}
 	})
 	
@@ -54,6 +56,7 @@ const UserAccess = ({ op }) => {
 							name: (userData?.fullname).toString(),
 							email: (userData?.email).toString(),
 							password: (userData?.password).toString(),
+							supabaseClient
 						},
 						{
 							onError(error) {
@@ -64,7 +67,7 @@ const UserAccess = ({ op }) => {
 								setFetching({ isLoading: false, text: null })
 							},
 							onSuccess() {
-								router.replace('/dashboard')
+								router.push('/dashboard')
 							},
 						}
 					)
@@ -100,7 +103,8 @@ const UserAccess = ({ op }) => {
 				signIn(
 					{
 						email: (userData?.email).toString(),
-						password: (userData?.password).toString()
+						password: (userData?.password).toString(),
+						supabaseClient
 					},
 					{
 						onError(error) {
@@ -111,7 +115,7 @@ const UserAccess = ({ op }) => {
 							setFetching({ isLoading: false, text: null })
 						},
 						onSuccess() {
-							router.replace('/dashboard')
+							router.push('/dashboard')
 						},
 					}
 				)
@@ -131,7 +135,6 @@ const UserAccess = ({ op }) => {
 			<title>Insperr – The Most Advanced Quotes Generator</title>
 		</Head>
 		<div className="flex flex-wrap min-h-screen w-full content-center justify-center bg-slate-200 py-10">
-			{JSON.stringify(user)}
 			{fetching?.isLoading ? <div className="w-full max-w-sm h-screen mx-auto text-center">
 				<Loading text={fetching?.text ?? null} width={50} height={50} /></div>
 			: 

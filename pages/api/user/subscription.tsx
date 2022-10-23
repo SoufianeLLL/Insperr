@@ -1,14 +1,13 @@
-import { useSessionContext } from "@supabase/auth-helpers-react"
+import { withApiAuth } from "@supabase/auth-helpers-nextjs"
 
 
-const UsersGet = async (req, res) => {
+export default withApiAuth(async function handler(req, res, supabaseServerClient) {
 	if (req.method === 'GET') {
 
-		const { supabaseClient } = useSessionContext()
-		const { data: { user } } = await supabaseClient.auth.getUser(req.cookies["sb-access-token"])
+		const { data: { user } } = await supabaseServerClient.auth.getUser()
 
 		if (user?.id) {
-			const { data: subscription, error } = await supabaseClient
+			const { data: subscription, error } = await supabaseServerClient
 				.from('subscription')
 				.select()
 				.eq('user_id', user?.id)
@@ -21,7 +20,7 @@ const UsersGet = async (req, res) => {
 			return res.status(401).end('Unauthorized')
 		}
 
-		return res.status(200).json()
+		return res.status(200).json(null)
 	}
 	else {
 		res.setHeader('Allow', 'GET')
@@ -30,6 +29,4 @@ const UsersGet = async (req, res) => {
 			message: 'Method Not Allowed'
 		})
 	}
-}
-
-export default UsersGet
+})

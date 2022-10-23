@@ -1,5 +1,5 @@
-import { useSessionContext } from '@supabase/auth-helpers-react'
 import { Settings } from '@/utils/settings'
+import { withApiAuth } from '@supabase/auth-helpers-nextjs'
 
 
 type statistics = {
@@ -9,8 +9,7 @@ type statistics = {
 	status?: number
 }
 
-
-export default async function handler(req, res) {
+export default withApiAuth(async function handler(req, res, supabaseServerClient) {
 	if (req.method === 'GET') {
 
 		const data: statistics = {
@@ -21,13 +20,13 @@ export default async function handler(req, res) {
 		}
 
 		const { action } = req?.query
-		const { supabaseClient } = useSessionContext()
-		const { data: { user } } = await supabaseClient.auth.getUser(req.cookies["sb-access-token"])
-	
+		const { data: { user } } = await supabaseServerClient.auth.getUser()
+
+		
 		if (user?.id) {
 			// Check only if the user allowed Auto-Post tweets/Quotes
 			if (action === 'checkAutoPost') {
-				const { data: result } = await supabaseClient
+				const { data: result } = await supabaseServerClient
 					.from("users")
 					.select("metadata")
 					.eq('id', user?.id)
@@ -38,7 +37,7 @@ export default async function handler(req, res) {
 			
 			// Check only if the user has a valid subscription
 			else if (action === 'checkUserSubscription') {
-				const { data: subscription } = await supabaseClient
+				const { data: subscription } = await supabaseServerClient
 					.from("subscription")
 					.select('product_id')
 					.eq('id', user?.id)
@@ -52,18 +51,18 @@ export default async function handler(req, res) {
 			
 			// Get user data
 			else if (action === 'getUserData') {
-				const { count: quotes } = await supabaseClient
+				const { count: quotes } = await supabaseServerClient
 					.from('quotes')
 					.select('*', { count: 'exact', head: true })
 					.eq('user_id', user?.id)
 
-				const { count: tweetedQuotes } = await supabaseClient
+				const { count: tweetedQuotes } = await supabaseServerClient
 					.from('quotes')
 					.select('*', { count: 'exact', head: true })
 					.eq('user_id', user?.id)
 					.eq('tweeted', true)
 
-				const { data: subscription } = await supabaseClient
+				const { data: subscription } = await supabaseServerClient
 					.from('subscription')
 					.select('*')
 					.single()
@@ -86,4 +85,4 @@ export default async function handler(req, res) {
 			message: 'Method Not Allowed'
 		})
 	}
-}
+})

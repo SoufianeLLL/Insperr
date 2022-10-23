@@ -16,7 +16,7 @@ const DashboardPage = () => {
 	const { isLoading, supabaseClient } = useSessionContext()
 	const user = useUser()
 	let { isValidating: isCheckingSubscription, data: userData } = useSWR(`/api/user?action=getUserData`)
-	// let { data: APIrequests } = useSWR(`/api/requests?user_id=${user?.id}`)
+	// let { data: APIrequests } = useSWR(`/api/requests`)
 	
 	const accountLinked = user && user?.app_metadata?.providers?.includes('twitter') ? 'authenticated' : 'unauthenticated' // Check if Twitter account is linked
 
