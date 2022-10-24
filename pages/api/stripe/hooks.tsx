@@ -1,12 +1,11 @@
 import { buffer } from "micro"
 import stripe from "@/utils/stripejs"
-import { withApiAuth } from "@supabase/auth-helpers-nextjs"
 import supabaseAdmin from "@/utils/supabase-admin"
 
 export const config = { api: { bodyParser: false } }
 
 
-export default withApiAuth(async function handler(req, res, supabaseServerClient) {
+export default async function handler(req, res) {
 
     const signature = req.headers["stripe-signature"]
     const signingSecret = process.env.STRIPE_SIGNING_SECRET_TEST
@@ -61,4 +60,4 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
     }
 
     res.send({ received: true })
-})
+}
