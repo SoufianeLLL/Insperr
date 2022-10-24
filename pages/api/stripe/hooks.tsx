@@ -47,6 +47,12 @@ export default async function handler(req, res) {
 				await supabaseAdmin
 					.from('subscription')
 					.insert({
+						log: event?.data?.object
+					})
+				
+				await supabaseAdmin
+					.from('subscription')
+					.insert({
 						user_id: id,
 						customer_id: event?.data?.object?.customer,
 						is_subscribed: event?.data?.object?.status === 'active' ? true : false,
