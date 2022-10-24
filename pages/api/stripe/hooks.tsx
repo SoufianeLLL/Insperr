@@ -45,7 +45,7 @@ export default async function handler(req, res) {
 
 			if (id) {
 				await supabaseAdmin
-					.from('subscription')
+					.from('logs')
 					.insert({
 						log: event?.data?.object
 					})
