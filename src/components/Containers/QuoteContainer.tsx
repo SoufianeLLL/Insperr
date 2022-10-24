@@ -7,7 +7,7 @@ import AuthorContainer from '@/components/Containers/AuthorContainer'
 import Loading from "@/components/Loading"
 
 
-const QuoteContainer = ({ id, quote, type='custom', withAuthor=true, classes=null, callback, mutate }) => {
+const QuoteContainer = ({ id, quote, type='custom', withAuthor=true, classes=null, callback, mutate=null }) => {
 
 	const router = useRouter()
 	const { isLoading } = useSessionContext()
@@ -45,7 +45,7 @@ const QuoteContainer = ({ id, quote, type='custom', withAuthor=true, classes=nul
 				.then((res) => res.json())
 
 			setBookmarksChanges({ status: false, id: null })
-			mutate(quote?.id)
+			if (mutate) mutate(quote?.id)
 			callback({ status: result?.status, text: result?.message })
 		}
 		catch(e) {
