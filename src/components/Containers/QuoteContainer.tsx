@@ -7,7 +7,7 @@ import AuthorContainer from '@/components/Containers/AuthorContainer'
 import Loading from "@/components/Loading"
 
 
-const QuoteContainer = ({ id, quote, type='custom', withAuthor=true, classes=null, callback }) => {
+const QuoteContainer = ({ id, quote, type='custom', withAuthor=true, classes=null, callback, mutate }) => {
 
 	const router = useRouter()
 	const { isLoading } = useSessionContext()
@@ -44,10 +44,8 @@ const QuoteContainer = ({ id, quote, type='custom', withAuthor=true, classes=nul
 			const result = await fetch(`/api/saves?action=Delete&quote_id=${quote?.id}`)
 				.then((res) => res.json())
 
-			if (result?.status === 'success') {
-				///
-			}
 			setBookmarksChanges({ status: false, id: null })
+			mutate(quote?.id)
 			callback({ status: result?.status, text: result?.message })
 		}
 		catch(e) {
@@ -57,13 +55,13 @@ const QuoteContainer = ({ id, quote, type='custom', withAuthor=true, classes=nul
 	
 
 	return <>
-		<div className={`${classes} quote_${id} p-quote bg-white shadow hover:shadow-lg border border-slate-100 p-5 md:p-8 w-full rounded-lg relative overflow-hidden mb-6 transition duration-200`}>
+		<div className={`${classes} quote_${quote?.id} p-quote bg-white shadow hover:shadow-lg border border-slate-100 p-5 md:p-8 w-full rounded-lg relative overflow-hidden mb-6 transition duration-200`}>
 			<svg style={{ zIndex: 0 }} className="absolute top-0 left-2 text-slate-100" fill="currentColor" width="70" height="70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
 			{bookmarksChanges?.status && bookmarksChanges?.id === id ? 
 				<div className="absolute top-2 right-2 py-2 px-2"><Loading text="" width={20} height={20} borderWidth={2} scpace="0" /></div>
 			:
 				((router.pathname)?.replace(/^\/|\/$/g, '') === 'dashboard/user/bookmarks') ? 
-				<div onClick={() => removeQuote_fromBookmarks(quote, id )} style={{ zIndex: 2 }} className="save text-slate-200 cursor-pointer hover:text-primary-500 absolute top-2 right-2 py-2 px-2"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="m3 3 18 18M3 21 21 3"></path></svg></div>
+				<div onClick={() => removeQuote_fromBookmarks(quote, id )} style={{ zIndex: 2 }} className="save text-slate-200 cursor-pointer hover:text-primary-500 absolute top-2 right-2 py-2 px-2"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="m3 3 18 18M3 21 21 3"></path></svg></div>
 				:
 				<div onClick={() => addQuote_toBookmarks(quote, id )} style={{ zIndex: 2 }} className="save text-slate-200 cursor-pointer hover:text-primary-500 absolute top-2 right-2 py-2 px-2"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path d="M19 24l-7-6-7 6v-24h14v24z"/></svg></div>
 			}

@@ -1,4 +1,4 @@
-import useSWR from "swr"
+import useSWR, { useSWRConfig } from "swr"
 import { useState } from "react"
 import Skeleton from "@/components/Skeleton"
 import ShowToast from "@/components/ShowToast"
@@ -8,7 +8,9 @@ import QuoteContainer from "@/components/Containers/QuoteContainer"
 
 const BookmarksPage = () => {
 
-	let { isValidating, data: CustomQuotes } = useSWR(`/api/saves?action=Read`)
+	const { mutate } = useSWRConfig()
+	let url = `/api/saves?action=Read`, 
+		{ isValidating, data: CustomQuotes } = useSWR(url)
 
 	const [Callback, setCallback] = useState({ status: null, text: null })
 
@@ -26,7 +28,12 @@ const BookmarksPage = () => {
 						(CustomQuotes && CustomQuotes?.length > 0) ? 
 							<div className="w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6 py-2">
 								{CustomQuotes?.map((quote, i) => {
-									return <QuoteContainer key={i} id={i} quote={quote} callback={(e) => setCallback(e)} />
+									return <QuoteContainer 
+										key={i} 
+										id={i} 
+										quote={quote} 
+										mutate={(id) => mutate(url)}
+										callback={(e) => setCallback(e)} />
 								})}
 							</div> : 
 						<div className="w-full text-center border border-slate-200 rounded-lg px-5 md:px-10 py-12 md:py-24">

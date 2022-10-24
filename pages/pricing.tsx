@@ -19,10 +19,11 @@ const PricingPage = ({ plans }) => {
 	const storage = Settings?.products
 
 	const runStripe = async (planId) => {
-		// setLoadingStripe(true)
+		setLoadingStripe(true)
 		const result = await fetch(`/api/stripe/customer/subscription/${planId}`)
 		const res = await result?.json()
 		if (res?.id) {
+			setLoadingStripe(false)
 			const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY_TEST)
 			await stripe.redirectToCheckout({ sessionId: res?.id })
 		}
@@ -65,7 +66,7 @@ const PricingPage = ({ plans }) => {
 												${(plan?.price)?.toString()}
 											</h2>
 											<div className="h-4 w-full mt-2 uppercase text-center text-xs">per month</div>
-											{(!isLoading && !loadingStripe) && 
+											{(!isLoading && !loadingStripe) ?
 												<div className="w-full mt-6 h-10">
 													{user ? 
 														subscription?.produc_id === plan.id ? 
@@ -78,7 +79,9 @@ const PricingPage = ({ plans }) => {
 													<Link href="/access?op=signup"><a className={`${i===1 ? 'bg-primary-500 text-white' : 'hover:text-white text-primary-500'} border-2 border-primary-500 hover:bg-primary-600 hover:border-primary-600 transition duration-200 text-base cursor-pointer rounded-lg w-full inline-block text-center py-2 px-4`}>
 														Create account</a></Link>
 													}
-												</div>}
+												</div>
+											:
+												<div className="w-full text-center my-4"><Loading text="" scpace='0 auto' borderWidth={2} width={30} height={30} /></div>}
 											{storage?.map((item, i) => {
 												if (item?.id === plan?.id) return <div key={i}>
 													<div className="w-full mt-6">
