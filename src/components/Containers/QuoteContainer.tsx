@@ -7,7 +7,7 @@ import AuthorContainer from '@/components/Containers/AuthorContainer'
 import Loading from "@/components/Loading"
 
 
-const QuoteContainer = ({ id, quote, type='custom', withAuthor=true, classes=null, callback, mutate=null }) => {
+const QuoteContainer = ({ id, quote, type='custom', withAuthor=true, classes=null, callback=null, mutate=null }) => {
 
 	const router = useRouter()
 	const { isLoading } = useSessionContext()

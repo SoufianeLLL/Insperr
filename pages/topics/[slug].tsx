@@ -51,7 +51,7 @@ const Topic = ({ slug }) => {
 						<div className="w-full columns-1 md:columns-2 lg:columns-3 gap-6">
 							{Quotes && Quotes?.pages.map((page) => {
 								return page.quotes.map((quote, i) => (
-									<QuoteContainer key={i} quote={quote} />
+									<QuoteContainer id={i} key={i} quote={quote} />
 								))
 							})}
 						</div>
