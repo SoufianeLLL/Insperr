@@ -47,28 +47,45 @@ export default async function handler(req, res) {
 				await supabaseAdmin
 					.from('logs')
 					.insert({
-						log: event?.data?.object
+						log: {
+							user_id: id ?? null,
+							customer_id: event?.data?.object?.customer ?? null,
+							is_subscribed: event?.data?.object?.status === 'active' ? true : false,
+							metadata: {
+								subscription_id: event?.data?.object?.id ?? null,
+								status: event?.data?.object?.status ?? null,
+								invoice_id: event?.data?.object?.latest_invoice ?? null,
+								amount: event?.data?.object?.items?.data[0]?.plan?.amount ?? null,
+								currency: event?.data?.object?.currency ?? null,
+								interval: event?.data?.object?.items.data[0].plan.interval ?? null,
+								interval_count: event?.data?.object?.items.data[0].plan.interval_count ?? null,
+								current_period_end: event?.data?.object?.current_period_end ?? null,
+								current_period_start: event?.data?.object?.current_period_start ?? null,
+							},
+							price_id: event?.data?.object?.items.data[0].plan.id ?? null,
+							product_id: event?.data?.object?.items.data[0].plan.product ?? null
+						}
 					})
 				
 				await supabaseAdmin
 					.from('subscription')
 					.insert({
-						user_id: id,
-						customer_id: event?.data?.object?.customer,
+						user_id: id ?? null,
+						customer_id: event?.data?.object?.customer ?? null,
 						is_subscribed: event?.data?.object?.status === 'active' ? true : false,
 						metadata: {
-							subscription_id: event?.data?.object?.id,
-							status: event?.data?.object?.status,
-							invoice_id: event?.data?.object?.latest_invoice,
-							amount: event?.data?.object?.items?.data[0]?.plan?.amount,
-							currency: event?.data?.object?.currency,
-							interval: event?.data?.object?.items.data[0].plan.interval,
-							interval_count: event?.data?.object?.items.data[0].plan.interval_count,
-							current_period_end: event?.data?.object?.current_period_end,
-							current_period_start: event?.data?.object?.current_period_start,
+							subscription_id: event?.data?.object?.id ?? null,
+							status: event?.data?.object?.status ?? null,
+							invoice_id: event?.data?.object?.latest_invoice ?? null,
+							amount: event?.data?.object?.items?.data[0]?.plan?.amount ?? null,
+							currency: event?.data?.object?.currency ?? null,
+							interval: event?.data?.object?.items.data[0].plan.interval ?? null,
+							interval_count: event?.data?.object?.items.data[0].plan.interval_count ?? null,
+							current_period_end: event?.data?.object?.current_period_end ?? null,
+							current_period_start: event?.data?.object?.current_period_start ?? null,
 						},
-						price_id: event?.data?.object?.items.data[0].plan.id,
-						product_id: event?.data?.object?.items.data[0].plan.product
+						price_id: event?.data?.object?.items.data[0].plan.id ?? null,
+						product_id: event?.data?.object?.items.data[0].plan.product ?? null
 					})
 			} 
 			else {
