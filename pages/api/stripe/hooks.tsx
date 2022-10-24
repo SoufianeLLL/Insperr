@@ -30,32 +30,40 @@ export default async function handler(req, res) {
                 .eq('stripe_customer_id', event.data.object.customer)
                 .single()
 
-            if (id) {
-                await supabaseAdmin
-                    .from('subscription')
-                    .insert({
-                        user_id: id,
-                        customer_id: event.data.object.customer,
-                        is_subscribed: event.data.object.paid,
-                        metadata: {
-                            payment_status: event?.data?.object?.payment_status,
-                            amount_subtotal: event?.data?.object?.amount_subtotal,
-                            amount_total: event?.data?.object?.amount_total,
-                            currency: event?.data?.object?.currency,
-                            email: event?.data?.object?.customer_details?.email,
-                            name: event?.data?.object?.customer_details?.name,
-                            next_payment: event?.data?.object?.next_payment_attempt,
-                            interval: event.data.object.items.data[0].plan.interval,
-                            interval_count: event.data.object.items.data[0].plan.interval_count,
-                            // interval: event.data.object.items.data[0].plan.interval,
-                        },
-                        price_id: event.data.object.items.data[0].plan.id,
-                        product_id: event.data.object.items.data[0].plan.product
-                    })
-            } 
-            else {
-                return res.status(400).send(`An error was occured, please contact support.`)
-            }
+			await supabaseAdmin
+				.from('logs')
+				.insert({ log: event })
+
+			await supabaseAdmin
+				.from('logs')
+				.insert({ log: id })
+
+            // if (id) {
+            //     await supabaseAdmin
+            //         .from('subscription')
+            //         .insert({
+            //             user_id: id,
+            //             customer_id: event.data.object.customer,
+            //             is_subscribed: event.data.object.paid,
+            //             metadata: {
+            //                 payment_status: event?.data?.object?.payment_status,
+            //                 amount_subtotal: event?.data?.object?.amount_subtotal,
+            //                 amount_total: event?.data?.object?.amount_total,
+            //                 currency: event?.data?.object?.currency,
+            //                 email: event?.data?.object?.customer_details?.email,
+            //                 name: event?.data?.object?.customer_details?.name,
+            //                 next_payment: event?.data?.object?.next_payment_attempt,
+            //                 interval: event.data.object.items.data[0].plan.interval,
+            //                 interval_count: event.data.object.items.data[0].plan.interval_count,
+            //                 // interval: event.data.object.items.data[0].plan.interval,
+            //             },
+            //             price_id: event.data.object.items.data[0].plan.id,
+            //             product_id: event.data.object.items.data[0].plan.product
+            //         })
+            // } 
+            // else {
+            //     return res.status(400).send(`An error was occured, please contact support.`)
+            // }
           break;
     }
 
