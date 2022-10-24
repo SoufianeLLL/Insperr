@@ -26,7 +26,7 @@ export default async function handler(req, res) {
 		case "customer.subscription.updated":
 			if (event?.data?.object?.status === 'active') {
 				await supabaseAdmin
-					.from('subscription')
+					.from('subscriptions')
 					.update({
 						is_subscribed: true
 					})
@@ -73,7 +73,7 @@ export default async function handler(req, res) {
 		// Delete subscription
 		case "customer.subscription.deleted":
 			await supabaseAdmin
-				.from('subscription')
+				.from('subscriptions')
 				.delete()
 				.eq('customer_id', event?.data?.object?.customer)
 				.eq('metadata->subscription_id', event?.data?.object?.id)
