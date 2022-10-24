@@ -1,6 +1,7 @@
 import { buffer } from "micro"
 import stripe from "@/utils/stripejs"
 import supabaseAdmin from "@/utils/supabase-admin"
+import { timestampToDate } from "@/lib/validation"
 
 export const config = { api: { bodyParser: false } }
 
@@ -58,8 +59,8 @@ export default async function handler(req, res) {
 							currency: event?.data?.object?.currency ?? null,
 							interval: event?.data?.object?.items.data[0].plan.interval ?? null,
 							interval_count: event?.data?.object?.items.data[0].plan.interval_count ?? null,
-							current_period_end: event?.data?.object?.current_period_end ?? null,
-							current_period_start: event?.data?.object?.current_period_start ?? null,
+							current_period_end: timestampToDate(event?.data?.object?.current_period_end) ?? null,
+							current_period_start: timestampToDate(event?.data?.object?.current_period_start) ?? null,
 						},
 						price_id: event?.data?.object?.items.data[0].plan.id ?? null,
 						product_id: event?.data?.object?.items.data[0].plan.product ?? null

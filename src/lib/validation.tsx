@@ -70,6 +70,20 @@ const topic = (list) => {
 	return topics
 }
 
+// Timestamp to date
+const timestampToDate = (timestamp) => {
+	const date = new Date(timestamp * 1000)
+	var year = date.getFullYear()
+	var month = ("0" + (date.getMonth() + 1)).slice(-2)
+	var day = ("0" + date.getDate()).slice(-2)
+	var hour = ("0" + date.getHours()).slice(-2)
+	var minutes = ("0" + date.getMinutes()).slice(-2)
+	var seconds = ("0" + date.getSeconds()).slice(-2)
+
+	const formattedTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':' + seconds 
+	return formattedTime
+}
+
 // Format date 
 const dateFormat = (date) => {
 	return [date.getFullYear(), date.getMonth()+1, date.getDate()]
@@ -104,6 +118,7 @@ export {
 	sluging,
 	dateFormat,
 	capitalizer,
+	timestampToDate,
 	checkEmailValidation,
 	checkUsernameValidation,
 	authorsListWithAlphabet,
