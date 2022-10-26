@@ -85,11 +85,9 @@ const timestampToDate = (timestamp) => {
 }
 
 // Format date 
-const dateFormat = (date) => {
+const dateFormat = (date, lastHour=false) => {
 	return [date.getFullYear(), date.getMonth()+1, date.getDate()]
-		.join('-')+' '+
-		[date.getHours(), date.getMinutes(), date.getSeconds()]
-		.join(':')
+		.join('-')+' '+ (lastHour ? '24:00:00' : ([(date.getHours(), date.getMinutes(), date.getSeconds())].join(':')))
 }
 
 // Sort Authors names by Alphabet

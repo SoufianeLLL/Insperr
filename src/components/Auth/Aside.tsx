@@ -50,7 +50,15 @@ const UserSidebar = ({ user, router }) => {
 						</a></Link>
 					</li>
 					<li className="-mt-2">
-						<Link href={`/user/@${user?.user_metadata?.username}`}><a className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === `dashboard/user/${user?.user_metadata?.username}` ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
+						<Link href={`/dashboard/user/results`}><a className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === `dashboard/user/results` ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
+							<div className="pl-4 pr-6 py-3 inline-block rounded-full w-auto">
+								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path fill="none" stroke="#000" stroke-width="2" d="M16 3h5v20H3V3h5m0-2h8v5H8V1z"></path></svg>
+								<span className="hidden md:block float-left ml-4">Results</span>
+							</div>
+						</a></Link>
+					</li>
+					<li className="-mt-2">
+						<Link href={`/user/@${user?.user_metadata?.username}`}><a className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === `user/${user?.user_metadata?.username}` ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
 							<div className="pl-4 pr-6 py-3 inline-block rounded-full w-auto">
 								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeWidth="2" d="M20 15c-1 1 1.25 3.75 0 5s-4-1-5 0-1.5 3-3 3-2-2-3-3-3.75 1.25-5 0 1-4 0-5-3-1.5-3-3 2-2 3-3-1.25-3.75 0-5 4 1 5 0 1.5-3 3-3 2 2 3 3 3.75-1.25 5 0-1 4 0 5 3 1.5 3 3-2 2-3 3zM7 12l3 3 7-7"></path></svg>
 								<span className="hidden md:block float-left ml-4">Profile</span>

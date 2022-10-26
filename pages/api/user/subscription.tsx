@@ -8,9 +8,11 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 
 		if (user?.id) {
 			const { data: subscription, error } = await supabaseServerClient
-				.from('subscription')
+				.from('subscriptions')
 				.select()
 				.eq('user_id', user?.id)
+				.eq('is_subscribed', true)
+				.single()
 
 			if (!error) {
 				return res.status(200).json(subscription)

@@ -12,10 +12,12 @@ import UnauthenticatedLayout from "@/components/UnauthenticatedLayout"
 
 const PricingPage = ({ plans }) => {
 
-	const [loadingStripe, setLoadingStripe] = useState(false)
-	const { isLoading } = useSessionContext()
 	const user = useUser() // Authenticated user
+	const { isLoading } = useSessionContext()
+
 	const { data: subscription } = useSWR('/api/user/subscription')
+
+	const [loadingStripe, setLoadingStripe] = useState(false)
 	const storage = Settings?.products
 
 	const runStripe = async (planId) => {
@@ -38,7 +40,6 @@ const PricingPage = ({ plans }) => {
 						Be inspired by thousands of Quotes. Use the Quotes AI Generator to find the best Quotes for you.
 					</div>
 				</div>
-				{JSON.stringify(subscription, null, 2)}
 				<div className="w-full mt-10">
 					<div className="w-full mt-12">
 						<div className="w-full max-w-5xl px-5 md:px-10 mx-auto">
@@ -69,9 +70,10 @@ const PricingPage = ({ plans }) => {
 											{(!isLoading && !loadingStripe) ?
 												<div className="w-full mt-6 h-10">
 													{user ? 
-														subscription?.produc_id === plan.id ? 
-														<Link href="/dashboard/user/account"><a className={`${i===1 ? 'bg-primary-500 text-white' : 'hover:text-white text-primary-500'} border-2 border-primary-500 hover:bg-primary-600 hover:border-primary-600 transition duration-200 text-base cursor-pointer rounded-lg w-full inline-block text-center py-2 px-4`}>
-														Manage Subscription</a></Link>
+														subscription ? 
+															subscription?.product_id === plan.id && 
+																<Link href="/dashboard/user/account"><a className={`${i===1 ? 'bg-primary-500 text-white' : 'hover:text-white text-primary-500'} border-2 border-primary-500 hover:bg-primary-600 hover:border-primary-600 transition duration-200 text-base cursor-pointer rounded-lg w-full inline-block text-center py-2 px-4`}>
+																Manage Subscription</a></Link>
 														:
 														<button onClick={() => runStripe(plan?.price_id)} className={`${i===1 ? 'bg-primary-500 text-white' : 'hover:text-white text-primary-500'} border-2 border-primary-500 hover:bg-primary-600 hover:border-primary-600 transition duration-200 text-base cursor-pointer rounded-lg w-full text-center py-2 px-4`}>
 															Upgrade to Pro</button>

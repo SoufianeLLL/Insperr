@@ -186,6 +186,9 @@ body {
 .x-shadow {
 	box-shadow: 0 6px 15px -3px rgba(22, 47, 68, 0.05), 0 4px 6px -5px rgba(0, 0, 0, 0.03);
 }
+.xy-shadow {
+	box-shadow: 0 6px 25px 30px rgba(22, 47, 68, 0.08), 0 4px 6px -5px rgba(0, 0, 0, 0.03);
+}
 .shadow-blue {
 	box-shadow: 0 1px 7px 0 rgba(65, 81, 104, 0.14), 0 1px 6px 0 rgba(0, 89, 255, 0.14);
 }

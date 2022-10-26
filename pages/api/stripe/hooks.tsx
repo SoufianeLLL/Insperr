@@ -29,7 +29,20 @@ export default async function handler(req, res) {
 				await supabaseAdmin
 					.from('subscriptions')
 					.update({
-						is_subscribed: true
+						is_subscribed: event?.data?.object?.status === 'active' ? true : false,
+						metadata: {
+							subscription_id: event?.data?.object?.id ?? null,
+							status: event?.data?.object?.status ?? null,
+							invoice_id: event?.data?.object?.latest_invoice ?? null,
+							amount: event?.data?.object?.items?.data[0]?.plan?.amount ?? null,
+							currency: event?.data?.object?.currency ?? null,
+							interval: event?.data?.object?.items.data[0].plan.interval ?? null,
+							interval_count: event?.data?.object?.items.data[0].plan.interval_count ?? null,
+							current_period_end: timestampToDate(event?.data?.object?.current_period_end) ?? null,
+							current_period_start: timestampToDate(event?.data?.object?.current_period_start) ?? null,
+						},
+						price_id: event?.data?.object?.items.data[0].plan.id ?? null,
+						product_id: event?.data?.object?.items.data[0].plan.product ?? null
 					})
 					.eq('customer_id', event?.data?.object?.customer)
 			}

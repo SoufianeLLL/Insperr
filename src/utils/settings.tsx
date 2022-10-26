@@ -1,14 +1,14 @@
 
 const Settings = {
 	quote: {
-		min_characters: 50,
+		min_characters: 100,
 		max_characters: 280,
 		min_quota: 1,
-		max_quota: 100,
+		max_quota: 10,
 	},
 	products: [
 		{
-			id: null,
+			id: "free",
 			name: 'Free',
 			quotes: 10,
 			price: 0,

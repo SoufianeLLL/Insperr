@@ -1,6 +1,7 @@
 import useSWR from 'swr'
-import { useEffect, useState } from "react"
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from "react"
 import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
 // import { useSignOutMutation } from "@/lib/api/auth"
 import { checkEmailValidation, checkPasswordValidation, checkUsernameValidation } from "@/lib/validation"
@@ -14,6 +15,7 @@ import { useSignOutMutation } from '@/lib/api/auth'
 const UserAccount = ({ q_screen, q_errors }) => {
 
 	const user = useUser()
+	const router = useRouter()
 	const { isLoading, supabaseClient } = useSessionContext()
 
 	const { mutate: signOut } = useSignOutMutation()
@@ -23,6 +25,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 	const { isValidating: isCheckingAutoPost, data: checkAutoPost } = useSWR(`/api/user?id=${user?.id}&action=checkAutoPost`)
 
 	const [error, setError] = useState(null)
+	const [loadingPortal, setLoadingPortal] = useState(false)
 	const [automation, setAutomation] = useState({ autoPostActive: false })
 	const [action, setAction] = useState({ name: null, params: null, isLoading: false, password: null })
 	const [screen, setScreen] = useState({ name: null, title: null })
@@ -32,7 +35,10 @@ const UserAccount = ({ q_screen, q_errors }) => {
 	useEffect(() => {
 		document.body.classList.remove("bg-slate-100")
 		setAutomation({ autoPostActive: checkAutoPost })
-		return () => document.body.classList.add("bg-slate-100")
+		return () => {
+			setAutomation({ autoPostActive: false })
+			document.body.classList.add("bg-slate-100")
+		}
 	}, [])
 
 	const handleScreenChange = ({ name, title }) => {
@@ -193,10 +199,30 @@ const UserAccount = ({ q_screen, q_errors }) => {
 		}
 	}
 
+	const loadPortal = async () => {
+		setLoadingPortal(true)
+		const res = await fetch('/api/stripe/customer/portal')
+		const portal = await res?.json()
+		if (portal && !portal?.error) {
+			console.log(portal)
+			router.push(portal?.url)
+		}
+		else {
+			setCallback({ status: 'error', text: portal?.message ?? 'An error occured when loading Stripe Portal.' })
+			setLoadingPortal(false)
+		}
+	}
+
 	return <>
 		{(Callback?.status && Callback?.text) ? 
 			<ShowToast onClick={(e) => setCallback(e)} type={Callback?.status} text={Callback?.text} />
 			: q_errors?.status && <ShowToast onClick={(e) => setCallback(e)} type={q_errors?.status} text={q_errors?.text} />}
+		{loadingPortal && <>
+			<div style={{ zIndex: 2000 }} className="fixed top-0 right-0 left-0 bottom-0 bg-white opacity-70"></div>
+			<div style={{ zIndex: 2001 }} className="fixed top-0 bottom-0 flex items-center justify-center left-0 right-0 w-full">
+				<div className="text-center w-full"><Loading text="Loading Stripe Portal" scpace='0 auto' borderWidth={3} width={50} height={50} /></div>
+			</div>
+		</>}
 		<section className="w-full overflow-hidden">
 			<div className="w-full">
 				{!screen?.name ? 
@@ -221,7 +247,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 							<Btn 
 								title="Payments and subscription" 
 								description="See your payments and cancel or change your subscription."
-								onClick={() => handleScreenChange({ name: 'payments-and-subscription', title: 'Payments and subscription' })}
+								onClick={loadPortal}
 								icon={
 									<div><svg className="text-slate-500 w-6 h-6" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M1 5c0-.552.44-1 1.002-1h19.996A1 1 0 0 1 23 5v14c0 .552-.44 1-1.002 1H2.002A1 1 0 0 1 1 19V5zm0 3h22v2H1V8zm4 7h2v.5H5V15zm5 0h6v.5h-6V15z"></path></svg></div>
 								} />
@@ -391,7 +417,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 									</div>
 								</>
 							:
-							'..'
+							''
 							}
 						</div>
 					</>

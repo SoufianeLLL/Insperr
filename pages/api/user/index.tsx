@@ -63,8 +63,9 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 					.eq('tweeted', true)
 
 				const { data: subscription } = await supabaseServerClient
-					.from('subscription')
+					.from('subscriptions')
 					.select('*')
+					.eq('is_subscribed', true)
 					.single()
 				
 				data.subscription = subscription ?? null
