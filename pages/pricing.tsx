@@ -18,7 +18,8 @@ const PricingPage = ({ plans }) => {
 	const { data: subscription } = useSWR('/api/user/subscription')
 
 	const [loadingStripe, setLoadingStripe] = useState(false)
-	const storage = Settings?.products
+	const Plans = Settings?.products
+	const freePlan = Settings?.products.find((itm) => { return (itm.id)?.toLowerCase() === 'free' })
 
 	const runStripe = async (planId) => {
 		setLoadingStripe(true)
@@ -46,12 +47,10 @@ const PricingPage = ({ plans }) => {
 							<div className="w-full text-center bg-slate-50 rounded-2xl p-6 md:p-10 mb-12 px-5">
 								<h2 className="w-full fontBold text-center text-xl md:text-2xl uppercase">Free Plan</h2>
 								<div className="w-full mt-2">
-									{storage?.map((product, i) => {
-										if (!product?.id && i===0) return <div key={i}>
-											Free plan is <span className="font-semibold">limited</span> to 
-											<span className="font-semibold">{product?.quotes}</span> Quotes <span className="text-sm">/month</span>.
-										</div>
-									})}
+									{freePlan && <div>
+										Free plan is <span className="font-semibold">limited</span> to 
+										<span className="font-semibold">{freePlan?.quotes}</span> Quotes <span className="text-sm">/month</span>.
+									</div>}
 									<div className="w-full mt-1">API access and Twitter AutoPost not included.</div>
 								</div>
 							</div>
@@ -84,7 +83,7 @@ const PricingPage = ({ plans }) => {
 												</div>
 											:
 												<div className="w-full text-center my-4"><Loading text="" scpace='0 auto' borderWidth={2} width={30} height={30} /></div>}
-											{storage?.map((item, i) => {
+											{Plans?.map((item, i) => {
 												if (item?.id === plan?.id) return <div key={i}>
 													<div className="w-full mt-6">
 														<div className="w-full mt-2 text-base inline-block">

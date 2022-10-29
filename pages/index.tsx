@@ -41,16 +41,16 @@ const IndexPage = () => {
 		<section className="w-full px-5 md:px-10 2xl:px-0 max-w-7xl mx-auto">
 			<div className="w-full my-20 overflow-hidden">
 				<div className="heading w-full">
-					<h2 className="w-full text-2xl md:text-4xl mb-2 fontSemiBold">Some random Quotes</h2>
+					<h2 className="w-full text-2xl md:text-4xl mb-2 fontSemiBold">Quotes Collection</h2>
 					<div className="text-sm md:text-base w-full">
 						<span className="text-slate-400">Custom Quotes</span>
 					</div>
 				</div>
 				<div className="mt-8 w-full">
 					{isValidating ? 
-						<div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-6 py-2"><Skeleton /></div> :
+						<div className="w-full columns-1 md:columns-2 xl:columns-3 gap-x-6 gap-y-2 py-2"><Skeleton /></div> :
 						(CustomQuotes && CustomQuotes?.length > 0) && 
-							<div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-6 py-2">
+							<div className="w-full columns-1 md:columns-2 xl:columns-3 gap-x-6 gap-y-2 py-2">
 								{CustomQuotes?.map((quote, i) => {
 									return <QuoteContainer key={i} id={i} quote={quote} callback={(e) => setCallback(e)} />
 								})}

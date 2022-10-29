@@ -59,7 +59,7 @@ const Author = ({ slug }) => {
 							})}
 						</div>
 						<div className="pagination mt-12 text-base text-center">
-							{isFetchingNextPage ? <Loading text="Loading..." width={50} height={50} /> 
+							{isFetchingNextPage ? <Loading text="Loading..." borderWidth={2} width={30} height={30} /> 
 							: <div style={{ visibility: 'hidden' }} ref={ref}>intersection observer marker</div>}
 						</div>
 					</>}

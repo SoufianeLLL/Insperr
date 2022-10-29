@@ -1,12 +1,13 @@
 import useSWR from 'swr'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { useSessionContext, useUser } from '@supabase/auth-helpers-react'
 import { withPageAuth } from '@supabase/auth-helpers-nextjs'
-import { Settings } from '@/utils/settings'
+import { useSessionContext, useUser } from '@supabase/auth-helpers-react'
 import Loading from '@/components/Loading'
+import { Settings } from '@/utils/settings'
+import Sidebar from '@/components/Auth/Sidebar'
 import BlueButton from '@/components/BlueButton'
 import AuthenticatedLayout from '@/components/AuthenticatedLayout'
-import Sidebar from '@/components/Auth/Sidebar'
 
 
 const APIrequests = { status: 200 }
@@ -14,19 +15,26 @@ const APIrequests = { status: 200 }
 
 const DashboardPage = () => {
 
+	const router = useRouter()
 	const user = useUser()
+
 	const { isLoading, supabaseClient } = useSessionContext()
 	let { isValidating: isCheckingSubscription, data: userData } = useSWR(`/api/user?action=getUserData`)
 	// let { data: APIrequests } = useSWR(`/api/requests`)
 	
 	const [subs, setSubs] = useState(null)
 	const [userAccountHelper, setUserAccountHelper] = useState(null)
-	const accountLinked = user && user?.app_metadata?.providers?.includes('twitter') ? 'authenticated' : 'unauthenticated' // Check if Twitter account is linked
+	const accountLinked = (user && !isCheckingSubscription) && (user?.app_metadata?.providers?.includes('twitter') && userData?.subscription) ? 'authenticated' : 'unauthenticated' // Check if Twitter account is linked
 
 	const connectTwitter = async () => {
-		await supabaseClient.auth.signInWithOAuth({
-			provider: 'twitter'
-		})
+		if ((user && !isCheckingSubscription) && (user?.app_metadata?.providers?.includes('twitter') && userData?.subscription)) {
+			await supabaseClient.auth.signInWithOAuth({
+				provider: 'twitter'
+			})
+		}
+		else {
+			router.push('/pricing')
+		}
 	}
 
 	useEffect(() => {
@@ -60,6 +68,11 @@ const DashboardPage = () => {
 				<div className="w-full mb-8 text-base md:text-xl">
 					👋  Let's get you tweeting, <span className="font-semibold">{user?.user_metadata?.fullname}</span>!
 				</div>
+				{userData?.generatedQuotes?.toLocaleString() >= subs?.quotes && 
+					<div className="flex items-center gap-4 w-full mb-8 py-2 px-4 md:py-3 md:px-5 bg-red-100 text-red-500 border-2 border-red-400 rounded-xl text-base">
+						<svg className="w-10 h-10" width="25" height="25" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M12 17v2m0-9v6m0-13L2 22h20L12 3z"></path></svg>
+						Your subscription has reached {subs?.quotes} Quotes in total, which is 100% of your monthly quota, you can always upgrade your account to use more quota.
+					</div>}
 				<div className="w-full">
 					<div className="w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 sm:gap-8 max-w-7xl content-start">
 						<div className="w-full bg-white p-5 rounded-xl">

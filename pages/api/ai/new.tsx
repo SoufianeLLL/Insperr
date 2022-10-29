@@ -11,7 +11,7 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 	
 	const { data: { user } } = await supabaseServerClient.auth.getUser()
 
-	const { phrase, category, quota=1, characters } = req?.body
+	const { phrase, category, quota=1, characters, place='startwith' } = req?.body
 
 	let resultIDs = []
 
@@ -40,7 +40,7 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 					try {
 						const result = await openai.createCompletion({
 							model: "text-davinci-002",
-							prompt: `Generate a new quote from scratch about ${category} starting with the prompt '${phrase}'`,
+							prompt: `Generate a new quote from scratch about ${category} ${place === 'startwith' ? 'starting with' : 'contains'} the prompt '${phrase}'`,
 							temperature: 0.8,
 							max_tokens: parseInt(characters) <= Settings?.quote?.max_characters ? parseInt(characters) : Settings?.quote?.max_characters,
 							top_p: 1,

@@ -52,7 +52,8 @@ const Settings = {
 				read: 200000
 			},
 		}
-	]
+	],
+	notices: 'We are excited to announce that our <span class="font-semibold">beta</span> website is now <span class="font-semibold">live</span>! <br/> We would love for our <span class="font-semibold">Insperrers</span> to sign up and try out the service to help support us. Thank you for your continued support!'
 }
 
 

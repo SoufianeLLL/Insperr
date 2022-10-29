@@ -51,12 +51,12 @@ const Topic = ({ slug }) => {
 						<div className="w-full columns-1 md:columns-2 lg:columns-3 gap-6">
 							{Quotes && Quotes?.pages.map((page) => {
 								return page.quotes.map((quote, i) => (
-									<QuoteContainer id={i} key={i} quote={quote} />
+									<QuoteContainer type="database" id={i} key={i} quote={quote} />
 								))
 							})}
 						</div>
 						<div className="pagination mt-12 text-base text-center">
-							{isFetchingNextPage ? <Loading text="Loading..." width={50} height={50} /> 
+							{isFetchingNextPage ? <Loading text="Loading..." borderWidth={2} width={30} height={30} /> 
 							: <div style={{ visibility: 'hidden' }} ref={ref}>intersection observer marker</div>}
 						</div>
 					</>}

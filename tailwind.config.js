@@ -3,12 +3,14 @@ const colors = require('tailwindcss/colors')
 module.exports = {
 	content: [
 		'./pages/**/*.tsx', 
-		'./src/components/**/*.tsx'
+		'./src/components/**/*.tsx',
+		'./node_modules/flowbite-react/**/*.js',
 	],
 	darkMode: 'class', // or 'media' or 'class'
 	theme: {
 		colors: {
 			orange: colors.orange,
+			zinc: colors.zinc,
 			slate: colors.slate,
 			gray: colors.gray,
 			red: colors.red,
@@ -53,5 +55,7 @@ module.exports = {
 			}
 		}
 	},
-	plugins: [],
+	plugins: [
+		require("flowbite/plugin")
+	],
 }

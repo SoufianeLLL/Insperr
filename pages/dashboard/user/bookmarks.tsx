@@ -17,16 +17,16 @@ const BookmarksPage = () => {
 	return <>
 		{(Callback?.status && Callback?.text) && 
 			<ShowToast onClick={(e) => setCallback(e)} type={Callback?.status} text={Callback?.text} />}
-		<section className="w-full">
+		<section className="w-full max-w-6xl">
 			<div className="w-full">
 				<div className="w-full mb-8 text-base md:text-xl">
 					✨ Recent Quotes added to your Bookmarks
 				</div>
 				<div className="mt-8 w-full">
 					{isValidating ? 
-						<div className="w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6 py-2"><Skeleton /></div> :
+						<div className="w-full columns-1 md:columns-2 gap-6 py-2"><Skeleton /></div> :
 						(CustomQuotes && CustomQuotes?.length > 0) ? 
-							<div className="w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6 py-2">
+							<div className="w-full columns-1 md:columns-2 gap-6 py-2">
 								{CustomQuotes?.map((quote, i) => {
 									return <QuoteContainer 
 										key={i} 

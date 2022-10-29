@@ -4,6 +4,7 @@ import Image from "next/image"
 import { useSessionContext } from "@supabase/auth-helpers-react"
 import { useSignOutMutation } from "@/lib/api/auth"
 import BlueButton from "@/components/BlueButton"
+import Logo from '@/components/Logo'
 
 
 const UserSidebar = ({ user, router }) => {
@@ -21,8 +22,8 @@ const UserSidebar = ({ user, router }) => {
 		<aside className="fixed bg-white z-10 top-0 py-3 px-5 flex flex-none flex-col justify-between h-screen border-r border-slate-100 w-24 md:w-72 overflow-hidden">
 			<div>
 				<div>
-					<Link href="/dashboard"><a className="hover:bg-primary-100 transition-all rounded-full w-14 h-14 flex items-center justify-center">
-						SVG</a></Link>
+					<Link href="/dashboard"><a className="transition-all mt-2 inline-block">
+						<Logo size={45} i="text-primary-500 hover:text-primary-700 mx-auto" showText={false} /></a></Link>
 				</div>
 				<ul className="mt-8">
 					<li className="-mt-2">
@@ -52,7 +53,7 @@ const UserSidebar = ({ user, router }) => {
 					<li className="-mt-2">
 						<Link href={`/dashboard/user/results`}><a className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === `dashboard/user/results` ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
 							<div className="pl-4 pr-6 py-3 inline-block rounded-full w-auto">
-								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path fill="none" stroke="#000" stroke-width="2" d="M16 3h5v20H3V3h5m0-2h8v5H8V1z"></path></svg>
+								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeWidth="2" d="M16 3h5v20H3V3h5m0-2h8v5H8V1z"></path></svg>
 								<span className="hidden md:block float-left ml-4">Results</span>
 							</div>
 						</a></Link>
@@ -65,14 +66,14 @@ const UserSidebar = ({ user, router }) => {
 							</div>
 						</a></Link>
 					</li>
-					<li className="-mt-2">
+					{/* <li className="-mt-2">
 						<Link href="/docs"><a className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === 'docs' ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
 							<div className="pl-4 pr-6 py-3 inline-block rounded-full w-auto">
 								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeWidth="2" d="M9 1v7L2 20v3h20v-3L15 8V1m0 17a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-6 2a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm9-7c-7-3-6 4-12 1M6 1h12"></path></svg>
 								<span className="hidden md:block float-left ml-4">Docs</span>
 							</div>
 						</a></Link>
-					</li>
+					</li> */}
 					<li className="-mt-2">
 						<div className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === 'dashboard/user/api' ? 'font-semibold' : ''} cursor-wait inline-block w-full opacity-20 text-black group`}>
 							<div className="pl-4 pr-6 py-3 inline-block rounded-full w-auto">

@@ -10,6 +10,7 @@ import AuthenticatedLayout from "@/components/AuthenticatedLayout"
 interface targetVars {
 	phrase: String;
 	category: String;
+	place: String;
 	characters: Number;
 	quota: Number;
 }
@@ -22,14 +23,18 @@ const GenerateQuotesPage = () => {
 	// Get Topics list
 	const { cache } = useSWRConfig()
 	let TopicsURI = `/api/topic`, Topics = cache.get(TopicsURI) ?? useSWR(TopicsURI)?.data
+	let { isValidating: isCheckingSubscription, data: userData } = useSWR(`/api/user?action=getUserData`)
+
 
 	const [error, setError] = useState(null)
+	const [rules, setRules] = useState(null)
 	const [subs, setSubs] = useState(null)
 	const [ganaratorHelper, setGeneratorHelper] = useState(null)
 	const [loading, setLoading] = useState({ isLoading: false, text: null })
 	const [target, setTarget] = useState<targetVars>({
 		phrase: null,
 		category: null,
+		place: 'startwith',
 		characters: Settings?.quote?.max_characters,
 		quota: 1 
 	})
@@ -37,8 +42,26 @@ const GenerateQuotesPage = () => {
 
 	useEffect(() => {
 		document.body.classList.remove("bg-slate-100")
-		if (!subs) {
+		if (isCheckingSubscription && !subs) {
+			let filter
+			if (userData?.subscription)
+				filter = Settings?.products.find((itm) => { return userData?.subscription?.product_id === itm.id })
+			else 
+				filter = Settings?.products.find((itm) => { return (itm.id)?.toLowerCase() === 'free' })
+
 			setSubs({
+				name: filter?.name,
+				quotes: filter?.quotes,
+				autoPost: filter?.autoPost,
+				priority_support: filter?.priority_support,
+				inProgress: {
+					api: filter?.api,
+					requests: filter?.requests
+				}
+			})
+		}
+		if (!rules) {
+			setRules({
 				min_characters: Settings?.quote?.min_characters,
 				max_characters: Settings?.quote?.max_characters,
 				min_quota: Settings?.quote?.min_quota,
@@ -49,10 +72,10 @@ const GenerateQuotesPage = () => {
 			document.body.classList.add("bg-slate-100")
 			setGeneratorHelper(false)
 		}
-	}, [subs])
+	}, [rules, subs])
 	
 	const startGenerating = async () => {
-		if (!loading?.isLoading && target?.category && target?.phrase) {
+		if (!loading?.isLoading && target?.category && target?.phrase && userData?.generatedQuotes?.toLocaleString() < subs?.quotes) {
 			setLoading({
 				isLoading: true,
 				text: "Please sit tight, we will start generating your quotes in the next few seconds. D'ont close this window!"
@@ -67,6 +90,7 @@ const GenerateQuotesPage = () => {
 				body: JSON.stringify({
 					phrase: target?.phrase ?? null,
 					category: target?.category ?? null,
+					place: target?.place ?? 'startwith',
 					characters: target?.characters ?? 250,
 					quota: target?.quota ?? 1 
 				})
@@ -79,9 +103,7 @@ const GenerateQuotesPage = () => {
 				}
 				else if(res?.resultIDs) {
 					setError(null)
-					router.push({
-						pathname: `/dashboard/user/results?resultIds=${res?.resultIDs}`,
-					})
+					router.push(`/dashboard/user/results?resultIds=${res?.resultIDs}`)
 				}
 				setLoading({ isLoading: false, text: null })
 			}
@@ -93,8 +115,8 @@ const GenerateQuotesPage = () => {
 	}
 
 	return <>
-		{!loading?.isLoading && subs && <Sidebar title="GPT-3 generator" state={ganaratorHelper} callback={(e) => setGeneratorHelper(e)}>
-			<pre>{JSON.stringify((subs), null, 3)?.replaceAll(/['"]+/g, '')}</pre>
+		{!loading?.isLoading && rules && <Sidebar title="GPT-3 generator" state={ganaratorHelper} callback={(e) => setGeneratorHelper(e)}>
+			<pre>{JSON.stringify((rules), null, 3)?.replaceAll(/['"]+/g, '')}</pre>
 		</Sidebar>}
 		<section className="w-full 2xl:px-0 max-w-7xl">
 			<div className="w-full pb-3 overflow-hidden">
@@ -102,6 +124,11 @@ const GenerateQuotesPage = () => {
 					<Loading text={loading?.text ?? null} width={50} height={50} /></div>
 				:
 				<>
+					{userData?.generatedQuotes?.toLocaleString() >= subs?.quotes && 
+					<div className="flex items-center gap-4 w-full mb-8 py-2 px-4 md:py-3 md:px-5 bg-red-100 text-red-500 border-2 border-red-400 rounded-xl text-base">
+						<svg className="w-10 h-10" width="25" height="25" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M12 17v2m0-9v6m0-13L2 22h20L12 3z"></path></svg>
+						Your subscription has reached {subs?.quotes} Quotes in total, which is 100% of your monthly quota, you can always upgrade your account to use more quota.
+					</div>}
 					<div className="heading w-full">
 						<div className="text-xl md:text-2xl font-semibold w-full flex items-center gap-3">
 							Generate new Quotes
@@ -134,6 +161,15 @@ const GenerateQuotesPage = () => {
 						</div>
 						<div className="flex-none lg:w-1/3 w-full lg:mt-0 mt-10">
 							<div className="w-full">
+								<div className="w-full font-somibold mb-2 text-base">Keyword place:</div>
+								<div className="flex items-center gap-3">
+									<div onClick={() => setTarget({ ...target, place: 'startwith' })} className={`${target?.place === 'startwith' ? 'font-semibold text-primary-500' : ''} hover:underline cursor-pointer text-base`}>
+										Start with</div>
+									<div onClick={() => setTarget({ ...target, place: 'contains' })} className={`${target?.place === 'contains' ? 'font-semibold text-primary-500' : ''} hover:underline cursor-pointer text-base`}>
+										Contains</div>
+								</div>
+							</div>
+							<div className="w-full mt-6">
 								<div className="w-full font-semibold mb-2 text-base">Characters:</div>
 								<div className="w-full text-slate-400 mb-2 text-sm">
 									The maximum characters allowed is {Settings?.quote?.max_characters}, 
@@ -172,8 +208,8 @@ const GenerateQuotesPage = () => {
 						</div>
 					</div>
 					<div className="mt-12 w-full text-center">
-						<div onClick={() => (target?.category && (target?.phrase && target?.phrase?.length >= 6)) && startGenerating()} 
-							className={`${target?.category && (target?.phrase && target?.phrase?.length >= 6) ? 'bg-primary-500 text-white hover:bg-primary-700' 
+						<div onClick={() => (target?.category && (target?.phrase && target?.phrase?.length >= 6) && userData?.generatedQuotes?.toLocaleString() < subs?.quotes) && startGenerating()} 
+							className={`${target?.category && (target?.phrase && target?.phrase?.length >= 6) && userData?.generatedQuotes?.toLocaleString() < subs?.quotes ? 'bg-primary-500 text-white hover:bg-primary-700' 
 							: 'bg-slate-300 text-white'} w-auto mx-auto text-base cursor-pointer transition duration-200 py-4 px-8 shadow font-semibold inline-block rounded-full`}>
 							Start Generating</div>
 					</div>
