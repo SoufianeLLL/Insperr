@@ -24,7 +24,7 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 		<div className="w-full onedomain-app relative">
 			{Settings?.notices && 
 				<div className="p-5 pb-0">
-					<div className="rounded-xl w-full bg-teal-50 text-teal-500 py-3 px-5 text-center text-base border-2 border-teal-500" 
+					<div className="rounded-xl w-full bg-primary-50 text-primary-600 py-3 px-5 text-center text-base" 
 						dangerouslySetInnerHTML={{ __html: Settings?.notices }} />
 				</div>}
 			<section className={`relative overflow-hidden w-full text-black pb-14 ${home ? 'bg-slate-50' : 'bg-white'}`}>

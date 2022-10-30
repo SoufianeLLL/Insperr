@@ -1,7 +1,10 @@
+import { NextApiRequest } from 'next'
 import { withApiAuth } from '@supabase/auth-helpers-nextjs'
 
+export const config = { runtime: 'experimental-edge' }
 
-export default withApiAuth(async function handler(req, res, supabaseServerClient) {
+
+export default withApiAuth(async function handler(req: NextApiRequest, res, supabaseServerClient) {
 
 	const { data: { user } } = await supabaseServerClient.auth.getUser()
 	const { action, number=10, page } = req?.query
@@ -39,24 +42,14 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 	
 				result = { quotes: latestQuotes, l_count, page: to }
 				break;
-	
-			case 'getRandomQuotes':
-				// get random quotes from Supabase
-				const { data: randomQuotes } = await supabaseServerClient
-					.from('random_quotes')
-					.select('*')
-					.limit(+number ?? 10)
-	
-				result = randomQuotes
-				break;
 		}
 	}
 	else {
-		return res.status(401).json({
+		return new Response(JSON.stringify({
 			status: 401,
 			message: 'Unauthorized, the request has not been completed because it lacks valid authentication credentials for the requested resource.'
-		})
+		}), { status: 401 })
 	}
 
-	return res.status(200).json(result)
+	return new Response(JSON.stringify(result), { status: 200 })
 })

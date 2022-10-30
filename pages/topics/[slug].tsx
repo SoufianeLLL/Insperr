@@ -1,4 +1,3 @@
-// import useSWR from 'swr'
 import { useEffect } from 'react'
 import { useInfiniteQuery } from 'react-query'
 import { capitalizer } from '@/lib/validation'
@@ -29,8 +28,6 @@ const Topic = ({ slug }) => {
 				const res = await fetch(`/api/quote?number=${take}&target=database&topic=${slug}&cursor=${pageParam}&action=getQuotesByTopic`)
 				const data = await res?.json()
 		        return data
-				// const { data: res } = useSWR(`/api/quote?number=${take}&target=database&author=${slug}&cursor=${pageParam}`)
-				// return res
 		},
 		{
 			getNextPageParam: (lastPage) => lastPage.nextId ?? false,
