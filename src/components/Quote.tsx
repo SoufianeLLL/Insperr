@@ -11,15 +11,16 @@ const Quote = ({ quote }) => {
 					<div className="flex-none inherit">
 						{quote?.avatar ? 
 							<Image 
+								alt="avatar"
 								className="inline-block rounded-full"
 								src={quote?.avatar}
-								blurDataURL={require('../../public/images/avatar.jpg')} 
-								placeholder="blur"
+								blurDataURL={'../../public/images/avatar.jpg'} 
 								unoptimized={true} 
 								height={50}
 								width={50} />
 						:
 							<Image 
+								alt="avatar"
 								className="inline-block rounded-full"
 								src={require('../../public/images/avatar.jpg')} 
 								placeholder="blur"

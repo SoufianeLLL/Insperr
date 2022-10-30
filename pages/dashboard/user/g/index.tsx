@@ -143,7 +143,7 @@ const GenerateQuotesPage = () => {
 							<div className="w-full">
 								<div className="w-full font-somibold mb-2 text-base">Keyword (type something relevant)</div>
 								<input onChange={async (e) => setTarget({ ...target, phrase: e?.target?.value })} 
-								className="w-full outline-none border-slate-200 focus:border-primary-500 focus:border-b-2 border-b-2 py-2 w-full bg-white placeholder-slate-400 text-left" 
+								className="w-full focus:ring-0 outline-none border-0 border-slate-200 focus:border-primary-500 focus:border-b-2 border-b-2 py-2 w-full bg-white placeholder-slate-400 text-left" 
 								placeholder="i.e Love is" type="text" name="custom-word" />
 							</div>
 							<div className="mt-8 category-col w-full">
@@ -183,7 +183,7 @@ const GenerateQuotesPage = () => {
 											>= Settings?.quote?.max_characters ? Settings?.quote?.max_characters : parseInt(e.target.value)) 
 											: Settings?.quote?.min_characters })} 
 										type="text" min={Settings?.quote?.min_characters} max={Settings?.quote?.max_characters} 
-										className="inline-block outline-none bg-white border-slate-200 focus:border-primary-500 focus:border-b-2 border-b-2 outline-none py-2 w-full" 
+										className="inline-block focus:ring-0 bg-white border-0 outline-0 border-slate-200 focus:border-primary-500 focus:border-b-2 border-b-2 outline-none py-2 w-full" 
 										value={(target?.characters)?.toString()} /> 
 									</div>
 								</div>
@@ -200,7 +200,7 @@ const GenerateQuotesPage = () => {
 											(parseInt(e.target.value) > Settings?.quote?.max_quota ? Settings?.quote?.max_quota : parseInt(e.target.value)) 
 											: Settings?.quote?.min_quota })} 
 										type="text" min={Settings?.quote?.min_quota} max={Settings?.quote?.max_quota} 
-										className="inline-block outline-none bg-white border-slate-200 focus:border-primary-500 focus:border-b-2 border-b-2 outline-none py-2 w-full" 
+										className="inline-block focus:ring-0 bg-white border-0 outline-0 border-slate-200 focus:border-primary-500 focus:border-b-2 border-b-2 outline-none py-2 w-full" 
 										value={(target?.quota)?.toString()} /> 
 									</div>
 								</div>
@@ -216,7 +216,7 @@ const GenerateQuotesPage = () => {
 				</>}
 			</div>
 		</section>
-	</>
+	</>;
 }
 
 GenerateQuotesPage.getLayout = (page) => <AuthenticatedLayout>{page}</AuthenticatedLayout>

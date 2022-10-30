@@ -31,8 +31,8 @@ const ResultPage = ({ result_id }) => {
 				<>
 					<div className="heading w-full">
 						<div className="text-xl md:text-2xl font-semibold w-full flex items-center gap-3">
-							<Link href="/dashboard/user/results"><a>
-								<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"></path></svg></a></Link>
+							<Link href="/dashboard/user/results">
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"></path></svg></Link>
 							<div>Output Result</div>
 						</div>
 					</div>
@@ -120,7 +120,7 @@ const ResultPage = ({ result_id }) => {
 				</>}
 			</div>
 		</section>
-	</>
+	</>;
 }
 
 ResultPage.getInitialProps = async ({ 'query': {result_id} }) => { return { result_id } }

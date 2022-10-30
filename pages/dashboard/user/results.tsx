@@ -61,39 +61,41 @@ const QuotesGeneratorResults = ({ resultIds }) => {
 						<div className="w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 lg:gap-8">
 							{Pagination?.pages?.map((page, i) => {
 								return page?.quotes?.map((quote, i) => {
-									return <div key={i} className="bg-white w-full px-3 py-2 md:px-6 md:py-4 rounded-lg shadow hover:shadow-lg transition duration-200">
-										<div className="w-full border-b border-slate-200 pb-2">
-											<div className="w-full md:flex items-center gap-2 md:gap-4">
-												<div className="w-full text-base shrink flex items-center gap-3">
-													{resultIds?.includes(quote?.result_id) && <div className="text-sm inline-block text-white bg-green-600 py-0.5 px-3 rounded-full">new</div> }
-													<div className="text-base mb-0.5 text-slate-500">Output:</div>
-												</div>
-												<div className="flex-none flex items-center gap-3">
-													<div className={`_quote_status_${quote?.id}`}>
-														{quote?.hidden ? 
-															<div className="cursor-pointer hover:text-green-600 flex items-center text-sm gap-2" onClick={() => changeQuoteStatus('show', quote?.id)}>
-																<svg className="w-6 h-6" width="25" height="25" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M12 17c-2.727 0-6-2.778-6-5s3.273-5 6-5 6 2.778 6 5-3.273 5-6 5zm-1-5a1 1 0 1 0 2 0 1 1 0 0 0-2 0z"></path></svg>
-																show
-															</div> 
-															: 
-															<div className="cursor-pointer hover:text-red-500 flex items-center text-sm gap-2" onClick={() => changeQuoteStatus('hide', quote?.id)}>
-																<svg className="w-6 h-6" width="25" height="25" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M12 17c-2.727 0-6-2.778-6-5s3.273-5 6-5 6 2.778 6 5-3.273 5-6 5zm-1-5a1 1 0 1 0 2 0 1 1 0 0 0-2 0zm9-7L4 19"></path></svg>
-																hide
-															</div>}
-													</div>
-													<div className="text-primary-500 hover:text-primary-600 transition-all">
-														<Link href={`/dashboard/user/g/result/${quote?.result_id}`}><a>
-															<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></a></Link>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div className="w-full mt-3">
-											<div className="w-full" 
-												dangerouslySetInnerHTML={{ __html: quote?.content?.replace(/\n/g, '<br>') }} />
-										</div>
-									</div>
-								})
+									return (
+                                        <div key={i} className="bg-white w-full px-3 py-2 md:px-6 md:py-4 rounded-lg shadow hover:shadow-lg transition duration-200">
+                                            <div className="w-full border-b border-slate-200 pb-2">
+                                                <div className="w-full md:flex items-center gap-2 md:gap-4">
+                                                    <div className="w-full text-base shrink flex items-center gap-3">
+                                                        {resultIds?.includes(quote?.result_id) && <div className="text-sm inline-block text-white bg-green-600 py-0.5 px-3 rounded-full">new</div> }
+                                                        <div className="text-base mb-0.5 text-slate-500">Output:</div>
+                                                    </div>
+                                                    <div className="flex-none flex items-center gap-3">
+                                                        <div className={`_quote_status_${quote?.id}`}>
+                                                            {quote?.hidden ? 
+                                                                <div className="cursor-pointer hover:text-green-600 flex items-center text-sm gap-2" onClick={() => changeQuoteStatus('show', quote?.id)}>
+                                                                    <svg className="w-6 h-6" width="25" height="25" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M12 17c-2.727 0-6-2.778-6-5s3.273-5 6-5 6 2.778 6 5-3.273 5-6 5zm-1-5a1 1 0 1 0 2 0 1 1 0 0 0-2 0z"></path></svg>
+                                                                    show
+                                                                </div> 
+                                                                : 
+                                                                <div className="cursor-pointer hover:text-red-500 flex items-center text-sm gap-2" onClick={() => changeQuoteStatus('hide', quote?.id)}>
+                                                                    <svg className="w-6 h-6" width="25" height="25" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M12 17c-2.727 0-6-2.778-6-5s3.273-5 6-5 6 2.778 6 5-3.273 5-6 5zm-1-5a1 1 0 1 0 2 0 1 1 0 0 0-2 0zm9-7L4 19"></path></svg>
+                                                                    hide
+                                                                </div>}
+                                                        </div>
+                                                        <div className="text-primary-500 hover:text-primary-600 transition-all">
+                                                            <Link href={`/dashboard/user/g/result/${quote?.result_id}`}>
+                                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></Link>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="w-full mt-3">
+                                                <div className="w-full" 
+                                                    dangerouslySetInnerHTML={{ __html: quote?.content?.replace(/\n/g, '<br>') }} />
+                                            </div>
+                                        </div>
+                                    );
+								});
 							})}
 						</div>
 						<div className="pagination mt-12 text-base text-center">
@@ -109,7 +111,7 @@ const QuotesGeneratorResults = ({ resultIds }) => {
 				</div>
 			</div>
 		</section>
-	</>
+	</>;
 }
 
 

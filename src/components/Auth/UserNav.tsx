@@ -15,20 +15,21 @@ const UserNav = ({ user, isAuthPage=false }) => {
 	}, [])
 	
 	return (
-		<div className="flex items-center gap-5 user-nav">
-			<Link href="/dashboard/user/account"><a className="flex items-center gap-2">
-				<div className="relative bg-slate-100 w-7 h-7 rounded-full flex items-center justify-center">
+        <div className="flex items-center gap-5 user-nav">
+			<Link href="/dashboard/user/account" className="flex items-center gap-2">
+                <div className="relative bg-slate-100 w-7 h-7 rounded-full flex items-center justify-center">
 					{user?.avatar ? 
 						<Image 
+							alt="avatar"
 							className="inline-block rounded-full"
 							src={user?.avatar}
-							blurDataURL={require('../../../public/images/avatar.jpg')} 
-							placeholder="blur"
+							blurDataURL={'../../../public/images/avatar.jpg'} 
 							unoptimized={true} 
 							height={30}
 							width={30} />
 					:
 						<Image 
+							alt="avatar"
 							className="inline-block rounded-full"
 							src={require('../../../public/images/avatar.jpg')} 
 							placeholder="blur"
@@ -37,11 +38,11 @@ const UserNav = ({ user, isAuthPage=false }) => {
 							width={30} />
 						}
 				</div>
-				{user?.fullname ?? user?.email}</a></Link>
-			{!isAuthPage ? <Link href="/pricing"><a>Pricing</a></Link> : <Link href="/dashboard"><a>Dashboard</a></Link>}
+                {user?.fullname ?? user?.email}</Link>
+			{!isAuthPage ? <Link href="/pricing">Pricing</Link> : <Link href="/dashboard">Dashboard</Link>}
 			<div onClick={() => onSignOut()} className="cursor-pointer">Sign Out</div>
 		</div>
-	)
+    );
 }
 
 export default UserNav

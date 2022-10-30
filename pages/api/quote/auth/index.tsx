@@ -1,10 +1,7 @@
-import { NextApiRequest } from 'next'
 import { withApiAuth } from '@supabase/auth-helpers-nextjs'
 
-export const config = { runtime: 'experimental-edge' }
 
-
-export default withApiAuth(async function handler(req: NextApiRequest, res, supabaseServerClient) {
+export default withApiAuth(async function handler(req, res, supabaseServerClient) {
 
 	const { data: { user } } = await supabaseServerClient.auth.getUser()
 	const { action, number=10, page } = req?.query
@@ -45,11 +42,11 @@ export default withApiAuth(async function handler(req: NextApiRequest, res, supa
 		}
 	}
 	else {
-		return new Response(JSON.stringify({
+		res.status(401).json({
 			status: 401,
 			message: 'Unauthorized, the request has not been completed because it lacks valid authentication credentials for the requested resource.'
-		}), { status: 401 })
+		})
 	}
 
-	return new Response(JSON.stringify(result), { status: 200 })
+	res.status(200).json(result)
 })

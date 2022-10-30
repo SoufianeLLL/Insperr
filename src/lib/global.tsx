@@ -10,8 +10,8 @@ const searchForAuthors = async (e, authors) => {
         })
         if (fetchedAuthors?.length === 0) {
             return { 
-                error: <div>The name is not found on our Database, please <Link href="/authors/add"><a className="text-blue-500">click here</a></Link> to add this name (make sure it's a correct name or you'll get banned from this feature).</div>
-            }
+                error: <div>The name is not found on our Database, please <Link href="/authors/add" className="text-blue-500">click here</Link> to add this name (make sure it's a correct name or you'll get banned from this feature).</div>
+            };
         }
         else {
             return fetchedAuthors

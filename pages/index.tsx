@@ -65,12 +65,14 @@ const IndexPage = () => {
 					<div className="text-2xl md:text-3xl lg:text-4xl leading-tight normal-case fontSemiBold w-full">
 						Let's discover your style? <br/> Start with <span className="text-primary-500">free</span> now.
 					</div>
-					<Link href="/access?op=signin"><a className="mt-8 w-auto inline-block text-white cursor-pointer mx-auto transition duration-200 transform scale-100 hover:scale-110 shadow-lg bg-primary-500 hover:bg-primary-700 py-4 px-8 text-xl rounded-full">
-						Get Started</a></Link>
+					<Link
+                        href="/access?op=signin"
+                        className="mt-8 w-auto inline-block text-white cursor-pointer mx-auto transition duration-200 transform scale-100 hover:scale-110 shadow-lg bg-primary-500 hover:bg-primary-700 py-4 px-8 text-xl rounded-full">
+						Get Started</Link>
 				</div>
 			</div>
 		</section>
-	</>
+	</>;
 }
 
 IndexPage.getLayout = (page) => <UnauthenticatedLayout home={true}>{page}</UnauthenticatedLayout>

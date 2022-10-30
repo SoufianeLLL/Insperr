@@ -26,27 +26,27 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 		if (user?.id) {
 			// Check only if the user allowed Auto-Post tweets/Quotes
 			if (action === 'checkAutoPost') {
-				const { data: result } = await supabaseServerClient
-					.from("users")
-					.select("metadata")
+				const { data: _autoPostStatus } = await supabaseServerClient
+					.from('users')
+					.select('metadata')
 					.eq('id', user?.id)
 					.single()
 				
-				return res.status(200).json(result?.metadata?.auto_post ?? false)
+				return res.status(200).json(_autoPostStatus?.metadata?.auto_post ?? false)
 			}
 			
 			// Check only if the user has a valid subscription
 			else if (action === 'checkUserSubscription') {
-				const { data: subscription } = await supabaseServerClient
-					.from("subscription")
+				const { data: _isSubscribed } = await supabaseServerClient
+					.from('subscriptions')
 					.select('product_id')
-					.eq('id', user?.id)
+					.eq('user_id', user?.id)
 					.eq('is_subscribed', true)
 					.single()
 				
 				// Check if the subscribed user allowed to connect to twitter 
-				const checkIfAllowed = Settings?.products?.some((o) => {return ((o['id'] === subscription?.product_id) && o['autoPost'] === true)})
-				return res.status(200).json(subscription ? (checkIfAllowed ?? false) : false)
+				const checkIfAllowed = Settings?.products?.some((o) => {return ((o['id'] === _isSubscribed?.product_id) && o['autoPost'] === true)})
+				return res.status(200).json(_isSubscribed ? (checkIfAllowed ?? false) : false)
 			}
 			
 			// Get user data

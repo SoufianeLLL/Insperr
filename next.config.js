@@ -1,7 +1,6 @@
 const nextConfig = {
-	swcMinify: true,
-	// images: {
-	// 	formats: ['image/avif', 'image/webp']
+	// experimental: {
+	// 	runtime: 'experimental-edge', // 'node.js' (default) | experimental-edge
 	// }
 }
 

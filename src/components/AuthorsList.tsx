@@ -30,8 +30,11 @@ const AuthorList = () => {
 							<div className="letter text-4xl md:text-5xl my-5 fontBold">{targetLetter?.toUpperCase()}</div>
 							<div className="w-full text-slate-500 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-2 gap-x-6">
 								{Authors?.map((author, i) => {
-									return <Link key={author?.id} href={`authors/${sluging(author?.name)}`}><a target="_blank"><div className="w-full mb-2 cursor-pointer hover:text-black text-base">
-										{capitalizer(author?.name)}</div></a></Link>
+									return (
+                                        <Link key={author?.id} href={`authors/${sluging(author?.name)}`} target="_blank">
+											<div className="w-full mb-2 cursor-pointer hover:text-black text-base">{capitalizer(author?.name)}</div>
+										</Link>
+                                    );
 								})}
 							</div>
 						</div>
@@ -43,7 +46,7 @@ const AuthorList = () => {
 				<Loading text="Loading..." width={50} height={50} />
 			</div>}
 		</div>
-	</>
+	</>;
 }
 
 export default AuthorList

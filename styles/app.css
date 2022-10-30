@@ -257,7 +257,7 @@ body {
 	scrollbar-width: none;  /* Firefox */
 }
 
-.nav-link:hover > div {
+.nav-link:hover div.rounded-full {
 	background-color: #E2E8F0;
 }
 

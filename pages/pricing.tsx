@@ -60,82 +60,84 @@ const PricingPage = ({ plans }) => {
 							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 								{plans?.map((plan, i) => {
 									if (plan?.active) {
-										return <div key={plan?.id} className={`w-full p-6 md:p-10 ${i===1 && 'bg-primary-50 rounded-2xl'}`}>
-											<h4 className="w-full fontNormal text-center text-lg md:text-xl uppercase">{plan?.name}</h4>
-											<h2 className="w-full mt-6 fontBold text-center text-2xl md:text-4xl">
-												${(plan?.price)?.toString()}
-											</h2>
-											<div className="h-4 w-full mt-2 uppercase text-center text-xs">per month</div>
-											{(!isLoading && !loadingStripe) ?
-												<div className="w-full mt-6 h-10">
-													{user ? 
-														subscription ? 
-															subscription?.product_id === plan.id && 
-																<Link href="/dashboard/user/account"><a className={`${i===1 ? 'bg-primary-500 text-white' : 'hover:text-white text-primary-500'} border-2 border-primary-500 hover:bg-primary-600 hover:border-primary-600 transition duration-200 text-base cursor-pointer rounded-lg w-full inline-block text-center py-2 px-4`}>
-																Manage Subscription</a></Link>
+										return (
+											<div key={plan?.id} className={`w-full p-6 md:p-10 ${i===1 && 'bg-primary-50 rounded-2xl'}`}>
+												<h4 className="w-full fontNormal text-center text-lg md:text-xl uppercase">{plan?.name}</h4>
+												<h2 className="w-full mt-6 fontBold text-center text-2xl md:text-4xl">
+													${(plan?.price)?.toString()}
+												</h2>
+												<div className="h-4 w-full mt-2 uppercase text-center text-xs">per month</div>
+												{(!isLoading && !loadingStripe) ?
+													<div className="w-full mt-6 h-10">
+														{user ? 
+															subscription ? 
+																subscription?.product_id === plan.id && 
+																	<Link href="/dashboard/user/account" className={`${i===1 ? 'bg-primary-500 text-white' : 'hover:text-white text-primary-500'} border-2 border-primary-500 hover:bg-primary-600 hover:border-primary-600 transition duration-200 text-base cursor-pointer rounded-lg w-full inline-block text-center py-2 px-4`}>
+																		Manage Subscription</Link>
+															:
+															<button onClick={() => runStripe(plan?.price_id)} className={`${i===1 ? 'bg-primary-500 text-white' : 'hover:text-white text-primary-500'} border-2 border-primary-500 hover:bg-primary-600 hover:border-primary-600 transition duration-200 text-base cursor-pointer rounded-lg w-full text-center py-2 px-4`}>
+																Upgrade to Pro</button>
 														:
-														<button onClick={() => runStripe(plan?.price_id)} className={`${i===1 ? 'bg-primary-500 text-white' : 'hover:text-white text-primary-500'} border-2 border-primary-500 hover:bg-primary-600 hover:border-primary-600 transition duration-200 text-base cursor-pointer rounded-lg w-full text-center py-2 px-4`}>
-															Upgrade to Pro</button>
-													:
-													<Link href="/access?op=signup"><a className={`${i===1 ? 'bg-primary-500 text-white' : 'hover:text-white text-primary-500'} border-2 border-primary-500 hover:bg-primary-600 hover:border-primary-600 transition duration-200 text-base cursor-pointer rounded-lg w-full inline-block text-center py-2 px-4`}>
-														Create account</a></Link>
-													}
-												</div>
-											:
-												<div className="w-full text-center my-4"><Loading text="" scpace='0 auto' borderWidth={2} width={30} height={30} /></div>}
-											{Plans?.map((item, x) => {
-												if (item?.id === plan?.id) return <div key={x}>
-													<div className="w-full mt-6">
-														<div className="w-full mt-2 text-base inline-block">
-															<div className="float-left mr-2 text-primary-600">
-																<svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" focusable="false" height="25" width="25" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
-															</div>
-															<div className="float-left"><span className="font-semibold">{(item?.quotes)?.toString()}</span> Quotes</div>
-														</div>
+														<Link href={`/access?op=signup&redirect=payment&p=${plan?.price_id}`} className={`${i===1 ? 'bg-primary-500 text-white' : 'hover:text-white text-primary-500'} border-2 border-primary-500 hover:bg-primary-600 hover:border-primary-600 transition duration-200 text-base cursor-pointer rounded-lg w-full inline-block text-center py-2 px-4`}>
+															Create account</Link>
+														}
 													</div>
-													{item?.api && <>
-														<div className="w-full">
+												:
+													<div className="w-full text-center my-4"><Loading text="" scpace='0 auto' borderWidth={2} width={30} height={30} /></div>}
+												{Plans?.map((item, x) => {
+													if (item?.id === plan?.id) return <div key={x}>
+														<div className="w-full mt-6">
 															<div className="w-full mt-2 text-base inline-block">
 																<div className="float-left mr-2 text-primary-600">
 																	<svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" focusable="false" height="25" width="25" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
 																</div>
-																<div className="float-left">API access</div>
+																<div className="float-left"><span className="font-semibold">{(item?.quotes)?.toString()}</span> Quotes</div>
 															</div>
 														</div>
-														<div className="w-full">
-															<div className="w-full mt-2 text-base inline-block">
-																<div className={`ml-2 float-left mr-2 rounded-full`}>—</div>
-																<div className="float-left"><span className="font-semibold">Read</span>: {item?.requests?.read} request</div>
-															</div>
-														</div>
-														<div className="w-full">
-															<div className="w-full mt-2 text-base inline-block">
-																<div className={`ml-2 float-left mr-2 rounded-full`}>—</div>
-																<div className="float-left"><span className="font-semibold">Create</span>: {item?.requests?.create} request</div>
-															</div>
-														</div>
-														{item?.autoPost && 
-														<div className="w-full">
-															<div className="w-full mt-2 text-base inline-block">
-																<div className="float-left mr-2 text-primary-600">
-																	<svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" focusable="false" height="25" width="25" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+														{item?.api && <>
+															<div className="w-full">
+																<div className="w-full mt-2 text-base inline-block">
+																	<div className="float-left mr-2 text-primary-600">
+																		<svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" focusable="false" height="25" width="25" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+																	</div>
+																	<div className="float-left">API access</div>
 																</div>
-																<div className="float-left">Twitter AutoPost</div>
 															</div>
-														</div>}
-														{item?.priority_support && 
-														<div className="w-full">
-															<div className="w-full mt-2 text-base inline-block">
-																<div className="float-left mr-2 text-primary-600">
-																	<svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" focusable="false" height="25" width="25" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+															<div className="w-full">
+																<div className="w-full mt-2 text-base inline-block">
+																	<div className={`ml-2 float-left mr-2 rounded-full`}>—</div>
+																	<div className="float-left"><span className="font-semibold">Read</span>: {item?.requests?.read} request</div>
 																</div>
-																<div className="float-left">Priority Support</div>
 															</div>
-														</div>}
-													</>}
-												</div>
-											})}
-										</div>
+															<div className="w-full">
+																<div className="w-full mt-2 text-base inline-block">
+																	<div className={`ml-2 float-left mr-2 rounded-full`}>—</div>
+																	<div className="float-left"><span className="font-semibold">Create</span>: {item?.requests?.create} request</div>
+																</div>
+															</div>
+															{item?.autoPost && 
+															<div className="w-full">
+																<div className="w-full mt-2 text-base inline-block">
+																	<div className="float-left mr-2 text-primary-600">
+																		<svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" focusable="false" height="25" width="25" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+																	</div>
+																	<div className="float-left">Twitter AutoPost</div>
+																</div>
+															</div>}
+															{item?.priority_support && 
+															<div className="w-full">
+																<div className="w-full mt-2 text-base inline-block">
+																	<div className="float-left mr-2 text-primary-600">
+																		<svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" focusable="false" height="25" width="25" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+																	</div>
+																	<div className="float-left">Priority Support</div>
+																</div>
+															</div>}
+														</>}
+													</div>
+												})}
+											</div>
+										);
 									}
 									return null
 								})}
@@ -167,7 +169,7 @@ const PricingPage = ({ plans }) => {
 				</div>
 			</div>
 		</section>
-	</>
+	</>;
 }
 
 export const getStaticProps = async () => {

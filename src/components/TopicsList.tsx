@@ -21,8 +21,11 @@ const TopicList = () => {
 							<div className="letter text-4xl md:text-5xl my-5 fontBold hidden"></div>
 							<div className="mt-5 w-full text-slate-500 columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-y-2 gap-x-6">
 								{Topics?.map((topic, i) => {
-									return <Link key={topic?.id} href={`topics/${sluging(topic?.name)}`}><a><div className="w-full mb-2 cursor-pointer hover:text-black text-base">
-										{capitalizer(topic?.name)}</div></a></Link>
+									return (
+										<Link key={topic?.id} href={`topics/${sluging(topic?.name)}`}>
+											<div className="w-full mb-2 cursor-pointer hover:text-black text-base">{capitalizer(topic?.name)}</div>
+										</Link>
+									);
 								})}
 							</div>
 						</div>
@@ -34,7 +37,7 @@ const TopicList = () => {
 				<Loading text="Loading..." width={50} height={50} />
 			</div>}
 		</div>
-	</>
+	</>;
 }
 
 export default TopicList

@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from "react"
 import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
-// import { useSignOutMutation } from "@/lib/api/auth"
 import { checkEmailValidation, checkPasswordValidation, checkUsernameValidation } from "@/lib/validation"
 import Loading from '@/components/Loading'
 import ShowToast from "@/components/ShowToast"
@@ -21,7 +20,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 	const { mutate: signOut } = useSignOutMutation()
 
 	let { isValidating: isCheckingSubscription, data: isSubscribed } = useSWR(`/api/user?action=checkUserSubscription`)
-	const accountLinked = user && user?.app_metadata?.providers?.includes('twitter') ? 'authenticated' : 'unauthenticated' // Check if Twitter account is linked
+	// const accountLinked = user && user?.app_metadata?.providers?.includes('twitter') ? 'authenticated' : 'unauthenticated' // Check if Twitter account is linked
 	const { isValidating: isCheckingAutoPost, data: checkAutoPost } = useSWR(`/api/user?id=${user?.id}&action=checkAutoPost`)
 
 	const [error, setError] = useState(null)
@@ -188,17 +187,6 @@ const UserAccount = ({ q_screen, q_errors }) => {
 		}
 	}
 
-	const twitterAccount = async (action) => {
-		if (action === 'connect') {
-			await supabaseClient.auth.signInWithOAuth({
-				provider: 'twitter'
-			})
-		}
-		else {
-			signOut({ supabaseClient })
-		}
-	}
-
 	const loadPortal = async () => {
 		setLoadingPortal(true)
 		const res = await fetch('/api/stripe/customer/portal')
@@ -285,12 +273,12 @@ const UserAccount = ({ q_screen, q_errors }) => {
 													{isSubscribed ? isLoading ? 
 														<div className="w-full my-4"><Loading text="" scpace='0' borderWidth={2} width={25} height={25} /></div>
 														:
-														<div onClick={() => accountLinked === 'authenticated' ? twitterAccount('disconnect') : twitterAccount('connect')} className="rounded-full cursor-pointer">
-															<BlueButton color={accountLinked === 'unauthenticated' ? 'primary' : 'red'} isLink={false} 
-																text={accountLinked === 'unauthenticated' ? 'Connect' : 'Disconnect'} smallSize={true} fullWidth={false} />
-														</div> 
+														<div className="flex items-center gap-1 text-primary-500">
+															<svg className="w-6 h-6" height="25" width="25" fill="currentColor" clipRule="evenodd" fillRule="evenodd" strokeLinejoin="round" strokeMiterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m11.998 2.005c5.517 0 9.997 4.48 9.997 9.997 0 5.518-4.48 9.998-9.997 9.998-5.518 0-9.998-4.48-9.998-9.998 0-5.517 4.48-9.997 9.998-9.997zm-5.049 10.386 3.851 3.43c.142.128.321.19.499.19.202 0 .405-.081.552-.242l5.953-6.509c.131-.143.196-.323.196-.502 0-.41-.331-.747-.748-.747-.204 0-.405.082-.554.243l-5.453 5.962-3.298-2.938c-.144-.127-.321-.19-.499-.19-.415 0-.748.335-.748.746 0 .205.084.409.249.557z" fillRule="nonzero"/></svg>
+															<span className="text-base">Connected</span>
+														</div>
 													: <div className="flex items-center gap-2 border-2 border-primary-500 text-primary-500 text-sm uppercase rounded-full py-2 px-4">
-														Pro feature <Link href="/pricing"><a className="hover:text-primary-700"><svg className="w-5 h-5" height="25" width="25" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></a></Link></div>}
+														Pro feature <Link href="/pricing" className="hover:text-primary-700"><svg className="w-5 h-5" height="25" width="25" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></Link></div>}
 												</div>
 											</div>
 											<div className="border-t border-slate-100 pt-10 mt-10 w-full text-base mb-2 md:flex md:items-center md:justify-start md:gap-x-32">
@@ -307,11 +295,11 @@ const UserAccount = ({ q_screen, q_errors }) => {
 													{isSubscribed ? isCheckingAutoPost ? 
 														<div className="w-full my-4"><Loading text="" scpace='0' borderWidth={2} width={25} height={25} /></div>
 														:
-														<div onClick={() => newRequest()} className={`${automation?.autoPostActive && accountLinked === 'authenticated' ? 'bg-primary-500' : 'bg-slate-300'} w-14 h-8 cursor-pointer rounded-full relative`}>
-															<span className={`${automation?.autoPostActive && accountLinked === 'authenticated' ? 'translate-x-6' : 'translate-x-0'} transform left-1 bg-white absolute transition duration-200 top-1 h-6 w-6 rounded-full`}></span>
+														<div onClick={() => newRequest()} className={`${automation?.autoPostActive ? 'bg-primary-500' : 'bg-slate-300'} w-14 h-8 cursor-pointer rounded-full relative`}>
+															<span className={`${automation?.autoPostActive ? 'translate-x-6' : 'translate-x-0'} transform left-1 bg-white absolute transition duration-200 top-1 h-6 w-6 rounded-full`}></span>
 														</div>
 													: <div className="flex items-center gap-2 border-2 border-primary-500 text-primary-500 text-sm uppercase rounded-full py-2 px-4">
-														Pro feature <Link href="/pricing"><a className="hover:text-primary-700"><svg className="w-5 h-5" height="25" width="25" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></a></Link></div>}
+														Pro feature <Link href="/pricing" className="hover:text-primary-700"><svg className="w-5 h-5" height="25" width="25" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></Link></div>}
 												</div>
 											</div>
 										</>}
@@ -424,7 +412,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 				}
 			</div>
 		</section>
-	</>
+	</>;
 }
 
 const Btn = ({ title, description, icon=null, onClick }) => {
