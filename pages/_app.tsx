@@ -65,7 +65,7 @@ const MyApp = ({ Component, pageProps }) => {
 	useEffect(() => {
 		const { data: { subscription } } = supabaseClient.auth.onAuthStateChange(
 		async (event, session) => {
-			// console.log(event)
+			console.log(event)
 			if (event === 'SIGNED_OUT') {
 				router.push('/access?op=signin')
 			}

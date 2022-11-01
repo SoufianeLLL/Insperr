@@ -49,6 +49,40 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 				return res.status(200).json(_isSubscribed ? (checkIfAllowed ?? false) : false)
 			}
 			
+			// Check only if the user has linked their Twitter account
+			else if (action === 'checkTwitterLinking') {
+				const { data: _isTwitterLinked } = await supabaseServerClient
+					.from('tokens')
+					.select('access_token, access_secret')
+					.eq('user_id', user?.id)
+					.not('access_token', 'is', null)
+					.not('access_secret', 'is', null)
+					.single()
+
+				// Check if the subscribed user allowed to connect to twitter 
+				return res.status(200).json(_isTwitterLinked?.access_token && _isTwitterLinked?.access_secret ? true : false)
+			}
+			
+			// Get user's twitter data
+			else if (action === 'getTwitterData') {
+				const { count: lastTweets } = await supabaseServerClient
+					.from('quotes')
+					.select('content, twitter_metadata')
+					.eq('user_id', user?.id)
+					.eq('tweet_metadata.status', 'published')
+					.limit(5)
+
+				const { data: _isTwitterLinked } = await supabaseServerClient
+					.from('tokens')
+					.select('access_token, access_secret')
+					.eq('user_id', user?.id)
+					.not('access_token', 'is', null)
+					.not('access_secret', 'is', null)
+					.single()
+
+				return res.status(200).json({ lastTweets, isTwitterLinked: _isTwitterLinked?.access_token && _isTwitterLinked?.access_secret ? true : false })
+			}
+
 			// Get user data
 			else if (action === 'getUserData') {
 				const { count: quotes } = await supabaseServerClient
@@ -60,7 +94,7 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 					.from('quotes')
 					.select('*', { count: 'exact', head: true })
 					.eq('user_id', user?.id)
-					.eq('tweeted', true)
+					.eq('tweet_metadata.status', 'published')
 
 				const { data: subscription } = await supabaseServerClient
 					.from('subscriptions')

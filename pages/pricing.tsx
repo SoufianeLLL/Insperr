@@ -1,5 +1,5 @@
 import useSWR from "swr"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
 import { loadStripe } from "@stripe/stripe-js"
@@ -10,7 +10,7 @@ import UnauthenticatedLayout from "@/components/UnauthenticatedLayout"
 
 
 
-const PricingPage = ({ plans }) => {
+const PricingPage = ({ plans, price_id }) => {
 
 	const user = useUser() // Authenticated user
 	const { isLoading } = useSessionContext()
@@ -21,9 +21,15 @@ const PricingPage = ({ plans }) => {
 	const Plans = Settings?.products
 	const freePlan = Settings?.products.find((itm) => { return (itm.id)?.toLowerCase() === 'free' })
 
-	const runStripe = async (planId) => {
+	useEffect(() => {
+		if (price_id) {
+			runStripe(price_id)
+		}
+	}, [])
+
+	const runStripe = async (priceId) => {
 		setLoadingStripe(true)
-		const result = await fetch(`/api/stripe/customer/subscription/${planId}`)
+		const result = await fetch(`/api/stripe/customer/subscription/${priceId}`)
 		const res = await result?.json()
 		if (res?.id) {
 			setLoadingStripe(false)
@@ -76,10 +82,10 @@ const PricingPage = ({ plans }) => {
 																		Manage Subscription</Link>
 															:
 															<button onClick={() => runStripe(plan?.price_id)} className={`${i===1 ? 'bg-primary-500 text-white' : 'hover:text-white text-primary-500'} border-2 border-primary-500 hover:bg-primary-600 hover:border-primary-600 transition duration-200 text-base cursor-pointer rounded-lg w-full text-center py-2 px-4`}>
-																Upgrade to Pro</button>
+																Upgrade to {plan?.name}</button>
 														:
-														<Link href={`/access?op=signup&redirect=payment&p=${plan?.price_id}`} className={`${i===1 ? 'bg-primary-500 text-white' : 'hover:text-white text-primary-500'} border-2 border-primary-500 hover:bg-primary-600 hover:border-primary-600 transition duration-200 text-base cursor-pointer rounded-lg w-full inline-block text-center py-2 px-4`}>
-															Create account</Link>
+														<Link href={`/access?op=signin&redirect=${process.env.NEXT_PUBLIC_URL_HOME}/pricing?p=${plan?.price_id}`} className={`${i===1 ? 'bg-primary-500 text-white' : 'hover:text-white text-primary-500'} border-2 border-primary-500 hover:bg-primary-600 hover:border-primary-600 transition duration-200 text-base cursor-pointer rounded-lg w-full inline-block text-center py-2 px-4`}>
+															Sign in</Link>
 														}
 													</div>
 												:
@@ -172,7 +178,7 @@ const PricingPage = ({ plans }) => {
 	</>;
 }
 
-export const getStaticProps = async () => {
+export async function getServerSideProps({ query }) {
 	const { data: prices } = await stripe?.prices?.list()
 	const plans = await Promise.all(prices.map(async (price) => {
 		const product = await stripe?.products.retrieve(price?.product)
@@ -188,6 +194,7 @@ export const getStaticProps = async () => {
 	}))
 	return {
 		props: {
+			price_id: query?.p ?? null,
 			plans: plans.sort((a, b) => a.created - b.created)
 		}
 	}

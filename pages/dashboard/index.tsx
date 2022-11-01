@@ -1,5 +1,5 @@
 import useSWR from 'swr'
-import { useRouter } from 'next/router'
+import { Tooltip } from "flowbite-react"
 import { useEffect, useState } from 'react'
 import { withPageAuth } from '@supabase/auth-helpers-nextjs'
 import { useSessionContext, useUser } from '@supabase/auth-helpers-react'
@@ -15,25 +15,15 @@ const APIrequests = { status: 200 }
 
 const DashboardPage = () => {
 
-	const router = useRouter()
 	const user = useUser()
-
-	const { isLoading, supabaseClient } = useSessionContext()
+	const { isLoading } = useSessionContext()
 	let { isValidating: isCheckingSubscription, data: userData } = useSWR(`/api/user?action=getUserData`)
 	// let { data: APIrequests } = useSWR(`/api/requests`)
 	
 	const [subs, setSubs] = useState(null)
 	const [userAccountHelper, setUserAccountHelper] = useState(null)
-	// const accountLinked = (user && !isCheckingSubscription) && (user?.app_metadata?.providers?.includes('twitter') && userData?.subscription) ? 'authenticated' : 'unauthenticated' // Check if Twitter account is linked
+	let { isValidating: isCheckingTwitterData, data: twitterData } = useSWR(`/api/user?action=getTwitterData`)
 
-	const connectTwitter = async () => {
-		if ((user && !isCheckingSubscription) && (user?.app_metadata?.providers?.includes('twitter') && userData?.subscription)) {
-			// 
-		}
-		else {
-			router.push('/pricing')
-		}
-	}
 
 	useEffect(() => {
 		if (isCheckingSubscription && !subs) {
@@ -63,7 +53,7 @@ const DashboardPage = () => {
         </Sidebar>}
         <section className="w-full overflow-hidden">
             <div className="w-full mb-8 text-base md:text-xl">
-                👋  Let's get you tweeting, <span className="font-semibold">{user?.user_metadata?.fullname}</span>!
+                👋  Let's get you tweeting, <span className="font-semibold">{user?.user_metadata?.full_name}</span>!
             </div>
             {userData?.generatedQuotes?.toLocaleString() >= subs?.quotes && 
                 <div className="flex items-center gap-4 w-full mb-8 py-2 px-4 md:py-3 md:px-5 bg-red-100 text-red-500 rounded-xl text-base">
@@ -121,30 +111,49 @@ const DashboardPage = () => {
                                     </div>
                                 }
                             </div>
-                            <div className="w-full text-center mt-1 inline-block text-sm">This month</div>
+                            <div className="w-full text-center mt-1 inline-block text-sm">All time</div>
                         </div>
                     </div>
                     <div className="w-full bg-white p-5 rounded-xl sm:my-0 my-4">
                         <div className="w-full overflow-hidden">
                             <div className="flex items-start gap-2">
                                 <div className="w-full shrink">
-                                    <div className="w-full text-lg">Tweets</div>
+                                    <div className="w-full text-lg">Latest Tweets</div>
                                 </div>
                                 <div className="flex-none">
-                                    {isLoading ? 
+                                    {isLoading || isCheckingTwitterData ? 
                                     <div className="w-full mt-1"><Loading text="" scpace='0 auto' borderWidth={2} width={25} height={25} /></div>
                                     :
-                                    <div className="flex items-center gap-1 text-primary-500">
-                                        <svg className="w-6 h-6" height="25" width="25" fill="currentColor" clipRule="evenodd" fillRule="evenodd" strokeLinejoin="round" strokeMiterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m11.998 2.005c5.517 0 9.997 4.48 9.997 9.997 0 5.518-4.48 9.998-9.997 9.998-5.518 0-9.998-4.48-9.998-9.998 0-5.517 4.48-9.997 9.998-9.997zm-5.049 10.386 3.851 3.43c.142.128.321.19.499.19.202 0 .405-.081.552-.242l5.953-6.509c.131-.143.196-.323.196-.502 0-.41-.331-.747-.748-.747-.204 0-.405.082-.554.243l-5.453 5.962-3.298-2.938c-.144-.127-.321-.19-.499-.19-.415 0-.748.335-.748.746 0 .205.084.409.249.557z" fillRule="nonzero"/></svg>
-                                        <span className="text-base">Connected</span>
-                                    </div>}
+									!twitterData?.isTwitterLinked ?
+										<BlueButton text="Connect" isLink={false} />
+									:
+										<div className="flex items-center gap-1 text-primary-500">
+											<svg className="w-6 h-6" height="25" width="25" fill="currentColor" clipRule="evenodd" fillRule="evenodd" strokeLinejoin="round" strokeMiterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m11.998 2.005c5.517 0 9.997 4.48 9.997 9.997 0 5.518-4.48 9.998-9.997 9.998-5.518 0-9.998-4.48-9.998-9.998 0-5.517 4.48-9.997 9.998-9.997zm-5.049 10.386 3.851 3.43c.142.128.321.19.499.19.202 0 .405-.081.552-.242l5.953-6.509c.131-.143.196-.323.196-.502 0-.41-.331-.747-.748-.747-.204 0-.405.082-.554.243l-5.453 5.962-3.298-2.938c-.144-.127-.321-.19-.499-.19-.415 0-.748.335-.748.746 0 .205.084.409.249.557z" fillRule="nonzero"/></svg>
+											<Tooltip content="Twitter account" placement="bottom">
+												<span className="text-base">Connected</span>
+											</Tooltip>
+	                                    </div>}
                                 </div>
                             </div>
                             <div className="w-full text-center mt-8 inline-block text-base">
-                                <div className="w-full my-14 px-0 md:px-5">
-                                    <svg fill="currentColor" viewBox="0 0 24 24" className="mx-auto mb-4 w-14 h-14 text-slate-200"><path fillRule="evenodd" d="M24 4.309a9.83 9.83 0 0 1-2.828.775 4.94 4.94 0 0 0 2.165-2.724 9.865 9.865 0 0 1-3.127 1.196 4.925 4.925 0 0 0-8.39 4.49A13.974 13.974 0 0 1 1.671 2.9a4.902 4.902 0 0 0-.667 2.476c0 1.708.869 3.216 2.191 4.099A4.936 4.936 0 0 1 .964 8.86v.06a4.926 4.926 0 0 0 3.95 4.829 4.964 4.964 0 0 1-2.224.085 4.93 4.93 0 0 0 4.6 3.42 9.886 9.886 0 0 1-6.115 2.107c-.398 0-.79-.023-1.175-.068a13.945 13.945 0 0 0 7.548 2.212c9.057 0 14.009-7.503 14.009-14.01 0-.213-.005-.425-.014-.636A10.012 10.012 0 0 0 24 4.309"></path></svg>
-                                    Connect your Twitter account, and start tweeting at a scheduled time.
-                                </div>
+								{isCheckingTwitterData ? '' :
+								!twitterData?.isTwitterLinked ? 
+									<div className="w-full my-14 px-0 md:px-5">
+										<svg fill="currentColor" viewBox="0 0 24 24" className="mx-auto mb-4 w-14 h-14 text-slate-200"><path fillRule="evenodd" d="M24 4.309a9.83 9.83 0 0 1-2.828.775 4.94 4.94 0 0 0 2.165-2.724 9.865 9.865 0 0 1-3.127 1.196 4.925 4.925 0 0 0-8.39 4.49A13.974 13.974 0 0 1 1.671 2.9a4.902 4.902 0 0 0-.667 2.476c0 1.708.869 3.216 2.191 4.099A4.936 4.936 0 0 1 .964 8.86v.06a4.926 4.926 0 0 0 3.95 4.829 4.964 4.964 0 0 1-2.224.085 4.93 4.93 0 0 0 4.6 3.42 9.886 9.886 0 0 1-6.115 2.107c-.398 0-.79-.023-1.175-.068a13.945 13.945 0 0 0 7.548 2.212c9.057 0 14.009-7.503 14.009-14.01 0-.213-.005-.425-.014-.636A10.012 10.012 0 0 0 24 4.309"></path></svg>
+										Connect your Twitter account, and start tweeting at a scheduled time.
+									</div>
+								:
+									<div className="w-full px-0 md:px-5">
+										{twitterData?.lastTweets ? twitterData?.lastTweets?.map((tweet, i) => {
+											return <div key={i} className={`${i !== twitterData?.lastTweets?.length && 'border-b border-slate-100'} py-2 px-3 text-base w-full`}>
+												{tweet?.centent}</div>
+										})
+										:
+										<div className="w-full my-14 px-0 md:px-5">
+											<svg fill="currentColor" viewBox="0 0 24 24" className="mx-auto mb-4 w-14 h-14 text-slate-200"><path fillRule="evenodd" d="M24 4.309a9.83 9.83 0 0 1-2.828.775 4.94 4.94 0 0 0 2.165-2.724 9.865 9.865 0 0 1-3.127 1.196 4.925 4.925 0 0 0-8.39 4.49A13.974 13.974 0 0 1 1.671 2.9a4.902 4.902 0 0 0-.667 2.476c0 1.708.869 3.216 2.191 4.099A4.936 4.936 0 0 1 .964 8.86v.06a4.926 4.926 0 0 0 3.95 4.829 4.964 4.964 0 0 1-2.224.085 4.93 4.93 0 0 0 4.6 3.42 9.886 9.886 0 0 1-6.115 2.107c-.398 0-.79-.023-1.175-.068a13.945 13.945 0 0 0 7.548 2.212c9.057 0 14.009-7.503 14.009-14.01 0-.213-.005-.425-.014-.636A10.012 10.012 0 0 0 24 4.309"></path></svg>
+											You don't have any tweets from <span className="font-semibold">Insperr</span>, try to generate some and turn on <span className="font-semibold">Auto-Post</span> to see your realtime custom tweets.
+										</div>}
+									</div>}
                             </div>
                         </div>
                     </div>

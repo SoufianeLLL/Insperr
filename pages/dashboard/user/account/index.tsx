@@ -1,6 +1,7 @@
 import useSWR from 'swr'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { Tooltip } from "flowbite-react"
 import { useEffect, useState } from "react"
 import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
 import { checkEmailValidation, checkPasswordValidation, checkUsernameValidation } from "@/lib/validation"
@@ -275,7 +276,9 @@ const UserAccount = ({ q_screen, q_errors }) => {
 														:
 														<div className="flex items-center gap-1 text-primary-500">
 															<svg className="w-6 h-6" height="25" width="25" fill="currentColor" clipRule="evenodd" fillRule="evenodd" strokeLinejoin="round" strokeMiterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m11.998 2.005c5.517 0 9.997 4.48 9.997 9.997 0 5.518-4.48 9.998-9.997 9.998-5.518 0-9.998-4.48-9.998-9.998 0-5.517 4.48-9.997 9.998-9.997zm-5.049 10.386 3.851 3.43c.142.128.321.19.499.19.202 0 .405-.081.552-.242l5.953-6.509c.131-.143.196-.323.196-.502 0-.41-.331-.747-.748-.747-.204 0-.405.082-.554.243l-5.453 5.962-3.298-2.938c-.144-.127-.321-.19-.499-.19-.415 0-.748.335-.748.746 0 .205.084.409.249.557z" fillRule="nonzero"/></svg>
-															<span className="text-base">Connected</span>
+															<Tooltip content="Twitter account" placement="bottom">
+																<span className="text-base">Connected</span>
+															</Tooltip>
 														</div>
 													: <div className="flex items-center gap-2 border-2 border-primary-500 text-primary-500 text-sm uppercase rounded-full py-2 px-4">
 														Pro feature <Link href="/pricing" className="hover:text-primary-700"><svg className="w-5 h-5" height="25" width="25" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></Link></div>}
@@ -310,7 +313,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 								<>
 									<Btn 
 										title="Username" 
-										description={`@${user?.user_metadata?.username}`}
+										description={`@${user?.user_metadata?.user_name}`}
 										onClick={() => handleScreenChange({ name: 'change-username', title: 'Change your username' })} />
 									<Btn 
 										title="Email" 
@@ -336,7 +339,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 												target: e?.target?.value
 											}
 										})} type="text" id="username" name="username" className="peer block w-full appearance-none border border-slate-300 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" 
-											placeholder=" " defaultValue={user?.user_metadata?.username} />
+											placeholder=" " defaultValue={user?.user_metadata?.user_name} />
 										<label htmlFor="username" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
 											Username</label>
 									</div>

@@ -11,7 +11,7 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
     if (result_id) {
         const { data: result, error } = await supabaseServerClient
             .from('quotes')
-            .select()
+            .select('*, quotes_satisfaction(satisfaction)')
             .eq('result_id', result_id)
             .eq('user_id', user?.id)
             .single()

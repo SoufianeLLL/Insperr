@@ -19,7 +19,7 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 			}
 		}
 		else {
-			return res.status(401).end('Unauthorized')
+			return res.status(200).end()
 		}
 
 		return res.status(200).json(null)

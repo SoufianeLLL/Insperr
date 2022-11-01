@@ -54,22 +54,23 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 							{user ? 
 								<UserNav user={{
 									id: user?.id,
-									fullname: user?.user_metadata?.fullname,
+									fullname: user?.user_metadata?.full_name,
 									email: user?.email,
 									avatar: user?.user_metadata?.avatar_url
 								}} isAuthPage={true} />
 							:
 							<>
-								<Link href="/access?op=signin" className="transition duration-200 hover:text-slate-400">
-									Login</Link>
-								<Link href="/access?op=signup" className="transition duration-200 hover:text-primary-500">
+								<Link href="/access?op=signin" className="transition duration-200 hover:text-slate-400 flex items-center gap-3">
+									<svg className="w-5 h-5 text-primary-500" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" fillRule="evenodd" d="M24 4.309a9.83 9.83 0 0 1-2.828.775 4.94 4.94 0 0 0 2.165-2.724 9.865 9.865 0 0 1-3.127 1.196 4.925 4.925 0 0 0-8.39 4.49A13.974 13.974 0 0 1 1.671 2.9a4.902 4.902 0 0 0-.667 2.476c0 1.708.869 3.216 2.191 4.099A4.936 4.936 0 0 1 .964 8.86v.06a4.926 4.926 0 0 0 3.95 4.829 4.964 4.964 0 0 1-2.224.085 4.93 4.93 0 0 0 4.6 3.42 9.886 9.886 0 0 1-6.115 2.107c-.398 0-.79-.023-1.175-.068a13.945 13.945 0 0 0 7.548 2.212c9.057 0 14.009-7.503 14.009-14.01 0-.213-.005-.425-.014-.636A10.012 10.012 0 0 0 24 4.309"></path></svg>
+									Signin with Twitter</Link>
+								{/* <Link href="/access?op=signup" className="transition duration-200 hover:text-primary-500">
 									<div className="flex items-center gap-2 ">
 										<div className="bg-primary-400 rounded-full w-8 h-8 flex items-center justify-center text-white">
 											<svg fill="currentColor" className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/></svg>
 										</div> 
 										Create an account
 									</div>
-								</Link>
+								</Link> */}
 							</>}
 						</div>
 					</header>

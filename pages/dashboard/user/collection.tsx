@@ -15,29 +15,27 @@ const CollectionsPage = () => {
 
 	const { ref, inView } = useInView()
 
+	const [Callback, setCallback] = useState({ status: null, text: null })
+	let { isValidating: isCheckingSubscription, data: isSubscribed } = useSWR(`/api/user?action=checkUserSubscription`)
+
 	useEffect(() => {
 		if (inView && hasNextPage) {
 			fetchNextPage()
 		}
 	}, [inView])
 
-
 	const { isLoading, data: Pagination, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery(
 		'quotes',
 		async ({ pageParam = 0 }) => {
 				await new Promise((res) => setTimeout(res, 1000))
-				const res = await fetch(`/api/quote/auth?number=${20}&action=getPublicQuotes&page=${pageParam}`)
+				const res = await fetch(`/api/quote/auth?number=${8}&action=getPublicQuotes&page=${pageParam}`)
 				const data = await res?.json()
 		        return data
 		},
 		{
-			getNextPageParam: (lastPage) => lastPage?.count ? lastPage?.page : false
+			getNextPageParam: (lastPage) => isSubscribed && lastPage?.count ? lastPage?.page : false
 		}
     )
-
-
-	const [Callback, setCallback] = useState({ status: null, text: null })
-	let { isValidating: isCheckingSubscription, data: isSubscribed } = useSWR(`/api/user?action=checkUserSubscription`)
 
 	return <>
 		{(Callback?.status && Callback?.text) && 

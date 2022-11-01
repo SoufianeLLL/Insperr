@@ -59,7 +59,7 @@ const UserSidebar = ({ user, router }) => {
                         </Link>
 					</li>
 					<li className="-mt-2">
-						<Link href={`/user/@${user?.user_metadata?.username}`} className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === `user/${user?.user_metadata?.username}` ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
+						<Link href={`/user/@${user?.user_metadata?.user_name}`} className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === `user/${user?.user_metadata?.user_name}` ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
                             <div className="pl-4 pr-6 py-3 inline-block rounded-full w-auto">
 								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeWidth="2" d="M20 15c-1 1 1.25 3.75 0 5s-4-1-5 0-1.5 3-3 3-2-2-3-3-3.75 1.25-5 0 1-4 0-5-3-1.5-3-3 2-2 3-3-1.25-3.75 0-5 4 1 5 0 1.5-3 3-3 2 2 3 3 3.75-1.25 5 0-1 4 0 5 3 1.5 3 3-2 2-3 3zM7 12l3 3 7-7"></path></svg>
 								<span className="hidden md:block float-left ml-4">Profile</span>
@@ -100,7 +100,7 @@ const UserSidebar = ({ user, router }) => {
 						<Link href="/dashboard/user/account" className="hover:bg-slate-50 transition-all py-3 px-5 w-full inline-block">
 							Account Settings</Link>
 						<button onClick={() => onSignOut()} className="ring-0 hover:bg-slate-50 transition-all py-3 px-5 w-full inline-block border-t border-slate-100 text-left">
-							Log Out @{user?.user_metadata?.username}</button>
+							Log Out @{user?.user_metadata?.user_name}</button>
 					</div>
 				</>}
 				<button onClick={() => setToggleUserMenu(true)} className="p-2 md:px-4 md:py-3 w-full flex gap-x-2 items-center hover:bg-slate-200 rounded-full text-sm text-black text-left">
@@ -124,8 +124,8 @@ const UserSidebar = ({ user, router }) => {
 						width={40} />
 					}
 					<div className="hidden md:block">
-						<div className="font-semibold">{user?.user_metadata?.fullname}</div>
-						<div className="text-slate-600">@{user?.user_metadata?.username}</div>
+						<div className="font-semibold">{user?.user_metadata?.full_name}</div>
+						<div className="text-slate-600">@{user?.user_metadata?.user_name}</div>
 					</div>
 				</button>
 			</div>

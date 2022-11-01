@@ -59,7 +59,6 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 									user_id: user?.id,
 									type: 'custom',
 									topics: category,
-									tweeted: false,
 									keyword: phrase
 								})
 								.select('result_id')

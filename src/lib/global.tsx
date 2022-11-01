@@ -1,4 +1,7 @@
 import Link from "next/link"
+import requestIp from 'request-ip'
+
+const fetcher = (url) => fetch(url).then((res) => res.json())
 
 const searchForAuthors = async (e, authors) => {
     let fetchedAuthors = []
@@ -24,9 +27,13 @@ const searchForAuthors = async (e, authors) => {
     }
 }
 
-const fetcher = (url) => fetch(url).then((res) => res.json())
+const getIPAddressHash = (request) => {
+    const ip = requestIp.getClientIp(request)
+    return ip
+}
 
 export {
     fetcher,
+    getIPAddressHash,
     searchForAuthors
 }
