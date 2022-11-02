@@ -14,7 +14,7 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 					if (user?.id) {
 						const { data: _saves, error } = await supabaseServerClient
 							.from('saves')
-							.select('quotes(id, content, type, topics), users(fullname, username)')
+							.select('quotes(id, content, type, topics), users(fullname, username, avatar, is_verified)')
 							.eq('user_id', user?.id)
 						
 						const saves = _saves ? _saves?.map((quote) => {
@@ -24,7 +24,9 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 								topics: quote?.quotes['topics'],
 								content: quote?.quotes['content'],
 								fullname: quote?.users['fullname'],
-								username: quote?.users['username']
+								username: quote?.users['username'],
+								is_verified: quote?.users['is_verified'],
+								avatar: quote?.users['avatar']
 							}
 						}) : null
 

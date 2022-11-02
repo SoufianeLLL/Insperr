@@ -69,10 +69,10 @@ export const twitterUserClientForUserId = async (userId: string): Promise<Twitte
 }
 
 
-
 export const appropriateTwitterUserClient = withApiAuth(async (req: NextApiRequest, res: NextApiResponse, supabaseServerClient): Promise<TwitterApi | null> => {
 	const { data: { user } } = await supabaseServerClient.auth.getUser()
 	return user
 		? await twitterUserClientForUserId(user.id)
 		: await twitterUserClientByToken(req, res)
 })
+

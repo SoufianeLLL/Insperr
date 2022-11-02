@@ -65,11 +65,11 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 			
 			// Get user's twitter data
 			else if (action === 'getTwitterData') {
-				const { count: lastTweets } = await supabaseServerClient
+				const { data: lastTweets } = await supabaseServerClient
 					.from('quotes')
-					.select('content, twitter_metadata')
+					.select('content, place, keyword, result_id, tweet_metadata')
 					.eq('user_id', user?.id)
-					.eq('tweet_metadata.status', 'published')
+					.eq('tweet_metadata->>status', 'publish')
 					.limit(5)
 
 				const { data: _isTwitterLinked } = await supabaseServerClient
@@ -90,11 +90,11 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 					.select('*', { count: 'exact', head: true })
 					.eq('user_id', user?.id)
 
-				const { count: tweetedQuotes } = await supabaseServerClient
+				const { count: tweetedQuotes, error } = await supabaseServerClient
 					.from('quotes')
-					.select('*', { count: 'exact', head: true })
+					.select('tweet_metadata', { count: 'exact', head: true })
 					.eq('user_id', user?.id)
-					.eq('tweet_metadata.status', 'published')
+					.eq('tweet_metadata->>status', 'publish')
 
 				const { data: subscription } = await supabaseServerClient
 					.from('subscriptions')

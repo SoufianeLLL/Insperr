@@ -32,7 +32,7 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 				// get lastest quotes from Supabase
 				const { data: latestQuotes, count: l_count } = await supabaseServerClient
 					.from('quotes')
-					.select('*, users(fullname, username, avatar)', { count: 'exact' })
+					.select('*, users(fullname, username, avatar, is_verified)', { count: 'exact' })
 					.eq('user_id', user?.id)
 					.order('id', { ascending: false })
 					.range(from, to)

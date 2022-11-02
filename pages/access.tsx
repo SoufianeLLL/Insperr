@@ -28,7 +28,7 @@ const UserAccess = ({ op, redirect }) => {
 		await supabaseClient.auth.signInWithOAuth({
 			provider: provider,
 			options: {
-				redirectTo: redirect ?? `${process.env.NEXT_PRUBLIC_URL_HOME}/dashboard`
+				redirectTo: redirect ?? `${process.env.NEXT_PUBLIC_URL_HOME}/dashboard`
 			}
 		})
 	}

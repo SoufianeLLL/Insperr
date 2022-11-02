@@ -53,15 +53,17 @@ const UserProfile = ({ username }) => {
 					{isLoading ? <div className="w-full columns-1 md:columns-2 lg:columns-3 gap-6"><Skeleton /></div> :
                     Pagination && Pagination?.pages && Pagination?.pages?.length > 0 ? <>
 						<div className="w-full columns-1 md:columns-2 lg:columns-3 gap-6">
-							{Pagination?.pages?.map((page, i) => {
+							{Pagination?.pages?.map((page) => {
 								return page?.quotes?.map((quote, i) => {
 									return <QuoteContainer  key={i} id={i} quote={{
 										id: quote?.id,
 										fullname: quote?.users?.fullname,
 										username: quote?.users?.username,
+										is_verified: quote?.users?.is_verified,
 										avatar: quote?.users?.avatar,
 										content: quote?.content,
-										topics: quote?.topics,
+										status: quote?.tweet_metadata?.status,
+										tweet_id: quote?.tweet_metadata?.tweet_id,
 									}} callback={(e) => setCallback(e)} />
 								})
 							})}

@@ -18,7 +18,7 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 			if (stripe_customer_id) {
 				session = await stripe.billingPortal.sessions.create({
 					customer: stripe_customer_id?.toString(),
-					return_url: `${process.env.NEXT_PRUBLIC_URL_HOME}/dashboard/user/account`
+					return_url: `${process.env.NEXT_PUBLIC_URL_HOME}/dashboard/user/account`
 				})
 			}
 

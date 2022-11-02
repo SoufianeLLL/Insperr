@@ -51,8 +51,8 @@ const Quote = ({ quote }) => {
 					<Tooltip content="Add to Bookmarks">
 						<span><svg className="cursor-pointer w-5 h-5 text-slate-400 hover:text-primary-500" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M5 1v21l7-5 7 5V1z"></path></svg></span>
 					</Tooltip>
-					<Tooltip content="Share on Twitter">
-						<span><svg className="cursor-pointer w-5 h-5 text-slate-400 hover:text-primary-500" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M18 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm12 7a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-2-4-8-5m8-7-8 5"></path></svg></span>
+					<Tooltip content="Retweet">
+						<div><svg className="cursor-pointer w-6 h-6 text-slate-400 hover:text-primary-500" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M5 10v7h10.797l1.594 2h-14.391v-9h-3l4-5 4 5h-3zm14 4v-7h-10.797l-1.594-2h14.391v9h3l-4 5-4-5h3z"/></svg></div>
 					</Tooltip>
 				</div>
 			</div>

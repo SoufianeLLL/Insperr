@@ -170,8 +170,18 @@ export const handleTwitterLogout = async (req: NextApiRequest, res: NextApiRespo
 		.from('tokens')
 		.delete()
 		.eq('id', tokenId)
-		.limit(1)
-		.maybeSingle()
+		.not('access_token', 'is', null)
+		.not('access_secret', 'is', null)
+
+	if (!error) {
+		await supabaseServerClient
+			.from('users')
+			.update({
+				metadata: {
+					auto_post: false
+				}
+			})
+	}
 	
 	if (error) console.error(`Error while deleting token with id '${tokenId}' on logout`, error)
 	cookies.set('token_id', null)

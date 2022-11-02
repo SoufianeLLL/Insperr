@@ -26,8 +26,8 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 						price: priceId,
 						quantity: 1
 					}],
-					success_url: `${process.env.NEXT_PRUBLIC_URL_HOME}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-					cancel_url: `${process.env.NEXT_PRUBLIC_URL_HOME}/payment/cancel?session_id={CHECKOUT_SESSION_ID}`,
+					success_url: `${process.env.NEXT_PUBLIC_URL_HOME}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+					cancel_url: `${process.env.NEXT_PUBLIC_URL_HOME}/payment/cancel?session_id={CHECKOUT_SESSION_ID}`,
 				})
 			}
 

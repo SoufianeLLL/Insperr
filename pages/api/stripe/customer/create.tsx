@@ -1,8 +1,9 @@
 import { v4 as uuidv4 } from 'uuid'
 import stripe from "@/utils/stripejs"
+import supabaseAdmin from '@/utils/supabase-admin'
 
 
-export default async function handler(req, res, supabaseServerClient) {
+export default async function handler(req, res) {
 	if (req.query.API_SECRET_KEY !== process.env.API_SECRET_KEY) {
 		return res.status(401).send("You are not authorized to call this API");
 	}
@@ -11,7 +12,7 @@ export default async function handler(req, res, supabaseServerClient) {
 		email: req.body.record.email,
 	})
 
-	await supabaseServerClient
+	await supabaseAdmin
 		.from('users')
 		.update({
 			stripe_customer_id: customer.id,

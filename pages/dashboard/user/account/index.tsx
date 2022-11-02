@@ -21,10 +21,12 @@ const UserAccount = ({ q_screen, q_errors }) => {
 	const { mutate: signOut } = useSignOutMutation()
 
 	let { isValidating: isCheckingSubscription, data: isSubscribed } = useSWR(`/api/user?action=checkUserSubscription`)
-	// const accountLinked = user && user?.app_metadata?.providers?.includes('twitter') ? 'authenticated' : 'unauthenticated' // Check if Twitter account is linked
+	let { isValidating: isCheckingTwitterAccount, data: isTwitterAccountLinked } = useSWR(`/api/user?action=checkTwitterLinking`)
 	const { isValidating: isCheckingAutoPost, data: checkAutoPost } = useSWR(`/api/user?id=${user?.id}&action=checkAutoPost`)
 
 	const [error, setError] = useState(null)
+	const [connect, setConnect] = useState(false)
+	const [disconnect, setDisconnect] = useState(false)
 	const [loadingPortal, setLoadingPortal] = useState(false)
 	const [automation, setAutomation] = useState({ autoPostActive: false })
 	const [action, setAction] = useState({ name: null, params: null, isLoading: false, password: null })
@@ -40,6 +42,44 @@ const UserAccount = ({ q_screen, q_errors }) => {
 			document.body.classList.add("bg-slate-100")
 		}
 	}, [])
+
+	const connectTwitterAccount = async () => {
+		setConnect(true)
+		try {
+			const result = await fetch(`${process.env.NEXT_PUBLIC_URL_HOME}/api/auth/twitter/login`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					redirect: `${process.env.NEXT_PUBLIC_URL_HOME}/dashboard/user/account`
+				})
+			})
+			const res = await result?.json()
+			if (res) {
+				router?.push(res?.url)
+			}
+		}
+		catch (e) {
+			setConnect(false)
+			console.error(e)
+		}
+	}
+
+	const disconnectTwitterAccount = async () => {
+		setDisconnect(true)
+		try {
+			const result = await fetch(`${process.env.NEXT_PUBLIC_URL_HOME}/api/auth/twitter/logout`)
+			const res = await result?.json()
+			if (!res) {
+				router?.push(`${process.env.NEXT_PUBLIC_URL_HOME}/dashboard`)
+			}
+		}
+		catch (e) {
+			setDisconnect(false)
+			console.error(e)
+		}
+	}
 
 	const handleScreenChange = ({ name, title }) => {
 		setError(null)
@@ -64,48 +104,50 @@ const UserAccount = ({ q_screen, q_errors }) => {
 
 	const newRequest = async () => {
 		if (!error && screen?.name && screen?.name === 'automation') {
-			const val = !automation?.autoPostActive
-			setAutomation({ autoPostActive: val })
-			// Change user's Auto-Post value from Database
-			const { data: res } = await supabaseClient
-				.from('users')
-				.select('metadata')
-				.eq('id', user?.id)
-				.single()
-
-			if (res?.metadata) {
-				const { error } = await supabaseClient
+			if (isTwitterAccountLinked) {
+				const val = !automation?.autoPostActive
+				setAutomation({ autoPostActive: val })
+				// Change user's Auto-Post value from Database
+				const { data: res } = await supabaseClient
 					.from('users')
-					.update({ metadata: { ...res?.metadata, auto_post: val } })
+					.select('metadata')
 					.eq('id', user?.id)
-				
-				if (error) {
+					.single()
+	
+				if (res?.metadata) {
+					const { error } = await supabaseClient
+						.from('users')
+						.update({ metadata: { ...res?.metadata, auto_post: val } })
+						.eq('id', user?.id)
+					
+					if (error) {
+						setAutomation({ autoPostActive: val })
+					}
+				}
+				else {
 					setAutomation({ autoPostActive: val })
 				}
 			}
-			else {
-				setAutomation({ autoPostActive: val })
-			}
 		}
-		else if (!error && action?.name && action?.password) {
+		else if (!error && action?.name) {
 			let _continue = true
 			setAction({ ...action, isLoading: true })
 			// check first the current password
-			try {
-				const { error } = await supabaseClient.auth.signInWithPassword({
-					email: user?.email,
-					password: action?.password,
-				})
-				if (error) {
-					_continue = false
-					setAction({ name: null, params: null, isLoading: false, password: null })
-					setCallback({ status: 'error', text: 'Your current password is invalid, please try again.' })
-				}
-			}
-			catch (e) {
-				setAction({ name: null, params: null, isLoading: false, password: null })
-				setCallback({ status: 'error', text: e })
-			}
+			// try {
+			// 	const { error } = await supabaseClient.auth.signInWithPassword({
+			// 		email: user?.email,
+			// 		password: action?.password,
+			// 	})
+			// 	if (error) {
+			// 		_continue = false
+			// 		setAction({ name: null, params: null, isLoading: false, password: null })
+			// 		setCallback({ status: 'error', text: 'Your current password is invalid, please try again.' })
+			// 	}
+			// }
+			// catch (e) {
+			// 	setAction({ name: null, params: null, isLoading: false, password: null })
+			// 	setCallback({ status: 'error', text: e })
+			// }
 
 			if (_continue) {
 				if (action?.name === 'changeUsername') {
@@ -226,13 +268,13 @@ const UserAccount = ({ q_screen, q_errors }) => {
 								icon={
 									<div><svg className="text-slate-500 w-6 h-6" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m12 19-2 3-3-1-.5-3.5L3 17l-1-3 3-2-3-2 1-3 3.5-.5L7 3l3-1 2 3 2-3 3 1 .5 3.5L21 7l1 3-3 2 3 2-1 3-3.5.5L17 21l-3 1-2-3zm0-3a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path></svg></div>
 								} />
-							<Btn 
+							{/* <Btn 
 								title="Change your password" 
 								description="Change your password at any time."
 								onClick={() => handleScreenChange({ name: 'change-password', title: 'Change your password' })}
 								icon={
 									<div><svg className="text-slate-500 w-6 h-6" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M10 13v3h3v3h3v2l2 2h5v-4L12.74 8.74C12.91 8.19 13 7.6 13 7c0-3.31-2.69-6-6-6S1 3.69 1 7a6.005 6.005 0 0 0 8.47 5.47L10 13zM6 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"></path></svg></div>
-								} />
+								} /> */}
 							<Btn 
 								title="Payments and subscription" 
 								description="See your payments and cancel or change your subscription."
@@ -269,17 +311,24 @@ const UserAccount = ({ q_screen, q_errors }) => {
 														With Insperr AutoTweet, you can easily auto-post to Twitter via our software, 
 														by creating new Quotes and streaming your last tweets on the dashboard in real-time.
 													</div>
+													{isCheckingTwitterAccount ? <div className="mt-4"><Loading text="" scpace='0' borderWidth={2} width={25} height={25} /></div> 
+														: isTwitterAccountLinked ? (disconnect ? <div className="mt-4"><Loading text="" scpace='0' borderWidth={2} width={25} height={25} /></div> 
+															: <div onClick={() => disconnectTwitterAccount()} className="mt-4 text-sm cursor-pointer text-red-500 inline-block py-1 px-4 bg-red-50 hover:bg-red-100 rounded-full">
+																Disconnect your Twitter account</div>) : null}
 												</div>
 												<div className="flex-none pr-0 md:pr-14 md:mt-0 mt-4">
-													{isSubscribed ? isLoading ? 
+													{isSubscribed ? (isLoading || isCheckingTwitterAccount || connect) ? 
 														<div className="w-full my-4"><Loading text="" scpace='0' borderWidth={2} width={25} height={25} /></div>
 														:
-														<div className="flex items-center gap-1 text-primary-500">
-															<svg className="w-6 h-6" height="25" width="25" fill="currentColor" clipRule="evenodd" fillRule="evenodd" strokeLinejoin="round" strokeMiterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m11.998 2.005c5.517 0 9.997 4.48 9.997 9.997 0 5.518-4.48 9.998-9.997 9.998-5.518 0-9.998-4.48-9.998-9.998 0-5.517 4.48-9.997 9.998-9.997zm-5.049 10.386 3.851 3.43c.142.128.321.19.499.19.202 0 .405-.081.552-.242l5.953-6.509c.131-.143.196-.323.196-.502 0-.41-.331-.747-.748-.747-.204 0-.405.082-.554.243l-5.453 5.962-3.298-2.938c-.144-.127-.321-.19-.499-.19-.415 0-.748.335-.748.746 0 .205.084.409.249.557z" fillRule="nonzero"/></svg>
-															<Tooltip content="Twitter account" placement="bottom">
-																<span className="text-base">Connected</span>
-															</Tooltip>
-														</div>
+														isTwitterAccountLinked ? 
+															<div className="flex items-center gap-1 text-primary-500">
+																<svg className="w-6 h-6" height="25" width="25" fill="currentColor" clipRule="evenodd" fillRule="evenodd" strokeLinejoin="round" strokeMiterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m11.998 2.005c5.517 0 9.997 4.48 9.997 9.997 0 5.518-4.48 9.998-9.997 9.998-5.518 0-9.998-4.48-9.998-9.998 0-5.517 4.48-9.997 9.998-9.997zm-5.049 10.386 3.851 3.43c.142.128.321.19.499.19.202 0 .405-.081.552-.242l5.953-6.509c.131-.143.196-.323.196-.502 0-.41-.331-.747-.748-.747-.204 0-.405.082-.554.243l-5.453 5.962-3.298-2.938c-.144-.127-.321-.19-.499-.19-.415 0-.748.335-.748.746 0 .205.084.409.249.557z" fillRule="nonzero"/></svg>
+																<Tooltip content="Twitter account" placement="bottom">
+																	<span className="text-base">Connected</span>
+																</Tooltip>
+															</div>
+														:
+															<div className="rounded-full cursor-pointer" onClick={() => connectTwitterAccount()}><BlueButton text="Connect" isLink={false} /></div>
 													: <div className="flex items-center gap-2 border-2 border-primary-500 text-primary-500 text-sm uppercase rounded-full py-2 px-4">
 														Pro feature <Link href="/pricing" className="hover:text-primary-700"><svg className="w-5 h-5" height="25" width="25" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></Link></div>}
 												</div>
@@ -298,8 +347,8 @@ const UserAccount = ({ q_screen, q_errors }) => {
 													{isSubscribed ? isCheckingAutoPost ? 
 														<div className="w-full my-4"><Loading text="" scpace='0' borderWidth={2} width={25} height={25} /></div>
 														:
-														<div onClick={() => newRequest()} className={`${automation?.autoPostActive ? 'bg-primary-500' : 'bg-slate-300'} w-14 h-8 cursor-pointer rounded-full relative`}>
-															<span className={`${automation?.autoPostActive ? 'translate-x-6' : 'translate-x-0'} transform left-1 bg-white absolute transition duration-200 top-1 h-6 w-6 rounded-full`}></span>
+														<div onClick={() => newRequest()} className={`${automation?.autoPostActive && isTwitterAccountLinked ? 'bg-primary-500' : 'bg-slate-300'} w-14 h-8 cursor-pointer rounded-full relative`}>
+															<span className={`${automation?.autoPostActive && isTwitterAccountLinked ? 'translate-x-6' : 'translate-x-0'} transform left-1 bg-white absolute transition duration-200 top-1 h-6 w-6 rounded-full`}></span>
 														</div>
 													: <div className="flex items-center gap-2 border-2 border-primary-500 text-primary-500 text-sm uppercase rounded-full py-2 px-4">
 														Pro feature <Link href="/pricing" className="hover:text-primary-700"><svg className="w-5 h-5" height="25" width="25" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></Link></div>}
@@ -327,11 +376,11 @@ const UserAccount = ({ q_screen, q_errors }) => {
 							: 
 							screen?.name === 'change-username' ? 
 								<>
-									<div className="relative z-0">
+									{/* <div className="relative z-0">
 										<input onChange={(e) => setAction({ ...action, password: e?.target?.value })} type="password" id="current_password" name="current_password" className="peer block w-full appearance-none border border-slate-300 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" placeholder=" " />
 										<label htmlFor="current_password" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
 											Current Password</label>
-									</div>
+									</div> */}
 									<div className="mt-4 relative z-0">
 										<input onChange={(e) => handleChange({
 											name: 'changeUsername',
@@ -348,18 +397,18 @@ const UserAccount = ({ q_screen, q_errors }) => {
 										<span className="font-semibold">NB:</span> You'll be logged out to set your new username, so make sure you log in again with your new credentials.
 									</div>
 									<div className="flex w-full mt-4 justify-end">
-										<div onClick={() => newRequest()} className={`${error || !action?.password ? 'opacity-40' : 'opacity-100'} rounded-full overflow-hidden cursor-pointer`}>
+										<div onClick={() => newRequest()} className={`${error ? 'opacity-40' : 'opacity-100'} rounded-full overflow-hidden cursor-pointer`}>
 												<BlueButton isLink={false} text="Save" /></div>
 									</div>
 								</>
 							:
 							screen?.name === 'change-email' ? 
 								<>
-									<div className="relative z-0">
+									{/* <div className="relative z-0">
 										<input onChange={(e) => setAction({ ...action, password: e?.target?.value })} type="password" id="current_password" name="current_password" className="peer block w-full appearance-none border border-slate-300 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" placeholder=" " />
 										<label htmlFor="current_password" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
 											Current Password</label>
-									</div>
+									</div> */}
 									<div className="mt-4 relative z-0">
 										<input onChange={(e) => handleChange({
 											name: 'changeEmail',
@@ -376,12 +425,12 @@ const UserAccount = ({ q_screen, q_errors }) => {
 										<span className="font-semibold">NB:</span> You'll be logged out to set your new username, so make sure you log in again with your new credentials.
 									</div>
 									<div className="flex w-full mt-4 justify-end">
-										<div onClick={() => newRequest()} className={`${error || !action?.password ? 'opacity-40' : 'opacity-100'} rounded-full overflow-hidden cursor-pointer`}>
+										<div onClick={() => newRequest()} className={`${error ? 'opacity-40' : 'opacity-100'} rounded-full overflow-hidden cursor-pointer`}>
 											<BlueButton isLink={false} text="Save" /></div>
 									</div>
 								</>
 							:
-							screen?.name === 'change-password' ? 
+							screen?.name === '!!change-password' &&  
 								<>
 									<div className="relative z-0">
 										<input onChange={(e) => setAction({ ...action, password: e?.target?.value })} type="password" id="current_password" name="current_password" className="peer block w-full appearance-none border border-slate-300 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" placeholder=" " />
@@ -407,8 +456,6 @@ const UserAccount = ({ q_screen, q_errors }) => {
 											<BlueButton isLink={false} text="Save" /></div>
 									</div>
 								</>
-							:
-							''
 							}
 						</div>
 					</>

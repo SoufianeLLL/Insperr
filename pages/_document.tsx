@@ -8,7 +8,7 @@ class MyDocument extends Document {
 			<Html dir="ltr" lang="en">
 				<Head>
 					<meta charSet="UTF-8" />
-					<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://www.google.com" />
+					{/* <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://www.google.com" /> */}
 					<meta name="environment" content="production" />
 					<meta content="IE=edge" httpEquiv="X-UA-Compatible" />
 					<meta content="#ffffff" name="theme-color" />
