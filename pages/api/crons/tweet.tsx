@@ -4,15 +4,15 @@ import { twitterUserClientByToken, twitterUserClientForUserId } from "@/utils/tw
 
 
 export default async function handler(req, res) {
-	// if (req.query.API_SECRET_KEY !== process.env.API_SECRET_KEY) {
-	// 	return res.status(401).send("You are not authorized to call this API");
-	// }
+	if (req.query.API_SECRET_KEY !== process.env.API_SECRET_KEY) {
+		return res.status(401).send("You are not authorized to call this API");
+	}
 
 	try {
 		// Get all subscribed users with valid subscription and with AutoPost ON
 		const { data: users } = await supabaseAdmin
 			.from('subscriptions')
-			.select('user:users(id, metadata)')
+			.select('user:users(*)')
 			.eq('users.metadata->auto_post', true)
 			.eq('is_subscribed', true)
 

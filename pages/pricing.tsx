@@ -149,7 +149,7 @@ const PricingPage = ({ plans, price_id }) => {
 								})}
 							</div>}
 						</div>
-						<div className="mt-8 w-full text-center text-base">All payments are proccessed & secured by <span className="fontSemiBold">Stripe</span></div>
+						<div className="mt-8 w-full text-center text-base">All payments are processed & secured by <span className="fontSemiBold">Stripe</span></div>
 					</div>
 				</div>
 			</div>
