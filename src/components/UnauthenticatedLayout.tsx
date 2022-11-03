@@ -21,7 +21,7 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 		<Head>
 			<title>{title}</title>
 		</Head>
-		<div className="w-full onedomain-app relative">
+		<div className="w-full insperr-app relative">
 			{Settings?.notices && 
 				<div className="p-5 pb-0">
 					<div className="rounded-xl w-full bg-primary-50 text-primary-600 py-3 px-5 text-center text-base" 
@@ -61,16 +61,8 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 							:
 							<>
 								<Link href="/access?op=signin" className="transition duration-200 hover:text-slate-400 flex items-center gap-3">
-									<svg className="w-5 h-5 text-primary-500" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" fillRule="evenodd" d="M24 4.309a9.83 9.83 0 0 1-2.828.775 4.94 4.94 0 0 0 2.165-2.724 9.865 9.865 0 0 1-3.127 1.196 4.925 4.925 0 0 0-8.39 4.49A13.974 13.974 0 0 1 1.671 2.9a4.902 4.902 0 0 0-.667 2.476c0 1.708.869 3.216 2.191 4.099A4.936 4.936 0 0 1 .964 8.86v.06a4.926 4.926 0 0 0 3.95 4.829 4.964 4.964 0 0 1-2.224.085 4.93 4.93 0 0 0 4.6 3.42 9.886 9.886 0 0 1-6.115 2.107c-.398 0-.79-.023-1.175-.068a13.945 13.945 0 0 0 7.548 2.212c9.057 0 14.009-7.503 14.009-14.01 0-.213-.005-.425-.014-.636A10.012 10.012 0 0 0 24 4.309"></path></svg>
-									Signin with Twitter</Link>
-								{/* <Link href="/access?op=signup" className="transition duration-200 hover:text-primary-500">
-									<div className="flex items-center gap-2 ">
-										<div className="bg-primary-400 rounded-full w-8 h-8 flex items-center justify-center text-white">
-											<svg fill="currentColor" className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/></svg>
-										</div> 
-										Create an account
-									</div>
-								</Link> */}
+									<svg className="w-5 h-5 text-primary-500" width="25" height="25" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M9 15v7h13V2H9v7m9 3H0m13-5 5 5-5 5"></path></svg>
+									Signin</Link>
 							</>}
 						</div>
 					</header>
@@ -82,14 +74,43 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 						<div className="w-full mt-4 text-base sm:text-xl text-center px-10 max-w-3xl mx-auto">
 							With just lines of content in your style, Insperr leverages state-of-the-art language model GPT-3 to create human-like Insperr-Quotes in your writing style
 						</div>
-						<div className="w-full py-12 mt-12 flex justify-center">
-							<Quote quote={{
-								content: 'The tech industry is booming and there are many opportunities for those with the right skills!',
-								username: 'insperr',
-								fullname: 'Insperr',
-								tags: ['Tech'],
-								avatar: null
-							}} />
+						<div className="w-full md:overflow-hidden relative">
+							<div className="sm:mt-12 py-8 w-full flex justify-center opacity-100 md:opacity-0">
+								<Quote quote={{
+									content: 'The tech industry is booming and there are many opportunities for those with the right skills!',
+									username: 'insperr',
+									fullname: 'Insperr',
+									tags: ['Tech'],
+									avatar: null
+								}} />
+							</div>
+							<div style={{ zIndex: 1000, transform: 'translateX(-50%)', width: 1400 }} className="mt-12 top-0 hidden gap-x-8 items-start md:flex absolute inset-x-1/2">
+								<div className="opacity-40">
+									<Quote quote={{
+										content: 'If you\'re not using social media for marketing, you\'re missing out on a huge opportunity to reach potential customers.',
+										username: 'insperr',
+										fullname: 'Insperr',
+										tags: ['Social Media', 'Internet'],
+										avatar: null
+									}} />
+								</div>
+								<Quote quote={{
+									content: 'The tech industry is booming and there are many opportunities for those with the right skills!',
+									username: 'insperr',
+									fullname: 'Insperr',
+									tags: ['Tech'],
+									avatar: null
+								}} />
+								<div className="opacity-40">
+									<Quote quote={{
+										content: 'Machine learning is one of the most fascinating and promising fields of technology. It has the potential to change the way ',
+										username: 'insperr',
+										fullname: 'Insperr',
+										tags: ['Tech', 'Machine Learning'],
+										avatar: null
+									}} />
+								</div>
+							</div>
 						</div>
 						<div className="w-full mt-12 text-center">
 							<Link href="/user/g" className="w-auto inline-block text-white cursor-pointer mx-auto transition duration-200 transform scale-100 hover:scale-110 shadow-lg bg-primary-500 hover:bg-primary-700 py-4 px-8 text-2xl rounded-full">
@@ -116,10 +137,12 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 								Terms of service</Link>
 							<Link href="/about" className="hover:text-slate-600 md:float-none float-left mr-4 md-mr-0">
 								About us</Link>
+							<Link href="/roadmap" className="hover:text-slate-600 md:float-none float-left mr-4 md-mr-0">
+								Our Roadmap</Link>
 							<Link href="#" className="hover:text-slate-600 md:float-none float-left mr-4 md-mr-0">
 								<div className="flex items-center gap-2">
 									API 
-									<span className="bg-red-500 text-white px-2 py-1 rounded-md text-xs">soon</span>
+									<span className="bg-red-50 text-red-600 px-2 py-1 rounded-md text-xs">soon</span>
 								</div>
 							</Link>
 						</div>

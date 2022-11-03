@@ -58,7 +58,7 @@ const QuotesGeneratorResults = ({ resultIds }) => {
 					{isLoading ? <div className="w-full text-center my-12">
 						<Loading text="" scpace='0 auto' borderWidth={3} width={50} height={50} /></div> 
 					:
-					Pagination && Pagination?.pages && Pagination?.pages?.length > 0 ? <>
+					Pagination && Pagination?.pages && Pagination?.pages[0]?.quotes?.length > 0 ? <>
 						<div className="w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 lg:gap-8">
 							{Pagination?.pages?.map((page, i) => {
 								return page?.quotes?.map((quote, i) => {
