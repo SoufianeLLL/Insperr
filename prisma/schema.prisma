@@ -4,8 +4,8 @@ generator client {
 
 datasource db {
 	provider = "sqlite"
-	url      = "file:database/ins.db"
-	// url      = env("DATABASE_URL")
+	url      = env("DATABASE_URL")
+	// url      = "file:database/ins.db"
 }
 
 model Author {
