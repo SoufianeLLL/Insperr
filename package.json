@@ -7,11 +7,12 @@
   "scripts": {
     "dev": "next dev -p 8088",
     "export": "next export",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "db": "npx prisma studio"
   },
   "dependencies": {
+    "autoprefixer": "^10.4.8",
     "@prisma/client": "^4.3.1",
     "@stripe/stripe-js": "^1.42.0",
     "@supabase/auth-helpers-nextjs": "0.4.1",
@@ -37,7 +38,6 @@
   },
   "devDependencies": {
     "@types/node": "^18.7.3",
-    "autoprefixer": "^10.4.8",
     "postcss": "^8.4.16",
     "prisma": "^4.3.1",
     "tailwindcss": "^3.1.8",
