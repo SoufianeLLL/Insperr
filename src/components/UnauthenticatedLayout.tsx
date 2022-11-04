@@ -21,10 +21,10 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 		<Head>
 			<title>{title}</title>
 		</Head>
-		<div className="w-full insperr-app relative">
+		<div className="w-full overflow-hidden insperr-app relative">
 			{Settings?.notices && 
-				<div className="p-5 pb-0">
-					<div className="rounded-xl w-full bg-primary-50 text-primary-600 py-3 px-5 text-center text-base" 
+				<div className={`p-0 md:p-5 md:pb-0 ${home ? 'bg-slate-50' : 'bg-white'}`}>
+					<div className="md:rounded-xl w-full bg-primary-50 text-primary-600 py-3 px-5 text-center text-sm md:text-base" 
 						dangerouslySetInnerHTML={{ __html: Settings?.notices }} />
 				</div>}
 			<section className={`relative overflow-hidden w-full text-black pb-14 ${home ? 'bg-slate-50' : 'bg-white'}`}>
@@ -34,18 +34,14 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 						<svg className="absolute transform left-full -translate-y-3/4 -translate-x-1/4 sm:-translate-x-1/2 md:-translate-y-1/2 lg:-translate-x-3/4" width="404" height="784" fill="none" viewBox="0 0 404 784"><defs><pattern id="d2a68204-c383-44b1-b99f-42ccff4e5365" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="4" height="4" className="text-slate-200" fill="currentColor"></rect></pattern></defs><rect width="404" height="784" fill="url(#d2a68204-c383-44b1-b99f-42ccff4e5365)"></rect></svg>
 					</div>
 				</div>
-				<div className="relative w-full py-8 px-10 2xl:px-0 max-w-7xl mx-auto">
+				<div className="relative w-full py-8 px-5 md:px-10 2xl:px-0 max-w-7xl mx-auto">
 					<header className="w-full text-lg flex items-center gap-10">
 						<div className="flex-none flex items-center">
 							<Link href="/" className="inline-block hover:text-slate-400 transition duration-200">
                                 <Logo /></Link>
 						</div>
 						<div className="shrink w-full">
-							<ul className="flex items-center text-base gap-8">
-								<li><Link href="/authors" className="inline-block hover:text-slate-400 transition duration-200">
-									Real Quotes</Link></li>
-								<li><Link href="/topics" className="inline-block hover:text-slate-400 transition duration-200">
-									Topics</Link></li>
+							<ul className="hidden md:block flex items-center text-base gap-8">
 								<li><Link href="/pricing" className="inline-block hover:text-slate-400 transition duration-200">
 									Our Pricing</Link></li>
 							</ul>
@@ -68,10 +64,10 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 					</header>
 					{home &&
 					<div className="w-full">
-						<h1 className="text-4xl md:text-5xl lg:text-6xl leading-tight normal-case fontBold w-full mt-8 md:mt-20 text-center mx-auto max-w-3xl md:px-10 px-5">
+						<h1 className="text-3xl md:text-5xl lg:text-6xl leading-tight normal-case fontBold w-full mt-8 md:mt-20 text-center mx-auto max-w-3xl md:px-10 px-0">
 							Intelligent GPT-3 <span className="fontUltra text-primary-400">Quotes</span> generator
 						</h1>
-						<div className="w-full mt-4 text-base sm:text-xl text-center px-10 max-w-3xl mx-auto">
+						<div className="w-full mt-4 text-base sm:text-xl text-center px-0 md:px-10 max-w-3xl mx-auto">
 							With just lines of content in your style, Insperr leverages state-of-the-art language model GPT-3 to create human-like Insperr-Quotes in your writing style
 						</div>
 						<div className="w-full md:overflow-hidden relative">
@@ -113,7 +109,7 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 							</div>
 						</div>
 						<div className="w-full mt-12 text-center">
-							<Link href="/user/g" className="w-auto inline-block text-white cursor-pointer mx-auto transition duration-200 transform scale-100 hover:scale-110 shadow-lg bg-primary-500 hover:bg-primary-700 py-4 px-8 text-2xl rounded-full">
+							<Link href="/user/g" className="w-auto inline-block text-white cursor-pointer mx-auto transition duration-200 transform scale-100 hover:scale-110 shadow-lg bg-primary-500 hover:bg-primary-700 py-4 px-8 text-base md:text-2xl rounded-full">
 								Generate Custom Quotes</Link>
 						</div>
 					</div>}

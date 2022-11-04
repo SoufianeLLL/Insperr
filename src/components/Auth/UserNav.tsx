@@ -16,8 +16,8 @@ const UserNav = ({ user, isAuthPage=false }) => {
 	
 	return (
         <div className="flex items-center gap-5 user-nav">
-			<Link href="/dashboard/user/account" className="flex items-center gap-2">
-                <div className="relative bg-slate-100 w-7 h-7 rounded-full flex items-center justify-center">
+			<Link href="/dashboard/user/account" className="hidden sm:flex items-center gap-2">
+                <div className="flex relative bg-slate-100 w-7 h-7 rounded-full items-center justify-center">
 					{user?.avatar ? 
 						<Image 
 							alt="avatar"
@@ -40,7 +40,7 @@ const UserNav = ({ user, isAuthPage=false }) => {
 				</div>
                 {user?.fullname ?? user?.email}</Link>
 			{!isAuthPage ? <Link href="/pricing">Pricing</Link> : <Link href="/dashboard">Dashboard</Link>}
-			<div onClick={() => onSignOut()} className="cursor-pointer">Sign Out</div>
+			<div onClick={() => onSignOut()} className="hidden sm:block cursor-pointer">Sign Out</div>
 		</div>
     );
 }

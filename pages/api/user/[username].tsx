@@ -1,8 +1,7 @@
 import supabaseAdmin from '@/utils/supabase-admin'
-import { withApiAuth } from '@supabase/auth-helpers-nextjs'
 
 
-export default withApiAuth(async function handler(req, res) {
+export default async function handler(req, res) {
 	if (req.method === 'GET') {
 
 		const { username } = req?.query
@@ -27,4 +26,4 @@ export default withApiAuth(async function handler(req, res) {
 			message: 'Method Not Allowed'
 		})
 	}
-})
+}

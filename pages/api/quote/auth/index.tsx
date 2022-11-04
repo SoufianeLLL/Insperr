@@ -25,7 +25,7 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 					.order('id', { ascending: false })
 					.range(from, to)
 	
-				result = { quotes: publicQuotes, p_count, page: to }
+				result = { quotes: publicQuotes, count: p_count, page: to }
 				break;
 	
 			case 'getQuotes':
@@ -37,7 +37,7 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 					.order('id', { ascending: false })
 					.range(from, to)
 	
-				result = { quotes: latestQuotes, l_count, page: to }
+				result = { quotes: latestQuotes, count: l_count, page: to }
 				break;
 		}
 	}

@@ -5,11 +5,11 @@ const BlueButton = ({ url=null, isLink=true, text, smallSize=true, fullWidth=tru
         return (
             <Link
             href={url}
-            className={`${smallSize ? 'text-sm py-2 px-4' : 'md:px-6 md:py-4 p-2 text-base'} ${fullWidth ? 'w-full' : ''} inline-block text-center transition-all shadow font-semibold rounded-full ${className}`}>
+            className={`${smallSize ? 'text-sm py-2 px-4' : 'md:px-6 md:py-4 p-3 text-base'} ${fullWidth ? 'w-full' : ''} inline-block text-center transition-all shadow md:font-semibold rounded-full ${className}`}>
                 {text}</Link>
         );
     }
-    return <div className={`${smallSize ? 'text-sm py-2 px-4' : 'md:px-6 md:py-4 p-2 text-base'} ${fullWidth ? 'w-full' : ''} inline-block text-center transition-all shadow font-semibold rounded-full ${className}`}>
+    return <div className={`${smallSize ? 'text-sm py-2 px-4' : 'md:px-6 md:py-4 p-3 text-base'} ${fullWidth ? 'w-full' : ''} inline-block text-center transition-all shadow md:font-semibold rounded-full ${className}`}>
             {text}</div>
 }
 

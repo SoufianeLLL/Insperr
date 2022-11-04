@@ -28,7 +28,7 @@ const UserSidebar = ({ user, router }) => {
 				<ul className="mt-8">
 					<li className="-mt-2">
 						<Link href="/dashboard" className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === 'dashboard' ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
-                            <div className="pl-4 pr-6 py-3 inline-block rounded-full w-auto">
+                            <div className="px-4 md:pl-4 md:pr-6 py-4 md:py-3 inline-block rounded-full w-auto">
 								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path stroke="#000" strokeLinejoin="round" strokeWidth="2" d="M3 6.2c0-1.12 0-1.68.218-2.108a2 2 0 0 1 .874-.874C4.52 3 5.08 3 6.2 3h.6c1.12 0 1.68 0 2.108.218a2 2 0 0 1 .874.874C10 4.52 10 5.08 10 6.2v.6c0 1.12 0 1.68-.218 2.108a2 2 0 0 1-.874.874C8.48 10 7.92 10 6.8 10h-.6c-1.12 0-1.68 0-2.108-.218a2 2 0 0 1-.874-.874C3 8.48 3 7.92 3 6.8v-.6zm11 0c0-1.12 0-1.68.218-2.108a2 2 0 0 1 .874-.874C15.52 3 16.08 3 17.2 3h.6c1.12 0 1.68 0 2.108.218a2 2 0 0 1 .874.874C21 4.52 21 5.08 21 6.2v.6c0 1.12 0 1.68-.218 2.108a2 2 0 0 1-.874.874C19.48 10 18.92 10 17.8 10h-.6c-1.12 0-1.68 0-2.108-.218a2 2 0 0 1-.874-.874C14 8.48 14 7.92 14 6.8v-.6zm-11 11c0-1.12 0-1.68.218-2.108a2 2 0 0 1 .874-.874C4.52 14 5.08 14 6.2 14h.6c1.12 0 1.68 0 2.108.218a2 2 0 0 1 .874.874C10 15.52 10 16.08 10 17.2v.6c0 1.12 0 1.68-.218 2.108a2 2 0 0 1-.874.874C8.48 21 7.92 21 6.8 21h-.6c-1.12 0-1.68 0-2.108-.218a2 2 0 0 1-.874-.874C3 19.48 3 18.92 3 17.8v-.6zm11 0c0-1.12 0-1.68.218-2.108a2 2 0 0 1 .874-.874C15.52 14 16.08 14 17.2 14h.6c1.12 0 1.68 0 2.108.218a2 2 0 0 1 .874.874C21 15.52 21 16.08 21 17.2v.6c0 1.12 0 1.68-.218 2.108a2 2 0 0 1-.874.874C19.48 21 18.92 21 17.8 21h-.6c-1.12 0-1.68 0-2.108-.218a2 2 0 0 1-.874-.874C14 19.48 14 18.92 14 17.8v-.6z"></path></svg>
 								<span className="hidden md:block float-left ml-4">Dashboard</span>
 							</div>
@@ -36,7 +36,7 @@ const UserSidebar = ({ user, router }) => {
 					</li>
 					<li className="-mt-2">
 						<Link href="/dashboard/user/collection" className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === 'dashboard/user/collection' ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
-                            <div className="pl-4 pr-6 py-3 inline-block rounded-full w-auto">
+                            <div className="px-4 md:pl-4 md:pr-6 py-4 md:py-3 inline-block rounded-full w-auto">
 								<svg className="w-6 h-6 float-left" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeWidth="2" d="M5 2h6l2 4h6v4H5V2zm-3 8h20l-3 12H5L2 10z"></path></svg>
 								<span className="hidden md:block float-left ml-4">Collection</span>
 							</div>
@@ -44,7 +44,7 @@ const UserSidebar = ({ user, router }) => {
 					</li>
 					<li className="-mt-2">
 						<Link href="/dashboard/user/bookmarks" className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === 'dashboard/user/bookmarks' ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
-                            <div className="pl-4 pr-6 py-3 inline-block rounded-full w-auto">
+                            <div className="px-4 md:pl-4 md:pr-6 py-4 md:py-3 inline-block rounded-full w-auto">
 								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeWidth="2" d="M5 1v21l7-5 7 5V1z"></path></svg>
 								<span className="hidden md:block float-left ml-4">Bookmarks</span>
 							</div>
@@ -52,7 +52,7 @@ const UserSidebar = ({ user, router }) => {
 					</li>
 					<li className="-mt-2">
 						<Link href={`/dashboard/user/results`} className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === `dashboard/user/results` ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
-                            <div className="pl-4 pr-6 py-3 inline-block rounded-full w-auto">
+                            <div className="px-4 md:pl-4 md:pr-6 py-4 md:py-3 inline-block rounded-full w-auto">
 								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeWidth="2" d="M16 3h5v20H3V3h5m0-2h8v5H8V1z"></path></svg>
 								<span className="hidden md:block float-left ml-4">Results</span>
 							</div>
@@ -60,7 +60,7 @@ const UserSidebar = ({ user, router }) => {
 					</li>
 					<li className="-mt-2">
 						<Link href={`/user/@${user?.user_metadata?.user_name}`} className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === `user/${user?.user_metadata?.user_name}` ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
-                            <div className="pl-4 pr-6 py-3 inline-block rounded-full w-auto">
+                            <div className="px-4 md:pl-4 md:pr-6 py-4 md:py-3 inline-block rounded-full w-auto">
 								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeWidth="2" d="M20 15c-1 1 1.25 3.75 0 5s-4-1-5 0-1.5 3-3 3-2-2-3-3-3.75 1.25-5 0 1-4 0-5-3-1.5-3-3 2-2 3-3-1.25-3.75 0-5 4 1 5 0 1.5-3 3-3 2 2 3 3 3.75-1.25 5 0-1 4 0 5 3 1.5 3 3-2 2-3 3zM7 12l3 3 7-7"></path></svg>
 								<span className="hidden md:block float-left ml-4">Profile</span>
 							</div>
@@ -68,7 +68,7 @@ const UserSidebar = ({ user, router }) => {
 					</li>
 					{/* <li className="-mt-2">
 						<Link href="/docs"><a className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === 'docs' ? 'font-semibold' : ''} inline-block w-full nav-link text-black group`}>
-							<div className="pl-4 pr-6 py-3 inline-block rounded-full w-auto">
+							<div className="px-4 md:pl-4 md:pr-6 py-4 md:py-3 inline-block rounded-full w-auto">
 								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeWidth="2" d="M9 1v7L2 20v3h20v-3L15 8V1m0 17a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-6 2a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm9-7c-7-3-6 4-12 1M6 1h12"></path></svg>
 								<span className="hidden md:block float-left ml-4">Docs</span>
 							</div>
@@ -76,7 +76,7 @@ const UserSidebar = ({ user, router }) => {
 					</li> */}
 					<li className="-mt-2">
 						<div className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === 'dashboard/user/api' ? 'font-semibold' : ''} cursor-wait inline-block w-full opacity-20 text-black group`}>
-							<div className="pl-4 pr-6 py-3 inline-block rounded-full w-auto">
+							<div className="px-4 md:pl-4 md:pr-6 py-4 md:py-3 inline-block rounded-full w-auto">
 								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeWidth="2" d="M2 5.077S3.667 2 12 2s10 3.077 10 3.077v13.846S20.333 22 12 22 2 18.923 2 18.923V5.077zM2 13s3.333 3 10 3 10-3 10-3M2 7s3.333 3 10 3 10-3 10-3"></path></svg>
 								<span className="hidden md:block float-left ml-4">API</span>
 							</div>
@@ -84,7 +84,7 @@ const UserSidebar = ({ user, router }) => {
 					</li>
 					<li className="block md:hidden">
 						<BlueButton text={
-							<div className="w-full py-1 flex items-center justify-center"><svg viewBox="0 0 24 24" height="25" width="25" className="text-white w-8 h-8"><path fill="none" stroke="currentColor" strokeWidth="2" d="M12 18V6m-6 6h12"></path></svg></div>
+							<div className="w-full flex items-center justify-center"><svg viewBox="0 0 24 24" height="25" width="25" className="text-white w-8 h-8"><path fill="none" stroke="currentColor" strokeWidth="2" d="M12 18V6m-6 6h12"></path></svg></div>
 						} smallSize={false} url="/dashboard/user/g" />
 					</li>
 					<li className="hidden md:block">

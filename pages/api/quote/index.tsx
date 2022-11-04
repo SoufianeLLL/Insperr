@@ -1,83 +1,50 @@
-import prisma from '@/utils/prisma'
-import supabaseAdmin from '@/utils/supabase-admin'
+import supabaseAdmin from "@/utils/supabase-admin"
 
 
 export default async function handler(req, res) {
 
-	const query = req?.query
-	const limit = parseInt(query?.number) ?? 9
+	const { action, number=10, page=null, user_id=null } = req?.query
+
 	let result
+	let _page = parseInt(page as string, 10)
+	let _size = parseInt(number as string, 10)
 
-	switch (query?.action) {
-		case 'getQuotesByAuthorName':
-			const name = (query?.author)?.replace(/\s/g, '') ?? null
-			// get real quotes from database by author
-			if (name) {
-				const cursor = query.cursor ?? ''
-				const cursorObj = cursor === '' ? undefined : { id: parseInt(cursor as string, 10) }
-				const quotes = await prisma.quote.findMany({
-					skip: cursor !== '' ? 1 : 0,
-					cursor: cursorObj,
-					take: limit,
-					where: {
-						published: true,
-						author_name: {
-							contains: name
-						}
-					}
-				})
-				result = { quotes, nextId: quotes.length === limit ? quotes[limit - 1].id : undefined }
-			}
-			break;
-		
-
-		case 'getQuotesByTopic':
-			const topic = (query?.topic)?.replace(/\s/g, '') ?? null
-			// get real quotes from database by topic
-			if (topic) {
-				const cursor = query.cursor ?? ''
-				const cursorObj = cursor === '' ? undefined : { id: parseInt(cursor as string, 10) }
-				const quotes = await prisma.quote.findMany({
-					skip: cursor !== '' ? 1 : 0,
-					cursor: cursorObj,
-					take: limit,
-					where: {
-						published: true,
-						topics: {
-							contains: topic
-						}
-					}
-				})
-				result = { quotes, nextId: quotes.length === limit ? quotes[limit - 1].id : undefined }
-			}
-			break;
+	const limit = _size ? +_size : 10
+	const from = _page ? _page * limit : 0
+	const to = _page ? from + _size - 1 : _size - 1
 
 
-		case 'getRandomQuotes':
-			// get random real quotes from SLite database (self hosted)
-			const count = await prisma.quote.count()
-			const skip = Math.floor(Math.random() * count)
-			result = await prisma.quote.findMany({
-				take: limit,
-				skip: skip,
-				where: {
-					published: true,
-				},
-				orderBy: {
-					id: 'desc',
-				}
-			})
-		
-
-		case 'getRandomCustomQuotes':
-			// get random quotes from Supabase
-			const { data: randomQuotes } = await supabaseAdmin
-				.from('random_quotes')
-				.select('*')
-				.limit(+(query?.number) ?? 10)
-
-			result = randomQuotes
-			break;
+	if (action) {
+		switch (action) {
+			case 'getRandomCustomQuotes':
+				// get random quotes from Supabase
+				const { data: randomQuotes } = await supabaseAdmin
+					.from('random_quotes')
+					.select('*')
+					.limit(+(number) ?? 12)
+	
+				result = randomQuotes
+				break;
+			
+			case 'getUserCustomQuotes':
+				// get random quotes from Supabase
+				const { data: userQuotes, count } = await supabaseAdmin
+					.from('quotes')
+					.select('*, users(username, fullname, avatar, is_verified)')
+					.eq('user_id', user_id)
+					.order('id', { ascending: false })
+					.limit(+(number) ?? 12)
+					.range(from, to)
+	
+				result = { quotes: userQuotes, count, page: to }
+				break;
+		}
+	}
+	else {
+		res.status(401).json({
+			status: 401,
+			message: 'Unauthorized, the request has not been completed because it lacks valid authentication credentials for the requested resource.'
+		})
 	}
 
 	res.status(200).json(result)

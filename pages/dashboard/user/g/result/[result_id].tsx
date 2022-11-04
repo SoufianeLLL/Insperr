@@ -148,7 +148,7 @@ const ResultPage = ({ result_id }) => {
 			{!isValidating && !voted ? 
 				<div className="emojis w-full inline-block mt-12">
 					<div className="flex items-center gap-3 justify-center w-full geist-emoji-selector shown">
-						<button onClick={() => !result?.quotes_satisfaction[0]?.satisfaction && setSatisfaction('useless')} type="button" className={`border-0 outline-0 focus:ring-0 bg-transparent p-1 transition-all ${result?.quotes_satisfaction[0]?.satisfaction === 'useless' ? 'scale-125 grayscale-0' : !result?.quotes_satisfaction[0]?.satisfaction && 'hover:scale-125 hover:grayscale-0'} grayscale transform option`}>
+						<button onClick={() => !result?.quotes_satisfaction[0]?.satisfaction && setSatisfaction('useless')} type="button" className={`border-0 outline-0 focus:ring-0 bg-transparent p-1 transition-all ${result?.quotes_satisfaction[0]?.satisfaction === 'useless' ? 'scale-125 grayscale-0' : !result?.quotes_satisfaction[0]?.satisfaction ? 'hover:scale-125 hover:grayscale-0' : 'grayscale'} transform option`}>
 							<Image 
 								alt="useless"
 								placeholder="blur"
@@ -158,7 +158,7 @@ const ResultPage = ({ result_id }) => {
 								height={24}
 								src="https://assets.vercel.com/twemoji/1f62d.svg" />
 						</button>
-						<button onClick={() => !result?.quotes_satisfaction[0]?.satisfaction && setSatisfaction('not bad')} type="button" className={`border-0 outline-0 focus:ring-0 bg-transparent p-1 transition-all ${result?.quotes_satisfaction[0]?.satisfaction === 'not bad' ? 'scale-125 grayscale-0' : !result?.quotes_satisfaction[0]?.satisfaction && 'hover:scale-125 hover:grayscale-0'} grayscale transform option`}>
+						<button onClick={() => !result?.quotes_satisfaction[0]?.satisfaction && setSatisfaction('not bad')} type="button" className={`border-0 outline-0 focus:ring-0 bg-transparent p-1 transition-all ${result?.quotes_satisfaction[0]?.satisfaction === 'not bad' ? 'scale-125 grayscale-0' : !result?.quotes_satisfaction[0]?.satisfaction ? 'hover:scale-125 hover:grayscale-0' : 'grayscale'} transform option`}>
 							<Image 
 								alt="not bad"
 								placeholder="blur"
@@ -168,7 +168,7 @@ const ResultPage = ({ result_id }) => {
 								height={24}
 								src="https://assets.vercel.com/twemoji/1f615.svg" />
 						</button>
-						<button onClick={() => !result?.quotes_satisfaction[0]?.satisfaction && setSatisfaction('good')} type="button" className={`border-0 outline-0 focus:ring-0 bg-transparent p-1 transition-all ${result?.quotes_satisfaction[0]?.satisfaction === 'good' ? 'scale-125 grayscale-0' : !result?.quotes_satisfaction[0]?.satisfaction && 'hover:scale-125 hover:grayscale-0'} grayscale transform option`}>
+						<button onClick={() => !result?.quotes_satisfaction[0]?.satisfaction && setSatisfaction('good')} type="button" className={`border-0 outline-0 focus:ring-0 bg-transparent p-1 transition-all ${result?.quotes_satisfaction[0]?.satisfaction === 'good' ? 'scale-125 grayscale-0' : !result?.quotes_satisfaction[0]?.satisfaction ? 'hover:scale-125 hover:grayscale-0' : 'grayscale'} transform option`}>
 							<Image 
 								alt="good"
 								placeholder="blur"
@@ -178,7 +178,7 @@ const ResultPage = ({ result_id }) => {
 								height={24}
 								src="https://assets.vercel.com/twemoji/1f600.svg" />
 						</button>
-						<button onClick={() => !result?.quotes_satisfaction[0]?.satisfaction && setSatisfaction('amazing')} type="button" className={`border-0 outline-0 focus:ring-0 bg-transparent p-1 transition-all ${result?.quotes_satisfaction[0]?.satisfaction === 'amazing' ? 'scale-125 grayscale-0' : !result?.quotes_satisfaction[0]?.satisfaction && 'hover:scale-125 hover:grayscale-0'} grayscale transform option`}>
+						<button onClick={() => !result?.quotes_satisfaction[0]?.satisfaction && setSatisfaction('amazing')} type="button" className={`border-0 outline-0 focus:ring-0 bg-transparent p-1 transition-all ${result?.quotes_satisfaction[0]?.satisfaction === 'amazing' ? 'scale-125 grayscale-0' : !result?.quotes_satisfaction[0]?.satisfaction ? 'hover:scale-125 hover:grayscale-0' : 'grayscale'} transform option`}>
 							<Image 
 								alt="amazing"
 								placeholder="blur"

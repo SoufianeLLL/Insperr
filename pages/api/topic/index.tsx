@@ -1,18 +1,12 @@
-import prisma from "@/utils/prisma"
+import supabaseAdmin from '@/utils/supabase-admin'
 
 export default async function handler(req, res) {
 	
-	// const query = req?.query
-	let topics
-
 	// get Topics list
-	// if (query?.letter) {
-		topics = await prisma.topic.findMany({
-			orderBy: {
-                name: 'asc',
-            }
-		})
-	// }
+	const { data: topics } = await supabaseAdmin
+		.from('quotes_topics')
+		.select()
+		.order('name', { ascending: true })
 
     return res.status(200).json(topics)
 }
