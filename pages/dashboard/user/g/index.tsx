@@ -69,7 +69,7 @@ const GenerateQuotesPage = () => {
 			})
 		}
 		return () => {
-			document.body.classList.add("bg-slate-100")
+			document.body.classList.add("bg-slate-100"); document.body.classList.add("dark:bg-slate-900")
 			setGeneratorHelper(false)
 		}
 	}, [rules, subs])

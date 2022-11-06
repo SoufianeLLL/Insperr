@@ -2,7 +2,7 @@
 const Skeleton = () => {
 
     return <>
-        <div className="h-60 rounded-2xl mb-6 p-5 md:p-8 bg-slate-200 bg-opacity-40">
+        <div className="h-60 rounded-2xl mb-6 p-5 md:p-8 bg-slate-200 dark:bg-zinc-900 bg-opacity-40">
             <div className="w-full flex items-center gap-x-4">
                 <div style={{ width: '50px', height: '50px' }} className="rounded-full flex-none skeleton"></div>
                 <div className="w-full">
@@ -19,7 +19,7 @@ const Skeleton = () => {
                 <div className="skeleton w-40 rounded-full h-5"></div>
             </div>
         </div>
-        <div className="h-60 rounded-2xl mb-6 p-5 md:p-8 bg-slate-200 bg-opacity-40">
+        <div className="h-60 rounded-2xl mb-6 p-5 md:p-8 bg-slate-200 dark:bg-zinc-900 bg-opacity-40">
             <div className="w-full flex items-center gap-x-4">
                 <div style={{ width: '50px', height: '50px' }} className="rounded-full flex-none skeleton"></div>
                 <div className="w-full">
@@ -36,7 +36,7 @@ const Skeleton = () => {
                 <div className="skeleton w-40 rounded-full h-5"></div>
             </div>
         </div>
-        <div className="h-60 rounded-2xl mb-6 p-5 md:p-8 bg-slate-200 bg-opacity-40">
+        <div className="h-60 rounded-2xl mb-6 p-5 md:p-8 bg-slate-200 dark:bg-zinc-900 bg-opacity-40">
             <div className="w-full flex items-center gap-x-4">
                 <div style={{ width: '50px', height: '50px' }} className="rounded-full flex-none skeleton"></div>
                 <div className="w-full">
@@ -53,7 +53,7 @@ const Skeleton = () => {
                 <div className="skeleton w-40 rounded-full h-5"></div>
             </div>
         </div>
-        <div className="h-60 rounded-2xl mb-6 p-5 md:p-8 bg-slate-200 bg-opacity-40">
+        <div className="h-60 rounded-2xl mb-6 p-5 md:p-8 bg-slate-200 dark:bg-zinc-900 bg-opacity-40">
             <div className="w-full flex items-center gap-x-4">
                 <div style={{ width: '50px', height: '50px' }} className="rounded-full flex-none skeleton"></div>
                 <div className="w-full">
@@ -70,7 +70,7 @@ const Skeleton = () => {
                 <div className="skeleton w-40 rounded-full h-5"></div>
             </div>
         </div>
-        <div className="h-60 rounded-2xl mb-6 p-5 md:p-8 bg-slate-200 bg-opacity-40">
+        <div className="h-60 rounded-2xl mb-6 p-5 md:p-8 bg-slate-200 dark:bg-zinc-900 bg-opacity-40">
             <div className="w-full flex items-center gap-x-4">
                 <div style={{ width: '50px', height: '50px' }} className="rounded-full flex-none skeleton"></div>
                 <div className="w-full">
@@ -87,7 +87,7 @@ const Skeleton = () => {
                 <div className="skeleton w-40 rounded-full h-5"></div>
             </div>
         </div>
-        <div className="h-60 rounded-2xl mb-6 p-5 md:p-8 bg-slate-200 bg-opacity-40">
+        <div className="h-60 rounded-2xl mb-6 p-5 md:p-8 bg-slate-200 dark:bg-zinc-900 bg-opacity-40">
             <div className="w-full flex items-center gap-x-4">
                 <div style={{ width: '50px', height: '50px' }} className="rounded-full flex-none skeleton"></div>
                 <div className="w-full">

@@ -50,7 +50,7 @@ const PricingPage = ({ plans, price_id }) => {
 				<div className="w-full mt-10">
 					<div className="w-full mt-12">
 						<div className="w-full max-w-5xl px-5 md:px-10 mx-auto">
-							<div className="w-full text-center border-t border-slate-200 p-6 md:p-10 mb-12 px-5">
+							<div className="w-full text-center border-t border-slate-200 dark:border-zinc-800 p-6 md:p-10 mb-12 px-5">
 								<h2 className="w-full fontBold text-center text-xl md:text-2xl uppercase">Free Plan</h2>
 								<div className="w-full mt-2">
 									{freePlan && <div>
@@ -67,7 +67,7 @@ const PricingPage = ({ plans, price_id }) => {
 								{plans?.map((plan, i) => {
 									if (plan?.active) {
 										return (
-											<div key={plan?.id} className={`w-full p-6 md:p-10 ${i===1 && 'bg-primary-50 rounded-2xl'}`}>
+											<div key={plan?.id} className={`w-full p-6 md:p-10 ${i===1 && 'bg-primary-50 dark:bg-primary-900 rounded-2xl'}`}>
 												<h4 className="w-full fontNormal text-center text-lg md:text-xl uppercase">{plan?.name}</h4>
 												<h2 className="w-full mt-6 fontBold text-center text-2xl md:text-4xl">
 													${(plan?.price)?.toString()}
@@ -159,19 +159,19 @@ const PricingPage = ({ plans, price_id }) => {
 			<div className="md:px-10 w-full mt-12 grid grid-cols-1 md:grid-cols-2 gap-12">
 				<div className="w-full">
 					<div className="text-lg md:text-xl font-semibold w-full mb-2">Who is behind Insperr?</div>
-					<div className="w-full text-base text-slate-700">Hi! I’m Jim. I’ve created Insperr to solve my own pain. As a creator, I used to create multiple social media graphics (for Twitter mostly) per day. I’ve noticed that it took me far too long time - even though I was a designer - and wondered: “How people with no design skills create graphics. I need to build sth for them”. And here, we are!</div>
+					<div className="w-full text-base text-slate-700 dark:text-zinc-800">Hi! I’m Jim. I’ve created Insperr to solve my own pain. As a creator, I used to create multiple social media graphics (for Twitter mostly) per day. I’ve noticed that it took me far too long time - even though I was a designer - and wondered: “How people with no design skills create graphics. I need to build sth for them”. And here, we are!</div>
 				</div>
 				<div className="w-full">
 					<div className="text-lg md:text-xl font-semibold w-full mb-2">Can I cancel my plan anytime?</div>
-					<div className="w-full text-base text-slate-700">I’m an independent fulltime creator who builts small products, like Insperr. I don’t take external funding because I want to only answer to our members & supporters. The subscriptions allow me to focus on building new features and make the product better every single day. Your support is valuable for Insperr’s future!</div>
+					<div className="w-full text-base text-slate-700 dark:text-zinc-800">I’m an independent fulltime creator who builts small products, like Insperr. I don’t take external funding because I want to only answer to our members & supporters. The subscriptions allow me to focus on building new features and make the product better every single day. Your support is valuable for Insperr’s future!</div>
 				</div>
 				<div className="w-full">
 					<div className="text-lg md:text-xl font-semibold w-full mb-2">Do you offer discounts?</div>
-					<div className="w-full text-base text-slate-700">We offer discounts only for our members and only on specific occasions. Then, the best way to get a discount it to follow us on Twitter and create an account. If you have a blog/newsletter, you can write a post about Insperr and get 2 months for free!</div>
+					<div className="w-full text-base text-slate-700 dark:text-zinc-800">We offer discounts only for our members and only on specific occasions. Then, the best way to get a discount it to follow us on Twitter and create an account. If you have a blog/newsletter, you can write a post about Insperr and get 2 months for free!</div>
 				</div>
 				<div className="w-full">
 					<div className="text-lg md:text-xl font-semibold w-full mb-2">Do you offer refunds?</div>
-					<div className="w-full text-base text-slate-700">You can request a refund for your purchase if you request it within 24 hours of the transaction.</div>
+					<div className="w-full text-base text-slate-700 dark:text-zinc-800">You can request a refund for your purchase if you request it within 24 hours of the transaction.</div>
 				</div>
 			</div>
 		</section>

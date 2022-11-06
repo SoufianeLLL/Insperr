@@ -23,7 +23,7 @@ const ResultPage = ({ result_id }) => {
 		if (result?.error) {
 			router.push('/')
 		}
-		return () => document.body.classList.add("bg-slate-100"); setVoted(false)
+		return () => document.body.classList.add("bg-slate-100"); document.body.classList.add("dark:bg-slate-900"); setVoted(false)
 	}, [])
 
 	const setSatisfaction = async (emj) => {
@@ -57,21 +57,21 @@ const ResultPage = ({ result_id }) => {
 						<div className="w-full lg:flex lg:items-start lg:gap-12 mt-5">
 							<div className="shrink w-full rounded-xl">
 								<div className="w-full mt-1">
-									<div className="w-full font-somibold text-base">Result ID:</div>
+									<div className="w-full font-somibold text-base dark:text-zinc-400">Result ID:</div>
 									<div className="w-full mt-1 text-base md:text-lg capitalize">{result?.result_id}</div>
 								</div>
 								<div className="w-full mt-5">
-									<div className="w-full font-somibold text-base">Topic:</div>
+									<div className="w-full font-somibold text-base dark:text-zinc-400">Topic:</div>
 									<div className="w-full mt-1 text-lg md:text-xl font-semibold capitalize">{result?.topics}</div>
 								</div>
 								<div className="w-full mt-5">
-									<div className="w-full font-somibold text-base">Keyword ({result?.place === 'startwith' ? 'Start with' : 'Contains'}):</div>
+									<div className="w-full font-somibold text-base dark:text-zinc-400">Keyword ({result?.place === 'startwith' ? 'Start with' : 'Contains'}):</div>
 									<div className="w-full mt-1 text-lg md:text-xl font-semibold capitalize">
 										{result?.keyword}
 									</div>
 								</div>
 								<div className="w-full mt-5">
-									<div className="w-full font-somibold text-base">Result:</div>
+									<div className="w-full font-somibold text-base dark:text-zinc-400">Result:</div>
 									<div className="w-full mt-1 text-lg md:text-xl">
 										{result?.content}
 									</div>

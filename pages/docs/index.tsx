@@ -6,7 +6,7 @@ const Docs = () => {
 
     useEffect(() => {
 		document.body.classList.remove("bg-slate-100")
-		return () => document.body.classList.add("bg-slate-100")
+		return () => document.body.classList.add("bg-slate-100"); document.body.classList.add("dark:bg-slate-900")
 	}, [])
 
     return <>

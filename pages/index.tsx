@@ -25,14 +25,14 @@ const IndexPage = () => {
 	return <>
 		{(Callback?.status && Callback?.text) && 
 			<ShowToast onClick={(e) => setCallback(e)} type={Callback?.status} text={Callback?.text} />}
-		<section className="w-full relative bg-white">
+		<section className="w-full relative bg-white dark:bg-zinc-900">
 			<div className="w-full py-20 px-5 md:px-10 2xl:px-0 max-w-4xl mx-auto">
 				<div className="text-center w-full text-primary-500 fontNormal text-xl uppercase">Automation & Schedule</div>
 				<div className="mt-2 w-full text-center">
 					<div className="text-2xl md:text-3xl lg:text-4xl leading-tight normal-case fontSemiBold w-full">
 						Connect with Twitter
 					</div>
-					<div className="mt-4 w-full text-center text-slate-400">
+					<div className="mt-4 w-full text-center text-slate-400 dark:text-zinc-600 dark:zinc-600">
 						Create tweets, threads and polls with Insperr and let us handle the rest we'll make sure your posts look great.
 					</div>
 				</div>
@@ -41,15 +41,15 @@ const IndexPage = () => {
 				</div>
 			</div>
 		</section>
-		<section className="w-full relative bg-slate-50">
+		<section className="w-full relative bg-slate-50 dark:bg-black">
 			<div className="w-full py-20 px-5 md:px-10 2xl:px-0 max-w-4xl mx-auto">
 				<div className="text-center w-full text-primary-500 fontNormal text-xl uppercase">Quality & Speed</div>
 				<div className="mt-2 w-full text-center">
 					<div className="text-2xl md:text-3xl lg:text-4xl leading-tight normal-case fontSemiBold w-full">
 						Write better. Build followers.
 					</div>
-					<div className="mt-4 w-full text-center text-slate-400">
-						Build a strong personal brand and grow your audience. Get access to <span className="text-black font-semibold">unlimited original content</span> written in your exact personal writing style.
+					<div className="mt-4 w-full text-center text-slate-400 dark:text-zinc-600 dark:zinc-600">
+						Build a strong personal brand and grow your audience. Get access to <span className="text-black dark:text-white font-semibold">unlimited original content</span> written in your exact personal writing style.
 					</div>
 				</div>
 			</div>
@@ -57,7 +57,7 @@ const IndexPage = () => {
 				<div className="w-full pb-20 overflow-hidden">
 					<div className="heading w-full">
 						<div className="text-sm md:text-base w-full">
-							<span className="text-slate-400">Custom Quotes</span>
+							<span className="text-slate-400 dark:text-zinc-600">Custom Quotes</span>
 						</div>
 					</div>
 					<div className="mt-4 w-full">
@@ -74,7 +74,7 @@ const IndexPage = () => {
 			</div>
 		</section>
 		<section className="w-full relative px-5 md:px-10 2xl:px-0 max-w-7xl mx-auto">
-			<div className="mt-6 w-full py-20">
+			<div className="mt-6 w-full py-20 dark:bg-zinc-900 dark:rounded-2xl">
 				<div className="text-center w-full text-primary-400 fontNormal text-xl uppercase">Get started for free</div>
 				<div className="mt-2 w-full text-center">
 					<div className="text-2xl md:text-3xl lg:text-4xl leading-tight normal-case fontSemiBold w-full">

@@ -63,12 +63,12 @@ const QuotesGeneratorResults = ({ resultIds }) => {
 							{Pagination?.pages?.map((page, i) => {
 								return page?.quotes?.map((quote, i) => {
 									return (
-                                        <div key={i} className="bg-white w-full px-3 py-2 md:px-6 md:py-4 rounded-lg shadow hover:shadow-lg transition duration-200">
+                                        <div key={i} className="bg-white dark:bg-zinc-900 w-full px-3 py-2 md:px-6 md:py-4 rounded-lg shadow hover:shadow-lg transition duration-200">
                                             <div className="w-full pb-2">
                                                 <div className="w-full md:flex items-center gap-2 md:gap-4">
                                                     <div className="w-full text-base shrink flex items-center gap-3">
                                                         {resultIds?.includes(quote?.result_id) && <div className="text-sm inline-block text-white bg-green-600 py-0.5 px-3 rounded-full">new</div> }
-                                                        <div className="text-base mb-0.5 text-slate-500">Output:</div>
+                                                        <div className="text-base mb-0.5 text-slate-500 dark:text-zinc-400">Output:</div>
                                                     </div>
                                                     <div className="flex-none flex items-center gap-3">
                                                         <div className={`_quote_status_${quote?.id}`}>

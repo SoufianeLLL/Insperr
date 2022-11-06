@@ -39,7 +39,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 		setAutomation({ autoPostActive: checkAutoPost })
 		return () => {
 			setAutomation({ autoPostActive: false })
-			document.body.classList.add("bg-slate-100")
+			document.body.classList.add("bg-slate-100"); document.body.classList.add("dark:bg-slate-900")
 		}
 	}, [])
 
@@ -259,36 +259,36 @@ const UserAccount = ({ q_screen, q_errors }) => {
 				{!screen?.name ? 
 					<>
 						<div className="w-full mb-2 text-base md:text-xl">Your Account</div>
-						<div className="text-base w-full text-slate-500">See information about your account, payments and subscription.</div>
+						<div className="text-base w-full text-slate-500 dark:text-zinc-400">See information about your account, payments and subscription.</div>
 						<div className="mt-8 w-full">
 							<Btn 
 								title="Account information" 
 								description="See your account information like your phone number and email address."
 								onClick={() => handleScreenChange({ name: 'account-information', title: 'Account information' })}
 								icon={
-									<div><svg className="text-slate-500 w-6 h-6" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m12 19-2 3-3-1-.5-3.5L3 17l-1-3 3-2-3-2 1-3 3.5-.5L7 3l3-1 2 3 2-3 3 1 .5 3.5L21 7l1 3-3 2 3 2-1 3-3.5.5L17 21l-3 1-2-3zm0-3a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path></svg></div>
+									<div><svg className="text-slate-500 dark:text-zinc-400 w-6 h-6" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m12 19-2 3-3-1-.5-3.5L3 17l-1-3 3-2-3-2 1-3 3.5-.5L7 3l3-1 2 3 2-3 3 1 .5 3.5L21 7l1 3-3 2 3 2-1 3-3.5.5L17 21l-3 1-2-3zm0-3a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path></svg></div>
 								} />
 							{/* <Btn 
 								title="Change your password" 
 								description="Change your password at any time."
 								onClick={() => handleScreenChange({ name: 'change-password', title: 'Change your password' })}
 								icon={
-									<div><svg className="text-slate-500 w-6 h-6" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M10 13v3h3v3h3v2l2 2h5v-4L12.74 8.74C12.91 8.19 13 7.6 13 7c0-3.31-2.69-6-6-6S1 3.69 1 7a6.005 6.005 0 0 0 8.47 5.47L10 13zM6 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"></path></svg></div>
+									<div><svg className="text-slate-500 dark:text-zinc-400 w-6 h-6" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M10 13v3h3v3h3v2l2 2h5v-4L12.74 8.74C12.91 8.19 13 7.6 13 7c0-3.31-2.69-6-6-6S1 3.69 1 7a6.005 6.005 0 0 0 8.47 5.47L10 13zM6 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"></path></svg></div>
 								} /> */}
 							<Btn 
 								title="Payments and subscription" 
 								description="See your payments and cancel or change your subscription."
 								onClick={loadPortal}
 								icon={
-									<div><svg className="text-slate-500 w-6 h-6" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M1 5c0-.552.44-1 1.002-1h19.996A1 1 0 0 1 23 5v14c0 .552-.44 1-1.002 1H2.002A1 1 0 0 1 1 19V5zm0 3h22v2H1V8zm4 7h2v.5H5V15zm5 0h6v.5h-6V15z"></path></svg></div>
+									<div><svg className="text-slate-500 dark:text-zinc-400 w-6 h-6" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M1 5c0-.552.44-1 1.002-1h19.996A1 1 0 0 1 23 5v14c0 .552-.44 1-1.002 1H2.002A1 1 0 0 1 1 19V5zm0 3h22v2H1V8zm4 7h2v.5H5V15zm5 0h6v.5h-6V15z"></path></svg></div>
 								} />
 						</div>
 					</>
 				: 
 					<>
 						<div className="w-full mb-2 text-base md:text-xl flex items-center gap-8">
-							<button onClick={() => handleScreenChange({ name: null, title: null })} className="bg-white border-0 ring-0">
-								<svg className="w-8 h-8" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeWidth="2" d="M18 12.4H6M11.4 7 6 12.4l5.4 5.4"></path></svg>
+							<button onClick={() => handleScreenChange({ name: null, title: null })} className="border-0 ring-0">
+								<svg className="w-8 h-8 text-black dark:text-white" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M18 12.4H6M11.4 7 6 12.4l5.4 5.4"></path></svg>
 							</button>
 							<div>{screen?.title}</div>
 						</div>
@@ -313,7 +313,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 													</div>
 													{isCheckingTwitterAccount ? <div className="mt-4"><Loading text="" scpace='0' borderWidth={2} width={25} height={25} /></div> 
 														: isTwitterAccountLinked ? (disconnect ? <div className="mt-4"><Loading text="" scpace='0' borderWidth={2} width={25} height={25} /></div> 
-															: <div onClick={() => disconnectTwitterAccount()} className="mt-4 text-sm cursor-pointer text-red-500 inline-block py-1 px-4 bg-red-50 hover:bg-red-100 rounded-full">
+															: <div onClick={() => disconnectTwitterAccount()} className="mt-4 text-sm cursor-pointer text-red-500 inline-block py-1 px-4 bg-red-50 hover:bg-red-100 dark:bg-red-900 dark:bg-opacity-40 dark:hover:bg-opacity-60 rounded-full">
 																Disconnect your Twitter account</div>) : null}
 												</div>
 												<div className="flex-none pr-0 md:pr-14 md:mt-0 mt-4">
@@ -333,7 +333,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 														Pro feature <Link href="/pricing" className="hover:text-primary-700"><svg className="w-5 h-5" height="25" width="25" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></Link></div>}
 												</div>
 											</div>
-											<div className="border-t border-slate-100 pt-10 mt-10 w-full text-base mb-2 md:flex md:items-center md:justify-start md:gap-x-32">
+											<div className="border-t border-slate-100 dark:border-zinc-700 pt-10 mt-10 w-full text-base mb-2 md:flex md:items-center md:justify-start md:gap-x-32">
 												<div className="w-full shrink">
 													<div className="text-xl md text-2xl font-semibold w-full mb-2">
 														Auto post to your Twitter account</div>
@@ -347,7 +347,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 													{isSubscribed ? isCheckingAutoPost ? 
 														<div className="w-full my-4"><Loading text="" scpace='0' borderWidth={2} width={25} height={25} /></div>
 														:
-														<div onClick={() => newRequest()} className={`${automation?.autoPostActive && isTwitterAccountLinked ? 'bg-primary-500' : 'bg-slate-300'} w-14 h-8 cursor-pointer rounded-full relative`}>
+														<div onClick={() => newRequest()} className={`${automation?.autoPostActive && isTwitterAccountLinked ? 'bg-primary-500' : 'bg-slate-300 dark:bg-zinc-800'} w-14 h-8 cursor-pointer rounded-full relative`}>
 															<span className={`${automation?.autoPostActive && isTwitterAccountLinked ? 'translate-x-6' : 'translate-x-0'} transform left-1 bg-white absolute transition duration-200 top-1 h-6 w-6 rounded-full`}></span>
 														</div>
 													: <div className="flex items-center gap-2 border-2 border-primary-500 text-primary-500 text-sm uppercase rounded-full py-2 px-4">
@@ -377,8 +377,8 @@ const UserAccount = ({ q_screen, q_errors }) => {
 							screen?.name === 'change-username' ? 
 								<>
 									{/* <div className="relative z-0">
-										<input onChange={(e) => setAction({ ...action, password: e?.target?.value })} type="password" id="current_password" name="current_password" className="peer block w-full appearance-none border border-slate-300 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" placeholder=" " />
-										<label htmlFor="current_password" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
+										<input onChange={(e) => setAction({ ...action, password: e?.target?.value })} type="password" id="current_password" name="current_password" className="peer block w-full appearance-none border border-slate-300 dark:border-zinc-700 dark:text-zinc-500 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" placeholder=" " />
+										<label htmlFor="current_password" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 dark:text-zinc-600 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
 											Current Password</label>
 									</div> */}
 									<div className="mt-4 relative z-0">
@@ -387,9 +387,9 @@ const UserAccount = ({ q_screen, q_errors }) => {
 											params: {
 												target: e?.target?.value
 											}
-										})} type="text" id="username" name="username" className="peer block w-full appearance-none border border-slate-300 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" 
+										})} type="text" id="username" name="username" className="peer block w-full appearance-none border border-slate-300 dark:border-zinc-700 dark:text-zinc-500 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" 
 											placeholder=" " defaultValue={user?.user_metadata?.user_name} />
-										<label htmlFor="username" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
+										<label htmlFor="username" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 dark:text-zinc-600 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
 											Username</label>
 									</div>
 									{error && <div className="mt-3 w-full text-red-500 text-base">{error}</div>}
@@ -405,8 +405,8 @@ const UserAccount = ({ q_screen, q_errors }) => {
 							screen?.name === 'change-email' ? 
 								<>
 									{/* <div className="relative z-0">
-										<input onChange={(e) => setAction({ ...action, password: e?.target?.value })} type="password" id="current_password" name="current_password" className="peer block w-full appearance-none border border-slate-300 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" placeholder=" " />
-										<label htmlFor="current_password" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
+										<input onChange={(e) => setAction({ ...action, password: e?.target?.value })} type="password" id="current_password" name="current_password" className="peer block w-full appearance-none border border-slate-300 dark:border-zinc-700 dark:text-zinc-500 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" placeholder=" " />
+										<label htmlFor="current_password" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 dark:text-zinc-600 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
 											Current Password</label>
 									</div> */}
 									<div className="mt-4 relative z-0">
@@ -415,9 +415,9 @@ const UserAccount = ({ q_screen, q_errors }) => {
 											params: {
 												target: e?.target?.value
 											}
-										})} type="email" id="email" name="email" className="peer block w-full appearance-none border border-slate-300 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" 
+										})} type="email" id="email" name="email" className="peer block w-full appearance-none border border-slate-300 dark:border-zinc-700 dark:text-zinc-500 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" 
 											placeholder=" " defaultValue={user?.email} />
-										<label htmlFor="email" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
+										<label htmlFor="email" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 dark:text-zinc-600 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
 											Email address</label>
 									</div>
 									{error && <div className="mt-3 w-full text-red-500 text-base">{error}</div>}
@@ -433,8 +433,8 @@ const UserAccount = ({ q_screen, q_errors }) => {
 							screen?.name === '!!change-password' &&  
 								<>
 									<div className="relative z-0">
-										<input onChange={(e) => setAction({ ...action, password: e?.target?.value })} type="password" id="current_password" name="current_password" className="peer block w-full appearance-none border border-slate-300 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" placeholder=" " />
-										<label htmlFor="current_password" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
+										<input onChange={(e) => setAction({ ...action, password: e?.target?.value })} type="password" id="current_password" name="current_password" className="peer block w-full appearance-none border border-slate-300 dark:border-zinc-700 dark:text-zinc-500 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" placeholder=" " />
+										<label htmlFor="current_password" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 dark:text-zinc-600 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
 											Current Password</label>
 									</div>
 									<div className="mt-4 relative z-0">
@@ -443,8 +443,8 @@ const UserAccount = ({ q_screen, q_errors }) => {
 											params: {
 												target: e?.target?.value
 											}
-										})} type="password" id="password" name="password" className="peer block w-full appearance-none border border-slate-300 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" placeholder=" " />
-										<label htmlFor="password" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
+										})} type="password" id="password" name="password" className="peer block w-full appearance-none border border-slate-300 dark:border-zinc-700 dark:text-zinc-500 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" placeholder=" " />
+										<label htmlFor="password" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 dark:text-zinc-600 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
 											New Password</label>
 									</div>
 									{error && <div className="mt-3 w-full text-red-500 text-base">{error}</div>}
@@ -467,14 +467,14 @@ const UserAccount = ({ q_screen, q_errors }) => {
 
 const Btn = ({ title, description, icon=null, onClick }) => {
 	return <>
-		<button onClick={onClick} className="w-full transition duration-200 hover:bg-slate-50 rounded-xl py-5 px-4 flex items-center gap-10">
+		<button onClick={onClick} className="w-full transition duration-200 hover:bg-slate-50 dark:hover:bg-zinc-900 rounded-xl py-5 px-4 flex items-center gap-10">
 			{icon && <div className="flex-none">{icon}</div>}
 			<div className="shrink w-full text-left">
 				<div className="w-full text-base font-semibold">{title}</div>
-				<div className="w-full text-sm text-slate-500">{description}</div>
+				<div className="w-full text-sm text-slate-500 dark:text-zinc-400">{description}</div>
 			</div>
 			<div className="flex-none">
-				<svg className="w-7 h-7 text-slate-500" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="m9 6 6 6-6 6"></path></svg>
+				<svg className="w-7 h-7 text-slate-500 dark:text-zinc-400" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="m9 6 6 6-6 6"></path></svg>
 			</div>
 		</button>
 	</>

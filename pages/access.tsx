@@ -38,19 +38,19 @@ const UserAccess = ({ op, redirect }) => {
 		<Head>
 			<title>Insperr – The Most Advanced Quotes Generator</title>
 		</Head>
-		<div className="flex flex-wrap min-h-screen w-full content-center justify-center bg-slate-200 px-5 py-10">
+		<div className="flex flex-wrap min-h-screen w-full content-center justify-center bg-slate-200 dark:bg-black px-5 py-10">
 			{fetching ? <div className="w-full max-w-sm h-screen mx-auto text-center">
 				<Loading text='null' width={50} height={50} /></div>
 			: 
-			<div className="shadow-lg max-w-sm mx-auto w-full text-center bg-white rounded-xl p-10">
+			<div className="shadow-lg max-w-sm mx-auto w-full text-center bg-white dark:bg-zinc-900 rounded-xl p-10">
 				<div className="w-full">
 					<div className="w-full justify-center flex items-center">
 						<Logo i="text-primary-500 hover:text-primary-700 mx-auto" showText={false} size={70} />
 					</div>
 					<h1 className="text-2xl md:text-3xl fontBlack">
-						<Link href="/">Insperr.com</Link>
+						<Link className="dark:text-white text-black" href="/">Insperr.com</Link>
 					</h1>
-					<div className="text-base text-slate-400 mb-8">Welcome back!</div>
+					<div className="text-base text-slate-400 dark:text-zinc-700 mb-8">Welcome back!</div>
 					<div onClick={() => signIn('twitter')} className="w-full cursor-pointer mt-3">
 						<BlueButton className="bg-primary-500 hover:bg-primary-700 text-white py-3 px-4 text-sm md:text-base" text={
 							<div className="flex items-center text-normal gap-3 justify-center">
@@ -59,7 +59,7 @@ const UserAccess = ({ op, redirect }) => {
 							</div>
 						} fullWidth={true} smallSize={false} isLink={false} /></div>
 					<div onClick={() => signIn('github')} className="w-full cursor-pointer mt-3">
-						<BlueButton className="bg-slate-900 hover:bg-slate-800 text-white py-3 px-4 text-sm md:text-base" text={
+						<BlueButton className="bg-zinc-800 hover:bg-zinc-800 dark:hover:bg-black dark:bg-zinc-900 text-white py-3 px-4 text-sm md:text-base" text={
 							<div className="flex items-center text-normal gap-3 justify-center">
 								<svg className="w-5 h-5 text-white" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" fillRule="evenodd" d="M11.999 1C5.926 1 1 5.925 1 12c0 4.86 3.152 8.983 7.523 10.437.55.102.75-.238.75-.53 0-.26-.009-.952-.014-1.87-3.06.664-3.706-1.475-3.706-1.475-.5-1.27-1.221-1.61-1.221-1.61-.999-.681.075-.668.075-.668 1.105.078 1.685 1.134 1.685 1.134.981 1.68 2.575 1.195 3.202.914.1-.71.384-1.195.698-1.47-2.442-.278-5.01-1.222-5.01-5.437 0-1.2.428-2.183 1.132-2.952-.114-.278-.491-1.397.108-2.91 0 0 .923-.297 3.025 1.127A10.536 10.536 0 0 1 12 6.32a10.49 10.49 0 0 1 2.754.37c2.1-1.424 3.022-1.128 3.022-1.128.6 1.514.223 2.633.11 2.911.705.769 1.13 1.751 1.13 2.952 0 4.226-2.572 5.156-5.022 5.428.395.34.747 1.01.747 2.037 0 1.47-.014 2.657-.014 3.017 0 .295.199.637.756.53C19.851 20.979 23 16.859 23 12c0-6.075-4.926-11-11.001-11"></path></svg>
 								Signin with Github

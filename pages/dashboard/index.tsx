@@ -89,7 +89,7 @@ const DashboardPage = () => {
                 </div>}
             <div className="w-full">
                 <div className="w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 sm:gap-8 max-w-7xl content-start">
-                    <div className="w-full bg-white p-5 rounded-xl">
+                    <div className="w-full bg-white dark:bg-zinc-900 p-5 rounded-xl">
                         <div className="w-full overflow-hidden">
                             <div className="flex items-start gap-2">
                                 <div className="w-full shrink">
@@ -118,7 +118,7 @@ const DashboardPage = () => {
                             <div className="w-full text-center mt-1 inline-block text-sm">This month</div>
                         </div>
                     </div>
-                    <div className="w-full bg-white p-5 rounded-xl sm:my-0 my-4">
+                    <div className="w-full bg-white dark:bg-zinc-900 p-5 rounded-xl sm:my-0 my-4">
                         <div className="w-full overflow-hidden">
                             <div className="flex items-start gap-2">
                                 <div className="w-full shrink">
@@ -141,7 +141,7 @@ const DashboardPage = () => {
                             <div className="w-full text-center mt-1 inline-block text-sm">All time</div>
                         </div>
                     </div>
-                    <div className="w-full bg-white p-5 rounded-xl sm:my-0 my-4">
+                    <div className="w-full bg-white dark:bg-zinc-900 p-5 rounded-xl sm:my-0 my-4">
                         <div className="w-full overflow-hidden">
                             <div className="flex items-start gap-2">
                                 <div className="w-full shrink">
@@ -174,7 +174,7 @@ const DashboardPage = () => {
 										{twitterData?.lastTweets ? 
 										<div className="w-full h-72 overflow-x-hidden overflow-y-scroll">
 											{twitterData?.lastTweets?.map((tweet, i) => {
-												return <div key={i} className={`${i+1 !== twitterData?.lastTweets?.length && 'border-b border-slate-100'} leading-tight py-3 px-3 text-base text-left w-full`}>
+												return <div key={i} className={`${i+1 !== twitterData?.lastTweets?.length && 'border-b border-slate-100 dark:border-zinc-800'} leading-tight py-4 px-0 text-base text-left w-full`}>
 													<div className="w-full flex items-center gap-3 mb-2">
 														<Tooltip content="See the output result" placement="bottom">
 															<Link href={`/dashboard/user/g/result/${tweet?.result_id}`}>
@@ -194,9 +194,9 @@ const DashboardPage = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="w-full bg-white p-5 rounded-xl sm:my-0 my-4">
+                    <div className="w-full bg-white dark:bg-zinc-900 p-5 rounded-xl sm:my-0 my-4">
                         <div className="w-full opacity-60 cursor-wait relative overflow-hidden">
-                            <div style={{ zIndex: 800 }} className="top-0 right-0 left-0 bottom-0 bg-white opacity-60 absolute"></div>
+                            <div style={{ zIndex: 800 }} className="top-0 right-0 left-0 bottom-0 bg-white dark:bg-zinc-900 opacity-60 absolute"></div>
                             <div className="w-full text-lg">API Requests</div>
                             {APIrequests && APIrequests?.status === 200 ? <>
                                 <div className="w-full">
@@ -270,37 +270,37 @@ const DashboardPage = () => {
                             : <div className="w-full my-24"><Loading text="" scpace='0 auto' borderWidth={3} width={50} height={50} /></div>}
                         </div>
                     </div>
-                    <div className="lg:col-span-2 w-full bg-white p-5 rounded-xl">
+                    <div className="lg:col-span-2 w-full bg-white dark:bg-zinc-900 p-5 rounded-xl">
                         <div className="w-full overflow-hidden">
                             <div className="w-full text-lg">Keyboard Shortcuts</div>
                             <div className="w-full mt-5">
                                 <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-2 text-sm">
                                     <div className="w-full">
-                                        <span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+B</span> Go Back to previous page
+                                        <span className="inline-block bg-slate-100 dark:bg-zinc-800 py-1 px-2 rounded-full mr-2">⇧+B</span> Go Back to previous page
                                     </div>
                                     <div className="w-full">
-                                        <span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+D</span> Dashboard
+                                        <span className="inline-block bg-slate-100 dark:bg-zinc-800 py-1 px-2 rounded-full mr-2">⇧+D</span> Dashboard
                                     </div>
                                     <div className="w-full">
-                                        <span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+G</span> Generate new Quotes
+                                        <span className="inline-block bg-slate-100 dark:bg-zinc-800 py-1 px-2 rounded-full mr-2">⇧+G</span> Generate new Quotes
                                     </div>
                                     <div className="w-full">
-                                        <span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+C</span> Manage your Collections
+                                        <span className="inline-block bg-slate-100 dark:bg-zinc-800 py-1 px-2 rounded-full mr-2">⇧+C</span> Quotes Collections
                                     </div>
                                     <div className="w-full">
-                                        <span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+U</span> User Account
+                                        <span className="inline-block bg-slate-100 dark:bg-zinc-800 py-1 px-2 rounded-full mr-2">⇧+U</span> User Account
                                     </div>
                                     <div className="w-full">
-                                        <span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+P</span> Our Pricing
+                                        <span className="inline-block bg-slate-100 dark:bg-zinc-800 py-1 px-2 rounded-full mr-2">⇧+P</span> Our Pricing
                                     </div>
                                     <div className="w-full">
-                                        <span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+H</span> Documentions (help)
+                                        <span className="inline-block bg-slate-100 dark:bg-zinc-800 py-1 px-2 rounded-full mr-2">⇧+H</span> Documentions (help)
                                     </div>
                                     <div className="w-full">
-                                        <span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+A</span> API Admin
+                                        <span className="inline-block bg-slate-100 dark:bg-zinc-800 py-1 px-2 rounded-full mr-2">⇧+A</span> API Admin
                                     </div>
                                     <div className="w-full">
-                                        <span className="inline-block bg-slate-100 py-1 px-2 rounded-full mr-2">⇧+S</span> Support
+                                        <span className="inline-block bg-slate-100 dark:bg-zinc-800 py-1 px-2 rounded-full mr-2">⇧+S</span> Support
                                     </div>
                                 </div>
                             </div>

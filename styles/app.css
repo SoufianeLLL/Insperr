@@ -257,6 +257,9 @@ body {
 	scrollbar-width: none;  /* Firefox */
 }
 
+.dark .nav-link:hover div.rounded-full {
+	background-color: #18181B;
+}
 .nav-link:hover div.rounded-full {
 	background-color: #E2E8F0;
 }
@@ -305,6 +308,11 @@ body {
 	}
 }
 
+.dark .skeleton {
+	animation: 1s shine linear infinite;
+	background: linear-gradient(90deg, #27272A, #202023, #27272A);
+	background-size: 200% 100%;
+}
 .skeleton {
 	animation: 1s shine linear infinite;
 	background: linear-gradient(90deg, #e2e8f0 13%, #cbd5e1 40%, #e2e8f0 90%);

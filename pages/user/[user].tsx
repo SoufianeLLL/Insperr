@@ -39,7 +39,7 @@ const UserProfile = ({ username }) => {
 
 	return <>
 		{(Callback?.status && Callback?.text) && <ShowToast onClick={(e) => setCallback(e)} type={Callback?.status} text={Callback?.text} />}
-		<section className="w-full px-5 md:px-10 2xl:px-0 max-w-7xl mx-auto bg-white">
+		<section className="w-full px-5 md:px-10 2xl:px-0 max-w-7xl mx-auto bg-white dark:bg-black">
 			<div className="heading w-full pb-10">
 				{ isValidating ? <Loading text="" scpace='0' borderWidth={2} width={30} height={30} /> : 
 					<div className="w-full">
@@ -48,7 +48,7 @@ const UserProfile = ({ username }) => {
 					</div>}
 			</div>
 		</section>
-		<section className="w-full py-10 md:py-12 px-5 md:px-10 2xl:px-0 max-w-7xl mx-auto bg-slate-100">
+		<section className="w-full py-10 md:py-12 px-5 md:px-10 2xl:px-0 max-w-7xl mx-auto bg-slate-100 dark:bg-black">
 			<div className="w-full">
 				{isLoading ? <div className="w-full columns-1 md:columns-2 lg:columns-3 gap-6"><Skeleton /></div> :
 				Pagination && Pagination?.pages && Pagination?.pages?.length > 0 ? <>
