@@ -80,7 +80,7 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 									username: 'insperr',
 									fullname: 'Insperr',
 									tags: ['Tech'],
-									avatar: null
+									avatar: require('../../public/images/insperr_avatar.png')
 								}} />
 							</div>
 							<div style={{ zIndex: 1000, transform: 'translateX(-50%)', width: 1400 }} className="mt-12 top-0 hidden gap-x-8 items-start md:flex absolute inset-x-1/2">
@@ -90,7 +90,7 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 										username: 'insperr',
 										fullname: 'Insperr',
 										tags: ['Social Media', 'Internet'],
-										avatar: null
+										avatar: require('../../public/images/insperr_avatar.png')
 									}} />
 								</div>
 								<Quote quote={{
@@ -98,7 +98,7 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 									username: 'insperr',
 									fullname: 'Insperr',
 									tags: ['Tech'],
-									avatar: null
+									avatar: require('../../public/images/insperr_avatar.png')
 								}} />
 								<div className="opacity-40 dark:opacity-60">
 									<Quote quote={{
@@ -106,7 +106,7 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 										username: 'insperr',
 										fullname: 'Insperr',
 										tags: ['Tech', 'Machine Learning'],
-										avatar: null
+										avatar: require('../../public/images/insperr_avatar.png')
 									}} />
 								</div>
 							</div>

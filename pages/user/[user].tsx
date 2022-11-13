@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useInfiniteQuery } from 'react-query'
 import { useInView } from 'react-intersection-observer'
 import Loading from "@/components/Loading"
-import Skeleton from '@/components/Skeleton'
+import { Skeleton } from '@/components/Skeleton'
 import ShowToast from '@/components/ShowToast'
 import QuoteContainer from '@/components/Containers/QuoteContainer'
 import UnauthenticatedLayout from "@/components/UnauthenticatedLayout"
@@ -61,6 +61,8 @@ const UserProfile = ({ username }) => {
 									username: quote?.users?.username,
 									is_verified: quote?.users?.is_verified,
 									avatar: quote?.users?.avatar,
+									keyword: quote?.keyword,
+									topics: quote?.topics,
 									content: quote?.content,
 									status: quote?.tweet_metadata?.status,
 									tweet_id: quote?.tweet_metadata?.tweet_id,

@@ -12,7 +12,6 @@ module.exports = {
 			orange: colors.orange,
 			zinc: colors.zinc,
 			slate: colors.slate,
-			gray: colors.gray,
 			red: colors.red,
 			indigo: colors.indigo,
 			teal: colors.teal,
@@ -23,6 +22,7 @@ module.exports = {
 		},
 		extend: {
 			colors: {
+				gray: colors.zinc,
 				primary: {
 					'50': '#e6f5fe',
 					'100': '#c2e7ff',

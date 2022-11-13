@@ -39,7 +39,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 		setAutomation({ autoPostActive: checkAutoPost })
 		return () => {
 			setAutomation({ autoPostActive: false })
-			document.body.classList.add("bg-slate-100"); document.body.classList.add("dark:bg-slate-900")
+			document.body.classList.add("bg-slate-100")
 		}
 	}, [])
 
@@ -129,25 +129,26 @@ const UserAccount = ({ q_screen, q_errors }) => {
 				}
 			}
 		}
+		{/*
 		else if (!error && action?.name) {
 			let _continue = true
 			setAction({ ...action, isLoading: true })
 			// check first the current password
-			// try {
-			// 	const { error } = await supabaseClient.auth.signInWithPassword({
-			// 		email: user?.email,
-			// 		password: action?.password,
-			// 	})
-			// 	if (error) {
-			// 		_continue = false
-			// 		setAction({ name: null, params: null, isLoading: false, password: null })
-			// 		setCallback({ status: 'error', text: 'Your current password is invalid, please try again.' })
-			// 	}
-			// }
-			// catch (e) {
-			// 	setAction({ name: null, params: null, isLoading: false, password: null })
-			// 	setCallback({ status: 'error', text: e })
-			// }
+			try {
+				const { error } = await supabaseClient.auth.signInWithPassword({
+					email: user?.email,
+					password: action?.password,
+				})
+				if (error) {
+					_continue = false
+					setAction({ name: null, params: null, isLoading: false, password: null })
+					setCallback({ status: 'error', text: 'Your current password is invalid, please try again.' })
+				}
+			}
+			catch (e) {
+				setAction({ name: null, params: null, isLoading: false, password: null })
+				setCallback({ status: 'error', text: e })
+			}
 
 			if (_continue) {
 				if (action?.name === 'changeUsername') {
@@ -228,6 +229,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 				setCallback({ status: 'success', text: 'Your information was updated.' })
 			}
 		}
+		*/}
 	}
 
 	const loadPortal = async () => {
@@ -254,7 +256,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 				<div className="text-center w-full"><Loading text="Loading Stripe Portal" scpace='0 auto' borderWidth={3} width={50} height={50} /></div>
 			</div>
 		</>}
-		<section className="w-full overflow-hidden">
+		<section className="w-full overflow-hidden bg-white dark:bg-black">
 			<div className="w-full">
 				{!screen?.name ? 
 					<>
@@ -374,7 +376,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 										onClick={() => handleScreenChange({ name: 'automation', title: 'Manage your automated account' })} />
 								</>
 							: 
-							screen?.name === 'change-username' ? 
+							screen?.name === '!!change-username' ? 
 								<>
 									{/* <div className="relative z-0">
 										<input onChange={(e) => setAction({ ...action, password: e?.target?.value })} type="password" id="current_password" name="current_password" className="peer block w-full appearance-none border border-slate-300 dark:border-zinc-700 dark:text-zinc-500 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" placeholder=" " />
@@ -402,7 +404,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 									</div>
 								</>
 							:
-							screen?.name === 'change-email' ? 
+							screen?.name === '!!change-email' ? 
 								<>
 									{/* <div className="relative z-0">
 										<input onChange={(e) => setAction({ ...action, password: e?.target?.value })} type="password" id="current_password" name="current_password" className="peer block w-full appearance-none border border-slate-300 dark:border-zinc-700 dark:text-zinc-500 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" placeholder=" " />

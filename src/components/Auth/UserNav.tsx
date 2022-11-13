@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
-import Image from "next/image"
 import Link from 'next/link'
 import { useSessionContext } from '@supabase/auth-helpers-react'
+import AvatarContainer from '@/components/Containers/AvatarContainer'
 import { useSignOutMutation } from "@/lib/api/auth"
 
 
@@ -18,25 +18,7 @@ const UserNav = ({ user, isAuthPage=false }) => {
         <div className="flex items-center gap-5 user-nav">
 			<Link href="/dashboard/user/account" className="hidden sm:flex items-center gap-2">
                 <div className="flex relative bg-slate-100 dark:bg-slate-800 w-7 h-7 rounded-full items-center justify-center">
-					{user?.avatar ? 
-						<Image 
-							alt="avatar"
-							className="inline-block rounded-full"
-							src={user?.avatar}
-							blurDataURL={'../../../public/images/avatar.jpg'} 
-							unoptimized={true} 
-							height={30}
-							width={30} />
-					:
-						<Image 
-							alt="avatar"
-							className="inline-block rounded-full"
-							src={require('../../../public/images/avatar.jpg')} 
-							placeholder="blur"
-							unoptimized={true} 
-							height={30}
-							width={30} />
-						}
+					<AvatarContainer avatar={user?.avatar} width={30} height={30} />
 				</div>
                 {user?.fullname ?? user?.email}</Link>
 			{!isAuthPage ? <Link href="/pricing">Pricing</Link> : <Link href="/dashboard">Dashboard</Link>}

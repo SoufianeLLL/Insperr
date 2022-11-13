@@ -56,7 +56,8 @@ export default async function handler(req, res) {
 											...quote?.tweet_metadata, 
 											status: 'publish',
 											tweet_id: createdTweet.id ?? null,
-											twitted_at: ((new Date()).toISOString()).toLocaleString()
+											twitted_at: ((new Date()).toISOString()).toLocaleString(),
+											tweets: 1
 										}
 									})
 									.eq('id', quote?.id)

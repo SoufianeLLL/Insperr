@@ -1,5 +1,5 @@
-import Image from "next/image"
 import { Tooltip } from "flowbite-react"
+import AvatarContainer from "@/components/Containers/AvatarContainer"
 
 
 const Quote = ({ quote }) => {
@@ -9,25 +9,7 @@ const Quote = ({ quote }) => {
 			<div className="w-full">
 				<div className="w-full flex items-center gap-x-4">
 					<div className="flex-none inherit">
-						{quote?.avatar ? 
-							<Image 
-								alt="avatar"
-								className="inline-block rounded-full"
-								src={quote?.avatar}
-								blurDataURL={'../../public/images/avatar.jpg'} 
-								unoptimized={true} 
-								height={50}
-								width={50} />
-						:
-							<Image 
-								alt="avatar"
-								className="inline-block rounded-full"
-								src={require('../../public/images/avatar.jpg')} 
-								placeholder="blur"
-								unoptimized={true} 
-								height={50}
-								width={50} />
-							}
+						<AvatarContainer avatar={quote?.avatar} width={50} height={50} />
 					</div>
 					<div className="w-full shrink">
 						<div className="w-full text-xl font-semibold flex items-center gap-x-2">
@@ -47,13 +29,17 @@ const Quote = ({ quote }) => {
 							#{tag}</span>
 					})}
 				</div>}
-				<div className="w-full inline-block mt-3 flex items-center gap-x-12">
+				<div className="w-full inline-block mt-3 flex items-center justify-between pr-5">
 					<Tooltip content="Add to Bookmarks">
 						<span><svg className="cursor-pointer w-5 h-5 text-slate-400 dark:text-zinc-600 hover:text-primary-500" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M5 1v21l7-5 7 5V1z"></path></svg></span>
 					</Tooltip>
 					<Tooltip content="Retweet">
 						<div><svg className="cursor-pointer w-6 h-6 text-slate-400 dark:text-zinc-600 hover:text-primary-500" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M5 10v7h10.797l1.594 2h-14.391v-9h-3l4-5 4 5h-3zm14 4v-7h-10.797l-1.594-2h14.391v9h3l-4 5-4-5h3z"/></svg></div>
 					</Tooltip>
+					<Tooltip content="Clone">
+						<div><svg className="text-slate-400 dark:text-zinc-600 hover:text-primary-500 cursor-pointer w-6 h-6" fill="none" stroke="currentColor" width="24" height="24" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></div>
+					</Tooltip>
+					<div className="blank"></div>
 				</div>
 			</div>
 		</div>

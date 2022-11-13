@@ -1,6 +1,6 @@
-import useSWR, { useSWRConfig } from "swr"
+import useSWR from "swr"
 import { useState } from "react"
-import Skeleton from "@/components/Skeleton"
+import { Skeleton } from "@/components/Skeleton"
 import ShowToast from "@/components/ShowToast"
 import AuthenticatedLayout from "@/components/AuthenticatedLayout"
 import QuoteContainer from "@/components/Containers/QuoteContainer"
@@ -8,9 +8,7 @@ import QuoteContainer from "@/components/Containers/QuoteContainer"
 
 const BookmarksPage = () => {
 
-	const { mutate } = useSWRConfig()
-	let url = `/api/saves?action=Read`, 
-		{ isValidating, data: CustomQuotes } = useSWR(url)
+	let { isValidating, data: CustomQuotes, mutate: mutateSaves } = useSWR(`/api/saves?action=Read`)
 
 	const [Callback, setCallback] = useState({ status: null, text: null })
 
@@ -32,7 +30,7 @@ const BookmarksPage = () => {
 										key={i} 
 										id={i} 
 										quote={quote} 
-										mutate={(id) => mutate(url)}
+										mutate={(id) => mutateSaves()}
 										callback={(e) => setCallback(e)} />
 								})}
 							</div> : 

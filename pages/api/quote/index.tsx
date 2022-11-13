@@ -36,7 +36,7 @@ export default async function handler(req, res) {
 					.limit(+(number) ?? 12)
 					.range(from, to)
 	
-				result = { quotes: userQuotes, count, page: to }
+				result = { quotes: userQuotes, count, page: _page+1 }
 				break;
 		}
 	}

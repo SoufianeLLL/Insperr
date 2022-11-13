@@ -7,7 +7,7 @@ import AuthenticatedLayout from "@/components/AuthenticatedLayout"
 import QuoteContainer from "@/components/Containers/QuoteContainer"
 import BlueButton from "@/components/BlueButton"
 import ShowToast from "@/components/ShowToast"
-import Skeleton from "@/components/Skeleton"
+import { Skeleton } from "@/components/Skeleton"
 import Loading from "@/components/Loading"
 
 

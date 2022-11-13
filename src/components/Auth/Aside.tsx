@@ -1,16 +1,19 @@
 import { useCallback, useState } from 'react'
 import Link from "next/link"
-import Image from "next/image"
+import { Modal } from "flowbite-react"
 import { useSessionContext } from "@supabase/auth-helpers-react"
 import { useSignOutMutation } from "@/lib/api/auth"
+import AvatarContainer from '@/components/Containers/AvatarContainer'
+import GenerateTweet from '@/components/Containers/GenerateTweet'
 import BlueButton from "@/components/BlueButton"
 import Logo from '@/components/Logo'
 
 
-const UserSidebar = ({ user, router }) => {
+const Aside = ({ user, router }) => {
 	
 	const { supabaseClient } = useSessionContext()
 
+	const [showGenerator, setShowGenerator] = useState(false)
 	const [toggleUserMenu, setToggleUserMenu] = useState(false)
 	const { mutate: signOut } = useSignOutMutation()
 	
@@ -19,7 +22,7 @@ const UserSidebar = ({ user, router }) => {
 	}, [])
 
 	return <>
-		<aside className="fixed bg-white dark:text-white dark:bg-black dark:border-black z-10 top-0 py-3 px-5 flex flex-none flex-col justify-between h-screen border-r border-slate-100 w-24 md:w-72 overflow-hidden">
+		<aside className="fixed bg-white dark:text-white dark:bg-black dark:border-zinc-900 z-10 top-0 py-3 px-5 flex flex-none flex-col justify-between h-screen border-r border-slate-100 w-24 md:w-72 overflow-hidden">
 			<div>
 				<div>
 					<Link href="/dashboard" className="transition-all mt-2 inline-block">
@@ -30,7 +33,15 @@ const UserSidebar = ({ user, router }) => {
 						<Link href="/dashboard" className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === 'dashboard' ? 'font-semibold' : ''} inline-block w-full nav-link dark:text-white text-black group`}>
                             <div className="px-4 md:pl-4 md:pr-6 py-4 md:py-3 inline-block rounded-full w-auto">
 								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" strokeLinejoin="round" strokeWidth="2" d="M3 6.2c0-1.12 0-1.68.218-2.108a2 2 0 0 1 .874-.874C4.52 3 5.08 3 6.2 3h.6c1.12 0 1.68 0 2.108.218a2 2 0 0 1 .874.874C10 4.52 10 5.08 10 6.2v.6c0 1.12 0 1.68-.218 2.108a2 2 0 0 1-.874.874C8.48 10 7.92 10 6.8 10h-.6c-1.12 0-1.68 0-2.108-.218a2 2 0 0 1-.874-.874C3 8.48 3 7.92 3 6.8v-.6zm11 0c0-1.12 0-1.68.218-2.108a2 2 0 0 1 .874-.874C15.52 3 16.08 3 17.2 3h.6c1.12 0 1.68 0 2.108.218a2 2 0 0 1 .874.874C21 4.52 21 5.08 21 6.2v.6c0 1.12 0 1.68-.218 2.108a2 2 0 0 1-.874.874C19.48 10 18.92 10 17.8 10h-.6c-1.12 0-1.68 0-2.108-.218a2 2 0 0 1-.874-.874C14 8.48 14 7.92 14 6.8v-.6zm-11 11c0-1.12 0-1.68.218-2.108a2 2 0 0 1 .874-.874C4.52 14 5.08 14 6.2 14h.6c1.12 0 1.68 0 2.108.218a2 2 0 0 1 .874.874C10 15.52 10 16.08 10 17.2v.6c0 1.12 0 1.68-.218 2.108a2 2 0 0 1-.874.874C8.48 21 7.92 21 6.8 21h-.6c-1.12 0-1.68 0-2.108-.218a2 2 0 0 1-.874-.874C3 19.48 3 18.92 3 17.8v-.6zm11 0c0-1.12 0-1.68.218-2.108a2 2 0 0 1 .874-.874C15.52 14 16.08 14 17.2 14h.6c1.12 0 1.68 0 2.108.218a2 2 0 0 1 .874.874C21 15.52 21 16.08 21 17.2v.6c0 1.12 0 1.68-.218 2.108a2 2 0 0 1-.874.874C19.48 21 18.92 21 17.8 21h-.6c-1.12 0-1.68 0-2.108-.218a2 2 0 0 1-.874-.874C14 19.48 14 18.92 14 17.8v-.6z"></path></svg>
-								<span className="hidden md:block float-left ml-4">Dashboard</span>
+								<span className="hidden md:block float-left ml-4">Home</span>
+							</div>
+                        </Link>
+					</li>
+					<li className="-mt-2">
+						<Link href="/dashboard/analytics" className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === 'dashboard/analytics' ? 'font-semibold' : ''} inline-block w-full nav-link dark:text-white text-black group`}>
+                            <div className="px-4 md:pl-4 md:pr-6 py-4 md:py-3 inline-block rounded-full w-auto">
+								<svg className="w-6 h-6 float-left" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+								<span className="hidden md:block float-left ml-4">Analytics</span>
 							</div>
                         </Link>
 					</li>
@@ -47,14 +58,6 @@ const UserSidebar = ({ user, router }) => {
                             <div className="px-4 md:pl-4 md:pr-6 py-4 md:py-3 inline-block rounded-full w-auto">
 								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M5 1v21l7-5 7 5V1z"></path></svg>
 								<span className="hidden md:block float-left ml-4">Bookmarks</span>
-							</div>
-                        </Link>
-					</li>
-					<li className="-mt-2">
-						<Link href={`/dashboard/user/results`} className={`${(router.pathname)?.replace(/^\/|\/$/g, '') === `dashboard/user/results` ? 'font-semibold' : ''} inline-block w-full nav-link dark:text-white text-black group`}>
-                            <div className="px-4 md:pl-4 md:pr-6 py-4 md:py-3 inline-block rounded-full w-auto">
-								<svg className="w-6 h-6 float-left" fill="none" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M16 3h5v20H3V3h5m0-2h8v5H8V1z"></path></svg>
-								<span className="hidden md:block float-left ml-4">Results</span>
 							</div>
                         </Link>
 					</li>
@@ -88,7 +91,17 @@ const UserSidebar = ({ user, router }) => {
 						} smallSize={false} url="/dashboard/user/g" />
 					</li>
 					<li className="hidden md:block">
-						<BlueButton text="Generate" smallSize={false} url="/dashboard/user/g" />
+						<div className="w-full rounded-full" onClick={() => setShowGenerator(true)}>
+							<BlueButton text="Generate" smallSize={false} isLink={false} />
+						</div>
+						<Modal show={showGenerator} size="xl" popup={true} onClose={() => setShowGenerator(!showGenerator)}>
+							<div className="dark:bg-zinc-800 bg-white">
+								<Modal.Header />
+								<Modal.Body>
+									<GenerateTweet user={user} />
+								</Modal.Body>
+							</div>
+						</Modal>
 					</li>
 				</ul>
 			</div>
@@ -104,28 +117,15 @@ const UserSidebar = ({ user, router }) => {
 					</div>
 				</>}
 				<button onClick={() => setToggleUserMenu(true)} className="p-2 md:px-4 md:py-3 w-full flex gap-x-2 items-center dark:hover:bg-zinc-900 hover:bg-slate-200 rounded-full text-sm text-black dark:text-white text-left">
-					{user?.user_metadata?.avatar_url ? 
-					<Image 
-						alt="avatar"
-						className="inline-block rounded-full"
-						src={user?.user_metadata?.avatar_url}
-						blurDataURL={'../../../public/images/avatar.jpg'} 
-						unoptimized={true} 
-						height={40}
-						width={40} />
-					:
-					<Image 
-						alt="avatar"
-						className="inline-block rounded-full"
-						src={require('../../../public/images/avatar.jpg')} 
-						placeholder="blur"
-						unoptimized={true} 
-						height={40}
-						width={40} />
-					}
-					<div className="hidden md:block">
-						<div className="font-semibold">{user?.user_metadata?.full_name}</div>
-						<div className="text-slate-600 dark:text-zinc-700">@{user?.user_metadata?.user_name}</div>
+					<AvatarContainer avatar={user?.user_metadata?.avatar_url} width={40} height={40} />
+					<div className="hidden md:block w-full">
+						{user?.user_metadata?.full_name ? <>
+							<div className="font-semibold">{user?.user_metadata?.full_name}</div>
+							<div className="text-slate-600 dark:text-zinc-700">@{user?.user_metadata?.user_name}</div>
+						</> : <div className="w-full">
+								<div className="w-11/12 h-6 rounded-full bg-slate-100 dark:bg-zinc-800"></div>
+								<div className="w-9/12 mt-1 h-4 rounded-full bg-slate-100 dark:bg-zinc-800"></div>
+							</div> }
 					</div>
 				</button>
 			</div>
@@ -133,4 +133,4 @@ const UserSidebar = ({ user, router }) => {
 	</>;
 }
 
-export default UserSidebar
+export default Aside

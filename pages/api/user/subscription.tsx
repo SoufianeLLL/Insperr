@@ -1,13 +1,14 @@
-import { withApiAuth } from "@supabase/auth-helpers-nextjs"
+import { NextApiHandler } from 'next'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 
-
-export default withApiAuth(async function handler(req, res, supabaseServerClient) {
+const ProtectedRoute: NextApiHandler = async (req, res) => {
 	if (req.method === 'GET') {
-
-		const { data: { user } } = await supabaseServerClient.auth.getUser()
+	
+		const supabase = createServerSupabaseClient({ req, res }) // Create authenticated Supabase Client
+		const { data: { user } } = await supabase.auth.getUser()
 
 		if (user?.id) {
-			const { data: subscription, error } = await supabaseServerClient
+			const { data: subscription, error } = await supabase
 				.from('subscriptions')
 				.select()
 				.eq('user_id', user?.id)
@@ -31,4 +32,6 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 			message: 'Method Not Allowed'
 		})
 	}
-})
+}
+
+export default ProtectedRoute

@@ -1,10 +1,11 @@
-import { withApiAuth } from "@supabase/auth-helpers-nextjs"
+import { NextApiHandler } from 'next'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 
-
-export default withApiAuth(async function handler(req, res, supabaseServerClient) {
+const ProtectedRoute: NextApiHandler = async (req, res) => {
 	if (req.method === 'GET') {
 
-		const { data: { user } } = await supabaseServerClient.auth.getUser()
+		const supabase = createServerSupabaseClient({ req, res }) // Create authenticated Supabase Client
+		const { data: { user } } = await supabase.auth.getUser()
 		const { action, quote_id } = req?.query
 
 
@@ -12,15 +13,16 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 			switch (action) {
 				case 'Read':
 					if (user?.id) {
-						const { data: _saves, error } = await supabaseServerClient
+						const { data: _saves, error } = await supabase
 							.from('saves')
-							.select('quotes(id, content, type, topics), users(fullname, username, avatar, is_verified)')
+							.select('quotes(id, content, type, topics, keyword), users(fullname, username, avatar, is_verified)')
 							.eq('user_id', user?.id)
 						
 						const saves = _saves ? _saves?.map((quote) => {
 							return {
 								id: quote?.quotes['id'],
 								type: quote?.quotes['type'],
+								keyword: quote?.quotes['keyword'],
 								topics: quote?.quotes['topics'],
 								content: quote?.quotes['content'],
 								fullname: quote?.users['fullname'],
@@ -38,7 +40,7 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 				case 'Delete':
 					if (user?.id && quote_id) {
 						// check if the user already saved the Quote then delete it
-						const { count } = await supabaseServerClient
+						const { count } = await supabase
 							.from('saves')
 							.select('*', { count: 'exact', head: true })
 							.eq('user_id', user?.id)
@@ -46,7 +48,7 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 
 						if (count) {
 							// Save the new Quote
-							await supabaseServerClient
+							await supabase
 								.from('saves')
 								.delete()
 								.eq('user_id', user?.id)
@@ -64,7 +66,7 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 				case 'Insert':
 					if (user?.id && quote_id) {
 						// check if the user already saved the Quote
-						const { count } = await supabaseServerClient
+						const { count } = await supabase
 							.from('saves')
 							.select('*', { count: 'exact', head: true })
 							.eq('user_id', user?.id)
@@ -72,7 +74,7 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 
 						if (!count) {
 							// Save the new Quote
-							await supabaseServerClient
+							await supabase
 								.from('saves')
 								.insert({
 									user_id: user?.id,
@@ -104,4 +106,6 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 			message: 'Method Not Allowed'
 		})
 	}
-})
+}
+
+export default ProtectedRoute

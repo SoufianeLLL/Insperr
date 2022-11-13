@@ -1,15 +1,16 @@
-import { withApiAuth } from "@supabase/auth-helpers-nextjs"
 import stripe from "@/utils/stripejs"
+import { NextApiHandler } from 'next'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 
-
-export default withApiAuth(async function handler(req, res, supabaseServerClient) {
+const ProtectedRoute: NextApiHandler = async (req, res) => {
 	if (req.method === 'GET') {
 
-		const { data: { user } } = await supabaseServerClient.auth.getUser()
+		const supabase = createServerSupabaseClient({ req, res }) // Create authenticated Supabase Client
+		const { data: { user } } = await supabase.auth.getUser()
 		let session
 
 		if (user?.id) {
-			const { data: { stripe_customer_id }, error } = await supabaseServerClient
+			const { data: { stripe_customer_id }, error } = await supabase
 				.from('users')
 				.select('stripe_customer_id')
 				.single()
@@ -41,4 +42,6 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 			message: 'Method Not Allowed'
 		})
 	}
-})
+}
+
+export default ProtectedRoute

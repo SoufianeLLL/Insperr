@@ -1,9 +1,11 @@
-import { withApiAuth } from '@supabase/auth-helpers-nextjs'
+import { NextApiHandler } from 'next'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 
 
-export default withApiAuth(async function handler(req, res, supabaseServerClient) {
+const ProtectedRoute: NextApiHandler = async (req, res) => {
 
-	const { data: { user } } = await supabaseServerClient.auth.getUser()
+	const supabase = createServerSupabaseClient({ req, res }) // Create authenticated Supabase Client
+	const { data: { user } } = await supabase.auth.getUser()
 	const { action, number=10, page } = req?.query
 
 	let result
@@ -19,25 +21,25 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 		switch (action) {
 			case 'getPublicQuotes':
 				// get lastest quotes from Supabase
-				const { data: publicQuotes, count: p_count } = await supabaseServerClient
+				const { data: publicQuotes, count: p_count } = await supabase
 					.from('public_quotes')
 					.select('*', { count: 'exact' })
 					.order('id', { ascending: false })
 					.range(from, to)
 	
-				result = { quotes: publicQuotes, count: p_count, page: to }
+				result = { quotes: publicQuotes, count: p_count, page: _page+1 }
 				break;
 	
 			case 'getQuotes':
 				// get lastest quotes from Supabase
-				const { data: latestQuotes, count: l_count } = await supabaseServerClient
+				const { data: latestQuotes, count: l_count } = await supabase
 					.from('quotes')
 					.select('*, users(fullname, username, avatar, is_verified)', { count: 'exact' })
 					.eq('user_id', user?.id)
 					.order('id', { ascending: false })
 					.range(from, to)
 	
-				result = { quotes: latestQuotes, count: l_count, page: to }
+				result = { quotes: latestQuotes, count: l_count, page: _page+1 }
 				break;
 		}
 	}
@@ -49,4 +51,6 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 	}
 
 	res.status(200).json(result)
-})
+}
+
+export default ProtectedRoute

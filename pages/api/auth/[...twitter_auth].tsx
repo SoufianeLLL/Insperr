@@ -1,36 +1,40 @@
 
 import Cookies from 'cookies'
+import { NextApiHandler } from 'next'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { withApiAuth } from '@supabase/auth-helpers-nextjs'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { twitterClient, twitterUserClient, twitterUserClientByToken, twitterUserClientForUserId } from '@/utils/twitter-client'
 import { getIPAddressHash } from '@/lib/global'
 
 
-export default withApiAuth(async function handler(req: NextApiRequest, res: NextApiResponse, supabaseServerClient) {
+const ProtectedRoute: NextApiHandler = async (req, res) => {
+
+	const supabase = createServerSupabaseClient({ req, res }) // Create authenticated Supabase Client
 	const { twitter_auth: slug } = req.query
 	const path = (slug as string[] || []).join('/')
 
 	switch (path) {
 		case 'twitter/login':
-			return await handleTwitterLogin(req, res, supabaseServerClient)
+			return await handleTwitterLogin(req, res, supabase)
 		case 'twitter/callback':
-			return await handleTwitterCallback(req, res, supabaseServerClient)
+			return await handleTwitterCallback(req, res, supabase)
 		case 'twitter/logout':
-			return await handleTwitterLogout(req, res, supabaseServerClient)
+			return await handleTwitterLogout(req, res, supabase)
 		case 'twitter/user':
-			return await handleTwitterGetUser(req, res, supabaseServerClient)
+			return await handleTwitterGetUser(req, res, supabase)
 		// case 'twitter/timeline':
-		// 	return await handleTwitterGetUserTimeline(req, res, supabaseServerClient)
+		// 	return await handleTwitterGetUserTimeline(req, res, supabase)
 		default:
 			return res.status(404).end()
 	}
-})
+}
+export default ProtectedRoute
 
 
 /**
  * Generates Twitter authentication URL and temporarily stores `oauth_token` in database. 
  */
-export const handleTwitterLogin = async (req: NextApiRequest, res: NextApiResponse, supabaseServerClient) => {
+export const handleTwitterLogin = async (req: NextApiRequest, res: NextApiResponse, supabase) => {
 	// Determine Twitter Auth-Link
 	let authLink
 	try {
@@ -44,10 +48,10 @@ export const handleTwitterLogin = async (req: NextApiRequest, res: NextApiRespon
 	}
 
 	// Save temporary token to database
-	const { data: { user } } = await supabaseServerClient.auth.getUser()
+	const { data: { user } } = await supabase.auth.getUser()
 	const user_id = user?.id
 	const ip_address_hash = getIPAddressHash(req)
-	const { data: token, error } = await supabaseServerClient
+	const { data: token, error } = await supabase
 		.from('tokens')
 		.insert({
 			redirect: req.body?.redirect,
@@ -74,7 +78,7 @@ export const handleTwitterLogin = async (req: NextApiRequest, res: NextApiRespon
  * Handles Twitters authentication callback, fetches permanent access-tokens, 
  * and saves them to the database.
  */
-export const handleTwitterCallback = async (req: NextApiRequest, res: NextApiResponse, supabaseServerClient) => {
+export const handleTwitterCallback = async (req: NextApiRequest, res: NextApiResponse, supabase) => {
 	const oauth_token = req.query?.oauth_token as string
 	const oauth_verifier = req.query?.oauth_verifier as string
 	if (!oauth_token || !oauth_verifier) {
@@ -83,10 +87,10 @@ export const handleTwitterCallback = async (req: NextApiRequest, res: NextApiRes
 	}
 
 	// Get existing token from database
-	const { data: { user } } = await supabaseServerClient.auth.getUser()
+	const { data: { user } } = await supabase.auth.getUser()
 	const user_id = user?.id
 	const ip_address_hash = getIPAddressHash(req)
-	const { data: token, error } = await supabaseServerClient
+	const { data: token, error } = await supabase
 		.from('tokens')
 		.select('*')
 		.match({
@@ -110,14 +114,14 @@ export const handleTwitterCallback = async (req: NextApiRequest, res: NextApiRes
 
 
 		// Delete all existing with duplicate tokens
-		await supabaseServerClient
+		await supabase
 			.from('tokens')
 			.delete()
 			.neq('id', token.id)
 			.match({ access_token, access_secret })
 		
 		if (user_id) {
-			await supabaseServerClient
+			await supabase
 				.from('tokens')
 				.delete()
 				.neq('id', token.id)
@@ -125,7 +129,7 @@ export const handleTwitterCallback = async (req: NextApiRequest, res: NextApiRes
 		}
 
 		// Update with permanent token, delete temporary tokens
-		const { data: newToken, error } = await supabaseServerClient
+		const { data: newToken, error } = await supabase
 			.from('tokens')
 			.update({
 				access_token,
@@ -162,11 +166,11 @@ export const handleTwitterCallback = async (req: NextApiRequest, res: NextApiRes
 /**
  * Handles logout of twitter user and removes token from the database and cookie 
  */
-export const handleTwitterLogout = async (req: NextApiRequest, res: NextApiResponse, supabaseServerClient) => {
+export const handleTwitterLogout = async (req: NextApiRequest, res: NextApiResponse, supabase) => {
 	const cookies = new Cookies(req, res)
 	const tokenId = cookies.get('token_id')
 
-	const { error } = await supabaseServerClient
+	const { error } = await supabase
 		.from('tokens')
 		.delete()
 		.eq('id', tokenId)
@@ -174,7 +178,7 @@ export const handleTwitterLogout = async (req: NextApiRequest, res: NextApiRespo
 		.not('access_secret', 'is', null)
 
 	if (!error) {
-		await supabaseServerClient
+		await supabase
 			.from('users')
 			.update({
 				metadata: {
@@ -193,13 +197,13 @@ export const handleTwitterLogout = async (req: NextApiRequest, res: NextApiRespo
  * After a user has signed-up after authenticating with Twitter,
  * the existing token is assigned and persisted with the user-id.
  */
-export const autoAssignTokenToUser = async (req: NextApiRequest, res: NextApiResponse, userId: string, supabaseServerClient) => {
+export const autoAssignTokenToUser = async (req: NextApiRequest, res: NextApiResponse, userId: string, supabase) => {
 	const cookies = new Cookies(req, res)
 	const tokenId = cookies.get('token_id')
 	if (!userId || !tokenId) return
 
 	// Update token with user_id 
-	const { data: token, error } = await supabaseServerClient
+	const { data: token, error } = await supabase
 		.from('tokens')
 		.update({
 			user_id: userId,
@@ -223,7 +227,7 @@ export const autoAssignTokenToUser = async (req: NextApiRequest, res: NextApiRes
 /**
  * Returns authenticated twitter user (by token_id cookie)
  */
-export const handleTwitterGetUser = async (req: NextApiRequest, res: NextApiResponse, supabaseServerClient) => {
+export const handleTwitterGetUser = async (req: NextApiRequest, res: NextApiResponse, supabase) => {
 	const handleForbidden = () => {
 		const cookies = new Cookies(req, res)
 		cookies.set('token_id', null)
@@ -231,13 +235,13 @@ export const handleTwitterGetUser = async (req: NextApiRequest, res: NextApiResp
 	}
 
 	// Determine token either by token_id or logged-in user_id 
-	const { data: { user } } = await supabaseServerClient.auth.getUser()
+	const { data: { user } } = await supabase.auth.getUser()
 	let client = user ? await twitterUserClientForUserId(user.id) : await twitterUserClientByToken(req, res)
 
 	if (user && !client) {
 		client = await twitterUserClientByToken(req, res)
 		if (client) {
-			await autoAssignTokenToUser(req, res, user.id, supabaseServerClient)
+			await autoAssignTokenToUser(req, res, user.id, supabase)
 		}
 	}
 
@@ -253,7 +257,7 @@ export const handleTwitterGetUser = async (req: NextApiRequest, res: NextApiResp
 /**
  * Returns user timeline tweets
  */
-export const handleTwitterGetUserTimeline = async (req: NextApiRequest, res: NextApiResponse, supabaseServerClient) => {
+export const handleTwitterGetUserTimeline = async (req: NextApiRequest, res: NextApiResponse, supabase) => {
 	const handleForbidden = () => {
 		const cookies = new Cookies(req, res)
 		cookies.set('token_id', null)
@@ -261,13 +265,13 @@ export const handleTwitterGetUserTimeline = async (req: NextApiRequest, res: Nex
 	}
 
 	// Determine token either by token_id or logged-in user_id 
-	const { data: { user } } = await supabaseServerClient.auth.getUser()
+	const { data: { user } } = await supabase.auth.getUser()
 	let client = user ? await twitterUserClientForUserId(user.id) : await twitterUserClientByToken(req, res)
 
 	if (user && !client) {
 		client = await twitterUserClientByToken(req, res)
 		if (client) {
-			await autoAssignTokenToUser(req, res, user.id, supabaseServerClient)
+			await autoAssignTokenToUser(req, res, user.id, supabase)
 		}
 	}
 

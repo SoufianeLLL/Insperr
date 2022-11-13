@@ -1,8 +1,8 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn remove prisma
+  /usr/local/bin/node /usr/local/bin/yarn upgrade @supabase/aith-helpers-nextjs@0.5.1
 
 PATH: 
-  /usr/local/opt/openssl/bin:/Applications/MAMP/bin/php/php7.3.9/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/usr/local/opt/openssl@1.1/bin:/Users/xdev/flutter/bin:/Users/xdev/Library/Android/sdk/tools/bin:/Users/xdev/Library/Android/sdk/platform-tools:/Users/xdev/Library/Android/sdk/tools:/usr/local/opt/openssl@1.1/bin:/usr/local/opt/openldap/sbin:/usr/local/opt/openldap/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Wireshark.app/Contents/MacOS:/usr/local/opt/openssl/bin:/Applications/MAMP/bin/php/php7.3.9/bin:/opt/local/bin:/opt/local/sbin:/usr/local/opt/openssl@1.1/bin:/Users/xdev/flutter/bin:/Users/xdev/Library/Android/sdk/tools/bin:/Users/xdev/Library/Android/sdk/platform-tools:/Users/xdev/Library/Android/sdk/tools:/usr/local/opt/openldap/sbin:/usr/local/opt/openldap/bin
+  /opt/anaconda3/bin:/opt/anaconda3/condabin:/usr/local/opt/openssl/bin:/Applications/MAMP/bin/php/php7.3.9/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/usr/local/opt/openssl@1.1/bin:/Users/xdev/flutter/bin:/Users/xdev/Library/Android/sdk/tools/bin:/Users/xdev/Library/Android/sdk/platform-tools:/Users/xdev/Library/Android/sdk/tools:/usr/local/opt/openssl@1.1/bin:/usr/local/opt/openldap/sbin:/usr/local/opt/openldap/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Wireshark.app/Contents/MacOS
 
 Yarn version: 
   1.22.10
@@ -14,16 +14,17 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/rxjs/-/rxjs-7.5.7.tgz: ESOCKETTIMEDOUT
-      at ClientRequest.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141289:19)
+  Error: https://registry.yarnpkg.com/@supabase%2faith-helpers-nextjs: Not found
+      at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:66988:18)
+      at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:140662:22)
+      at Request.emit (node:events:513:28)
+      at Request.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141634:10)
+      at Request.emit (node:events:513:28)
+      at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141556:12)
       at Object.onceWrapper (node:events:627:28)
-      at ClientRequest.emit (node:events:513:28)
-      at TLSSocket.emitRequestTimeout (node:_http_client:814:9)
-      at Object.onceWrapper (node:events:627:28)
-      at TLSSocket.emit (node:events:525:35)
-      at TLSSocket.Socket._onTimeout (node:net:526:8)
-      at listOnTimeout (node:internal/timers:559:17)
-      at processTimers (node:internal/timers:502:7)
+      at IncomingMessage.emit (node:events:525:35)
+      at endReadableNT (node:internal/streams/readable:1358:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
 
 npm manifest: 
   {
@@ -36,11 +37,9 @@ npm manifest:
       "dev": "next dev -p 8088",
       "export": "next export",
       "build": "next build",
-      "start": "next start",
-      "db": "npx prisma studio"
+      "start": "next start"
     },
     "dependencies": {
-      "@prisma/client": "^4.3.1",
       "@stripe/stripe-js": "^1.42.0",
       "@supabase/auth-helpers-nextjs": "0.4.1",
       "@supabase/auth-helpers-react": "0.3.0",
@@ -51,7 +50,7 @@ npm manifest:
       "flowbite-react": "^0.3.2",
       "micro": "^9.4.1",
       "next": "13.0.0",
-      "next-themes": "^0.2.0",
+      "next-themes": "^0.2.1",
       "openai": "^3.0.0",
       "react": "^18.2.0",
       "react-cookie": "^4.1.1",
@@ -305,23 +304,6 @@ Lockfile:
     version "2.11.6"
     resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.6.tgz#cee20bd55e68a1720bdab363ecf0c821ded4cd45"
     integrity sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==
-  
-  "@prisma/client@^4.3.1":
-    version "4.5.0"
-    resolved "https://registry.yarnpkg.com/@prisma/client/-/client-4.5.0.tgz#f708549bee3da396d5741d846b4e4306b120210c"
-    integrity sha512-B2cV0OPI1smhdYUxsJoLYQLoMlLH06MUxgFUWQnHodGMX98VRVXKmQE/9OcrTNkqtke5RC+YU24Szxd04tZA2g==
-    dependencies:
-      "@prisma/engines-version" "4.5.0-43.0362da9eebca54d94c8ef5edd3b2e90af99ba452"
-  
-  "@prisma/engines-version@4.5.0-43.0362da9eebca54d94c8ef5edd3b2e90af99ba452":
-    version "4.5.0-43.0362da9eebca54d94c8ef5edd3b2e90af99ba452"
-    resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-4.5.0-43.0362da9eebca54d94c8ef5edd3b2e90af99ba452.tgz#5b7fae294ee9bd9790d0e7b7a0b0912e4222ac08"
-    integrity sha512-o7LyVx8PPJBLrEzLl6lpxxk2D5VnlM4Fwmrbq0NoT6pr5aa1OuHD9ZG+WJY6TlR/iD9bhmo2LNcxddCMr5Rv2A==
-  
-  "@prisma/engines@4.5.0":
-    version "4.5.0"
-    resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-4.5.0.tgz#82df347a893a5ae2a67707d44772ba181f4b9328"
-    integrity sha512-4t9ir2SbQQr/wMCNU4YpHWp5hU14J2m3wHUZnGJPpmBF8YtkisxyVyQsKd1e6FyLTaGq8LOLhm6VLYHKqKNm+g==
   
   "@stripe/stripe-js@^1.42.0":
     version "1.42.0"
@@ -1636,10 +1618,10 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.4.tgz#730b67e3cd09e2deacf03c027c81c9d9dbc5e8ab"
     integrity sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==
   
-  next-themes@^0.2.0:
-    version "0.2.0"
-    resolved "https://registry.npmjs.org/next-themes/-/next-themes-0.2.0.tgz"
-    integrity sha512-myhpDL4vadBD9YDSHiewqvzorGzB03N84e+3LxCwHRlM/hiBOaW+UsKsQojQAzC7fdcJA0l2ppveXcYaVV+hxQ==
+  next-themes@^0.2.1:
+    version "0.2.1"
+    resolved "https://registry.yarnpkg.com/next-themes/-/next-themes-0.2.1.tgz#0c9f128e847979daf6c67f70b38e6b6567856e45"
+    integrity sha512-B+AKNfYNIzh0vqQQKqQItTS8evEouKD7H5Hj3kmuPERwddR2TxvDSFZuTj6T7Jfn1oyeUyJMydPl1Bkxkh0W7A==
   
   next-tick@^1.1.0:
     version "1.1.0"
@@ -1878,13 +1860,6 @@ Lockfile:
       nanoid "^3.3.4"
       picocolors "^1.0.0"
       source-map-js "^1.0.2"
-  
-  prisma@^4.3.1:
-    version "4.5.0"
-    resolved "https://registry.yarnpkg.com/prisma/-/prisma-4.5.0.tgz#361ae3f4476d0821b97645e5da42975a7c2943bb"
-    integrity sha512-9Aeg4qiKlv9Wsjz4NO8k2CzRzlvS3A4FYVJ5+28sBBZ0eEwbiVOE/Jj7v6rZC1tFW2s4GSICQOAyuOjc6WsNew==
-    dependencies:
-      "@prisma/engines" "4.5.0"
   
   punycode@^2.1.0:
     version "2.1.1"

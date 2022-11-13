@@ -1,42 +1,118 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import useSWR from "swr"
 import Link from "next/link"
-import Image from "next/image"
 import { useRouter } from "next/router"
-import { Tooltip } from "flowbite-react"
+import { Dropdown, Modal, Tooltip } from "flowbite-react"
 import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
-import { topic, sluging } from '@/lib/validation'
-import AuthorContainer from '@/components/Containers/AuthorContainer'
+import { topic } from '@/lib/validation'
+import { Settings } from "@/utils/settings"
+import AvatarContainer from "@/components/Containers/AvatarContainer"
+import BlueButton from "@/components/BlueButton"
 import Loading from "@/components/Loading"
 
 
-const QuoteContainer = ({ id, quote, type='custom', withAuthor=true, classes=null, callback=null, mutate=null }) => {
 
-	const router = useRouter()
-	const { isLoading } = useSessionContext()
+const QuoteContainer = ({ id, quote, callback=null, mutate=null }) => {
+
 	const user = useUser()
-	const [bookmarksChanges, setBookmarksChanges] = useState({ status: false, id: null })
+	const router = useRouter()
+	const { isLoading: isUserLoading } = useSessionContext()
 
 	const topics = topic(quote?.topics)
+	let { isValidating: isCheckingSubscription, data: userData } = useSWR(`/api/user?action=getUserData`)
+
+	const [subs, setSubs] = useState(null)
+	const [tweeted, setTweeted] = useState(false)
+	const [tweeting, setTweeting] = useState(false)
+	const [cloning, setCloning] = useState(false)
+	const [confirm, setConfirm] = useState({ show: false, action: null })
+	const [bookmarksChanges, setBookmarksChanges] = useState({ status: false, id: null })
+
+
+	useEffect(() => {
+		if (isCheckingSubscription && !subs) {
+			let filter
+			if (userData?.subscription)
+				filter = Settings?.products.find((itm) => { return userData?.subscription?.product_id === itm.id })
+			else 
+				filter = Settings?.products.find((itm) => { return (itm.id)?.toLowerCase() === 'free' })
+
+			setSubs({
+				name: filter?.name,
+				quotes: filter?.quotes,
+				autoPost: filter?.autoPost,
+				priority_support: filter?.priority_support,
+				inProgress: {
+					api: filter?.api,
+					requests: filter?.requests
+				}
+			})
+		}
+	}, [subs])
+
+
+	const runTask = async (action) => {
+		setConfirm({ show: false, action: null })
+		if (action === 'retweet' || action === 'tweet') {
+			setTweeting(true)
+			const data = await fetch(`/api/quote/auth/tweet?quote_id=${quote?.id}&action=${action}`)
+			const res = await data?.json()
+			if (res?.error) {
+				callback({ status: 'error', text: res?.message })
+			}
+			else {
+				if (action === 'tweet') {
+					setTweeted(true)
+				}
+				callback({ status: 'success', text: `Quote has been ${action}ed successfully!` })
+			}
+			setTweeting(false)
+		}
+		else if (action === 'clone') {
+			if (quote?.topics && quote?.keyword) {
+				setCloning(true)
+				// Start cloning
+				const data = await fetch('/api/ai/new', {
+					method: 'POST',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						phrase: quote?.keyword ?? null,
+						category: quote?.topics ?? null,
+						characters: 250,
+					})
+				})
+				const res = await data?.json()
+				if (res) {
+					if (res?.status) {
+						callback({ status: 'error', text: res?.message })
+					}
+					else if(res?.resultId) {
+						// Redirect after quote created
+						router?.push(`/dashboard/user/status/${res?.resultId}`)
+					}
+				}
+				else {
+					callback({ status: 'error', text: 'There was an error during the process please contact the admin.' })
+				}
+				setTweeting(false)
+			}
+		}
+	}
 
 	const addQuote_toBookmarks = async (quote, id) => {
 		setBookmarksChanges({ status: true, id })
-		if (!isLoading) {
-			if (user) {
-				try {
-					const result = await fetch(`/api/saves?action=Insert&quote_id=${quote?.id}`)
-						.then((res) => res.json())
+		try {
+			const result = await fetch(`/api/saves?action=Insert&quote_id=${quote?.id}`)
+				.then((res) => res.json())
 
-					setBookmarksChanges({ status: false, id: null })
-					callback({ status: result?.status, text: result?.message })
-				}
-				catch(e) {
-					setBookmarksChanges({ status: false, id: null })
-				}
-			}
-			else {
-				alert('Login')
-				setBookmarksChanges({ status: false, id: null })
-			}
+			setBookmarksChanges({ status: false, id: null })
+			callback({ status: result?.status, text: result?.message })
+		}
+		catch(e) {
+			setBookmarksChanges({ status: false, id: null })
 		}
 	}
 
@@ -55,30 +131,12 @@ const QuoteContainer = ({ id, quote, type='custom', withAuthor=true, classes=nul
 		}
 	}
 	
-	return (
+	return <>
 		<div className={`quote_${quote?.id} inline-block mb-7 w-full max-w-2xl rounded-2xl shadow hover:shadow-lg border border-slate-100 p-5 md:p-8 dark:bg-zinc-900 dark:border-zinc-900 bg-white`}>
 			<div className="w-full">
 				<div className="w-full flex items-center gap-x-4">
 					<div className="flex-none inherit">
-						{quote?.avatar ? 
-							<Image 
-								alt="avatar"
-								className="inline-block rounded-full"
-								src={quote?.avatar}
-								blurDataURL={'../../../public/images/avatar.jpg'} 
-								unoptimized={true} 
-								height={50}
-								width={50} />
-						:
-							<Image 
-								alt="avatar"
-								className="inline-block rounded-full"
-								src={require('../../../public/images/avatar.jpg')} 
-								placeholder="blur"
-								unoptimized={true} 
-								height={50}
-								width={50} />
-							}
+						<AvatarContainer avatar={quote?.avatar} width={50} height={50} />
 					</div>
 					<div className="w-full shrink">
 						{quote?.username ? <>
@@ -91,20 +149,20 @@ const QuoteContainer = ({ id, quote, type='custom', withAuthor=true, classes=nul
 							</div>
 							<div className="text-base -mt-1 text-slate-600 dark:text-zinc-600 w-full">@{quote?.username}</div>
 						</> : <div className="w-40">
-								<div className="w-full h-6 rounded-full bg-zinc-100 dark:bg-zinc-800"></div>
-								<div className="w-10/12 mt-2 h-4 rounded-full bg-zinc-100 dark:bg-zinc-800"></div>
+								<div className="w-full h-6 rounded-full bg-slate-100 dark:bg-zinc-800"></div>
+								<div className="w-10/12 mt-2 h-4 rounded-full bg-slate-100 dark:bg-zinc-800"></div>
 							</div> }
 					</div>
 				</div>
 				<div className="w-full inline-block mt-3 text-base md:text-lg font-medium">{quote?.content}</div>
 				{topics && 
-				<div className="w-full inline-block mt-1 text-base md:text-lg">
-					{topics?.map((tag, i) => {
-						return <span key={i} className="tag float-left mr-4 mb-3 text-primary-500 cursor-pointer hover:text-primary-700 transition-all">
-							#{tag}</span>
-					})}
-				</div>}
-				<div className="w-full inline-block mt-3 flex items-center gap-x-12">
+					<div className="w-full inline-block mt-1 text-base md:text-lg">
+						{topics?.map((tag, i) => {
+							return <span key={i} className="tag float-left mr-4 mb-3 text-primary-500 cursor-pointer hover:text-primary-700 transition-all">
+								#{tag}</span>
+						})}
+					</div>}
+				<div className="w-full inline-block mt-3 flex items-center justify-between pr-5">
 					{bookmarksChanges?.status && bookmarksChanges?.id === id ? 
 						<div><Loading text="null" width={20} height={20} borderWidth={2} scpace="0" /></div>
 					:
@@ -114,16 +172,63 @@ const QuoteContainer = ({ id, quote, type='custom', withAuthor=true, classes=nul
 						</Tooltip>
 						:
 						<Tooltip content="Add to Bookmarks">
-							<div onClick={() => addQuote_toBookmarks(quote, id )}><svg className="cursor-pointer w-5 h-5 text-slate-400 dark:text-zinc-600 hover:text-primary-500" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M5 1v21l7-5 7 5V1z"></path></svg></div>
+							<div onClick={() => {
+								if (!isUserLoading && !user) router.push('/access')
+								else {
+									addQuote_toBookmarks(quote, id )
+								}
+							}}><svg className="cursor-pointer w-5 h-5 text-slate-400 dark:text-zinc-600 hover:text-primary-500" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M5 1v21l7-5 7 5V1z"></path></svg></div>
 						</Tooltip>
 					}
-					<Tooltip content="Retweet">
-						<div><svg className="cursor-pointer w-6 h-6 text-slate-400 dark:text-zinc-600 hover:text-primary-500" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M5 10v7h10.797l1.594 2h-14.391v-9h-3l4-5 4 5h-3zm14 4v-7h-10.797l-1.594-2h14.391v9h3l-4 5-4-5h3z"/></svg></div>
-					</Tooltip>
+					{tweeting ? 
+						<div><Loading text="null" width={20} height={20} borderWidth={2} scpace="0" /></div>
+					:
+						<Dropdown className="dark:bg-zinc-700" inline={true} arrowIcon={false} placement="top" label={<svg className="cursor-pointer w-6 h-6 text-slate-400 dark:text-zinc-600 hover:text-primary-500" fill="currentColor" width="24" height="24" viewBox="0 0 24 24"><path d="M5 10v7h10.797l1.594 2h-14.391v-9h-3l4-5 4 5h-3zm14 4v-7h-10.797l-1.594-2h14.391v9h3l-4 5-4-5h3z"/></svg>}>
+							<Dropdown.Item onClick={() => setConfirm({ show: true, action: 'tweet' })}>
+								Tweet
+							</Dropdown.Item>
+							<Dropdown.Item onClick={() => {
+								if (!isUserLoading && !user) router.push('/access')
+								else if (quote?.tweet_metadata?.tweet_id) {
+									setConfirm({ show: true, action: 'retweet' })
+								}
+							}}>
+								<div title={`${(!quote?.tweet_metadata?.tweet_id && !tweeted) && 'You can\'t retweet untweeted quote!'}`} className={`${(!quote?.tweet_metadata?.tweet_id && !tweeted) ? 'cursor-wait opacity-60' : ''}`}>Retweet</div>
+							</Dropdown.Item>
+						</Dropdown>
+					}
+					{cloning ? 
+						<div><Loading text="null" width={20} height={20} borderWidth={2} scpace="0" /></div>
+					:
+						<Tooltip content="Clone">
+							<div onClick={() => {
+								if (!isUserLoading && !user) router.push('/access')
+								else if (parseInt(userData?.generatedQuotes?.toLocaleString(), 10) < subs?.quotes) {
+									setConfirm({ show: true, action: 'clone' })
+								}
+							}}><svg className={`${parseInt(userData?.generatedQuotes?.toLocaleString(), 10) < subs?.quotes ? 'text-slate-400 dark:text-zinc-600 hover:text-primary-500' : 'text-slate-200 dark:text-zinc-800'} cursor-pointer w-6 h-6`} fill="none" stroke="currentColor" width="24" height="24" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></div>
+						</Tooltip>
+					}
+					<div className="blank"></div>
 				</div>
 			</div>
 		</div>
-	)
+		<Modal show={confirm?.show} size="md" popup={true} onClose={() => setConfirm({ show: false, action: null })}>
+			<Modal.Header />
+			<Modal.Body>
+				<div className="text-center w-full">
+					<svg className="w-24 h-24 text-slate-200 dark:text-zinc-900 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+					<div className="mb-5 text-lg md:text-xl font-normal">
+						Are you sure you want to {confirm?.action === 'retweet' ? 'retweet the quote?' : `clone the quote? You still have ${subs?.quotes - parseInt(userData?.generatedQuotes?.toLocaleString(), 10)} quotes remaining.`}
+					</div>
+					<div className="flex justify-center">
+						<div onClick={() => runTask(confirm?.action)} className="rounded-full">
+							<BlueButton fullWidth={false} text="Yes, I'm sure" isLink={false} /></div>
+					</div>
+				</div>
+			</Modal.Body>
+		</Modal>
+	</>
 }
 
 export default QuoteContainer

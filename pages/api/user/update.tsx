@@ -1,22 +1,22 @@
-import { withApiAuth } from "@supabase/auth-helpers-nextjs"
-import supabaseAdmin from "@/utils/supabase-admin"
+import { NextApiHandler } from 'next'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 
-
-export default withApiAuth(async function handler(req, res, supabaseServerClient) {
+const ProtectedRoute: NextApiHandler = async (req, res) => {
 	if (req.method === 'POST') {
-
-		const { data: { user } } = await supabaseServerClient.auth.getUser()
+	
+		const supabase = createServerSupabaseClient({ req, res }) // Create authenticated Supabase Client
+		const { data: { user } } = await supabase.auth.getUser()
 		const { action, params } = req.body
 
 		if (action === 'changeUsername') {
 			if (user?.id && params?.username && params?.user_metadata) {
-				const { error } = await supabaseServerClient
+				const { error } = await supabase
 					.from('users')
 					.update({ username: params?.username })
 					.eq('id', user?.id)
 	
 				if (!error) {
-					await supabaseAdmin.auth.admin.updateUserById(
+					await supabase.auth.admin.updateUserById(
 						user?.id, { user_metadata: { ...params?.user_metadata, username: params?.username } }
 					)
 					return res.status(200).json({ 
@@ -29,13 +29,13 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
 	
 		else if (action === 'changeEmail') {
 			if (user?.id && params?.email) {
-				const { error } = await supabaseServerClient
+				const { error } = await supabase
 					.from('users')
 					.update({ email: params?.email })
 					.eq('id', user?.id)
 	
 				if (!error) {
-					await supabaseAdmin.auth.admin.updateUserById(
+					await supabase.auth.admin.updateUserById(
 						user?.id, { email: params?.email }
 					)
 					return res.status(200).json({ 
@@ -61,4 +61,6 @@ export default withApiAuth(async function handler(req, res, supabaseServerClient
             message: 'Method Not Allowed'
         })
 	}
-})
+}
+
+export default ProtectedRoute

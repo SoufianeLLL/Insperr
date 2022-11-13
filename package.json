@@ -11,9 +11,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "@prisma/client": "^4.3.1",
     "@stripe/stripe-js": "^1.42.0",
-    "@supabase/auth-helpers-nextjs": "0.4.1",
+    "@supabase/auth-helpers-nextjs": "0.5.1",
     "@supabase/auth-helpers-react": "0.3.0",
     "@supabase/supabase-js": "2.0.4",
     "autoprefixer": "^10.4.8",

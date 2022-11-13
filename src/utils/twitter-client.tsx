@@ -1,7 +1,7 @@
 import Cookies from 'cookies'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { TwitterApi, TwitterApiTokens } from 'twitter-api-v2'
-import { withApiAuth } from '@supabase/auth-helpers-nextjs'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import supabaseAdmin from '@/utils/supabase-admin'
 import { getIPAddressHash } from '@/lib/global'
 
@@ -69,10 +69,10 @@ export const twitterUserClientForUserId = async (userId: string): Promise<Twitte
 }
 
 
-export const appropriateTwitterUserClient = withApiAuth(async (req: NextApiRequest, res: NextApiResponse, supabaseServerClient): Promise<TwitterApi | null> => {
-	const { data: { user } } = await supabaseServerClient.auth.getUser()
+export const appropriateTwitterUserClient = async (req: NextApiRequest, res: NextApiResponse): Promise<TwitterApi | null> => {
+	const supabase = createServerSupabaseClient({ req, res }) // Create authenticated Supabase Client
+	const { data: { user } } = await supabase.auth.getUser()
 	return user
 		? await twitterUserClientForUserId(user.id)
 		: await twitterUserClientByToken(req, res)
-})
-
+}

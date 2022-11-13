@@ -264,6 +264,40 @@ body {
 	background-color: #E2E8F0;
 }
 
+@media (min-width: 768px) {
+	.relative.rounded-lg .p-6.pt-0 {
+		padding: 0 2.5rem 2.5rem !important;
+	}
+}
+.relative.rounded-lg .p-6.pt-0 {
+	padding: 1.25rem;
+}
+.relative.rounded-lg {
+	border-radius: 1rem;
+	overflow: hidden;
+}
+
+.accordion .divide-y button:nth-child(n+2) {
+	margin-top: 1.5rem;
+}
+.accordion .divide-y button {
+	color: inherit !important;
+	border: none !important;
+	padding: 1rem 0;
+}
+.accordion .divide-y h2 {
+	color: inherit !important;
+	font: inherit !important;
+} 
+.accordion .divide-y > div {
+	border: none !important;
+	background: transparent !important;
+	padding: 0;
+}
+.accordion .divide-y {
+	border: none !important;
+}
+
 /* Loading */
 .lg-lds.lds-ring {
 	display: inherit;
