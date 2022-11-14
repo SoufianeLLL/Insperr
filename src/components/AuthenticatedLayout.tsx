@@ -20,11 +20,6 @@ const AuthenticatedLayout = ({ children, padding=true, title="Insperr – The Mo
 
 	useEffect(() => {
 		setMounted(true)
-		if ((router.pathname)?.replace(/^\/|\/$/g, '') === 'dashboard/analytics' || 
-			(router.pathname)?.replace(/^\/|\/$/g, '') === 'dashboard/bookmarks' || 
-			(router.pathname)?.replace(/^\/|\/$/g, '') === 'dashboard/collection') {
-			document.body.classList.add("bg-slate-100")
-		}
 		const keyDownHandler = (e) => {
 			if (e.shiftKey === true && router.pathname?.replace(/^\/|\/$/g, '') !== 'dashboard/user/account') {
 				switch (e?.key?.toLowerCase()) {
@@ -68,7 +63,6 @@ const AuthenticatedLayout = ({ children, padding=true, title="Insperr – The Mo
 		}
 		document.addEventListener("keydown", keyDownHandler)
 		return () => {
-			document.body.classList.remove("bg-slate-100")
 			document.removeEventListener("keydown", keyDownHandler)
 		}
 	}, [])
