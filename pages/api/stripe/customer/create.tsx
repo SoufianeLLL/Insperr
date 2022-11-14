@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid'
+// import { v4 as uuidv4 } from 'uuid'
 import stripe from "@/utils/stripejs"
 import supabaseAdmin from '@/utils/supabase-admin'
 
@@ -16,7 +16,7 @@ export default async function handler(req, res) {
 		.from('users')
 		.update({
 			stripe_customer_id: customer.id,
-			api_key: uuidv4.replaceAll('-', '')
+			// api_key: uuidv4.replaceAll('-', '')
 		})
 		.eq('id', req.body.record.id)
 
