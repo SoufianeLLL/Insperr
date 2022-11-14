@@ -10,7 +10,7 @@ export default async function handler(req, res) {
 	await supabaseAdmin
 		.from('logs')
 		.insert({
-			log: (req.body.record)?.toString()
+			log: JSON.stringify(req.body.record)
 		})
 
 	const customer = await stripe.customers.create({
