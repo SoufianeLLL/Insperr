@@ -17,7 +17,7 @@ const CollectionsPage = () => {
 
 	const { ref, inView } = useInView()
 
-	const [Callback, setCallback] = useState({ status: null, text: null })
+	const [callbackToast, setCallbackToast] = useState({ status: null, text: null })
 	let { isValidating: isCheckingSubscription, data: isSubscribed } = useSWR(`/api/user?action=checkUserSubscription`)
 
 	useEffect(() => {
@@ -40,8 +40,8 @@ const CollectionsPage = () => {
     )
 
 	return <>
-		{(Callback?.status && Callback?.text) && 
-			<ShowToast onClick={(e) => setCallback(e)} type={Callback?.status} text={Callback?.text} />}
+		{(callbackToast?.status && callbackToast?.text) && 
+			<ShowToast onClick={(e) => setCallbackToast(e)} type={callbackToast?.status} text={callbackToast?.text} />}
 		<section className="w-full max-w-6xl">
 			<div className="w-full mb-8">
 				<div className="heading w-full bg-slate-900 text-white p-5 md:p-10 rounded-xl">
@@ -73,7 +73,7 @@ const CollectionsPage = () => {
 						<div className="w-full columns-1 lg:columns-2 gap-6 py-2">
 							{Pagination?.pages?.map((page, i) => {
 								return page?.quotes?.map((quote, i) => {
-									return <QuoteContainer key={i} id={i} quote={quote} callback={(e) => setCallback(e)} />
+									return <QuoteContainer key={i} id={i} quote={quote} callback={(e) => setCallbackToast(e)} />
 								})
 							})}
 						</div>

@@ -18,7 +18,7 @@ const Status = ({ resultId }) => {
 	let { isValidating: isCheckingSubscription, data: userData } = useSWR(`/api/user?action=getUserData`)
 	
 	const [subs, setSubs] = useState(null)
-	const [Callback, setCallback] = useState({ status: null, text: null })
+	const [callbackToast, setCallbackToast] = useState({ status: null, text: null })
 	const isCheckingData = !quote && !error
 
 
@@ -44,8 +44,8 @@ const Status = ({ resultId }) => {
 	}, [subs])
 
 	return <>
-		{(Callback?.status && Callback?.text) && 
-			<ShowToast onClick={(e) => setCallback(e)} type={Callback?.status} text={Callback?.text} />}
+		{(callbackToast?.status && callbackToast?.text) && 
+			<ShowToast onClick={(e) => setCallbackToast(e)} type={callbackToast?.status} text={callbackToast?.text} />}
 		<section className="w-full h-screen relative overflow-hidden bg-white dark:bg-black">
 			<div className="w-full h-full max-w-7xl md:flex">
 				<div className="w-full h-full overflow-y-scroll">
@@ -73,7 +73,7 @@ const Status = ({ resultId }) => {
 										changeTweet={(content) => {
 											quote.result.content = content
 										}}
-										callback={(e) => setCallback(e)} />
+										callback={(e) => setCallbackToast(e)} />
 								</div>
 							</div>}
 					</div>

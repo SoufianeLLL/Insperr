@@ -33,7 +33,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 	const [automation, setAutomation] = useState({ autoPostActive: false })
 	const [action, setAction] = useState({ name: null, params: null, isLoading: false, password: null })
 	const [screen, setScreen] = useState({ name: null, title: null })
-	const [Callback, setCallback] = useState({ status: null, text: null })
+	const [callbackToast, setCallbackToast] = useState({ status: null, text: null })
 
 	
 	useEffect(() => {
@@ -142,12 +142,12 @@ const UserAccount = ({ q_screen, q_errors }) => {
 				if (error) {
 					_continue = false
 					setAction({ name: null, params: null, isLoading: false, password: null })
-					setCallback({ status: 'error', text: 'Your current password is invalid, please try again.' })
+					setCallbackToast({ status: 'error', text: 'Your current password is invalid, please try again.' })
 				}
 			}
 			catch (e) {
 				setAction({ name: null, params: null, isLoading: false, password: null })
-				setCallback({ status: 'error', text: e })
+				setCallbackToast({ status: 'error', text: e })
 			}
 
 			if (_continue) {
@@ -177,7 +177,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 					}
 					catch (e) {
 						setAction({ name: null, params: null, isLoading: false, password: null })
-						setCallback({ status: 'error', text: e })
+						setCallbackToast({ status: 'error', text: e })
 					}
 				}
 				else if (action?.name === 'changeEmail') {
@@ -205,7 +205,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 					}
 					catch (e) {
 						setAction({ name: null, params: null, isLoading: false, password: null })
-						setCallback({ status: 'error', text: e })
+						setCallbackToast({ status: 'error', text: e })
 					}
 				}
 				else if (action?.name === 'changePassword') {
@@ -221,12 +221,12 @@ const UserAccount = ({ q_screen, q_errors }) => {
 					}
 					catch (e) {
 						setAction({ name: null, params: null, isLoading: false, password: null })
-						setCallback({ status: 'error', text: e })
+						setCallbackToast({ status: 'error', text: e })
 					}
 				}
 
 				setAction({ name: null, params: null, isLoading: false, password: null })
-				setCallback({ status: 'success', text: 'Your information was updated.' })
+				setCallbackToast({ status: 'success', text: 'Your information was updated.' })
 			}
 		}
 		*/}
@@ -240,15 +240,15 @@ const UserAccount = ({ q_screen, q_errors }) => {
 			router.push(portal?.url)
 		}
 		else {
-			setCallback({ status: 'error', text: portal?.message ?? 'An error occured when loading Stripe Portal.' })
+			setCallbackToast({ status: 'error', text: portal?.message ?? 'An error occured when loading Stripe Portal.' })
 			setLoadingPortal(false)
 		}
 	}
 
 	return <>
-		{(Callback?.status && Callback?.text) ? 
-			<ShowToast onClick={(e) => setCallback(e)} type={Callback?.status} text={Callback?.text} />
-			: q_errors?.status && <ShowToast onClick={(e) => setCallback(e)} type={q_errors?.status} text={q_errors?.text} />}
+		{(callbackToast?.status && callbackToast?.text) ? 
+			<ShowToast onClick={(e) => setCallbackToast(e)} type={callbackToast?.status} text={callbackToast?.text} />
+			: q_errors?.status && <ShowToast onClick={(e) => setCallbackToast(e)} type={q_errors?.status} text={q_errors?.text} />}
 		{loadingPortal && <>
 			<div style={{ zIndex: 2000 }} className="fixed top-0 right-0 left-0 bottom-0 bg-white opacity-70"></div>
 			<div style={{ zIndex: 2001 }} className="fixed top-0 bottom-0 flex items-center justify-center left-0 right-0 w-full">

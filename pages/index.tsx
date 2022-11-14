@@ -11,7 +11,7 @@ const ShowToast = dynamic(() => import("@/components/ShowToast"))
 
 const IndexPage = () => {
 
-	const [Callback, setCallback] = useState({ status: null, text: null })
+	const [callbackToast, setCallbackToast] = useState({ status: null, text: null })
 	let { isValidating, data: CustomQuotes } = useSWR(`/api/quote?number=${20}&action=getRandomCustomQuotes`)
 	
 	/**
@@ -24,8 +24,8 @@ const IndexPage = () => {
 	 */
 
 	return <>
-		{(Callback?.status && Callback?.text) && 
-			<ShowToast onClick={(e) => setCallback(e)} type={Callback?.status} text={Callback?.text} />}
+		{(callbackToast?.status && callbackToast?.text) && 
+			<ShowToast onClick={(e) => setCallbackToast(e)} type={callbackToast?.status} text={callbackToast?.text} />}
 		<section className="w-full relative bg-white dark:bg-zinc-900">
 			<div className="w-full py-20 px-5 md:px-10 2xl:px-0 max-w-4xl mx-auto">
 				<div className="text-center w-full text-primary-500 fontNormal text-xl uppercase">Automation & Schedule</div>
@@ -67,7 +67,7 @@ const IndexPage = () => {
 							(CustomQuotes && CustomQuotes?.length > 0) && 
 								<div className="w-full columns-1 md:columns-2 xl:columns-3 gap-x-6 gap-y-2 py-2">
 									{CustomQuotes?.map((quote, i) => {
-										return <QuoteContainer key={i} id={i} quote={quote} callback={(e) => setCallback(e)} />
+										return <QuoteContainer key={i} id={i} quote={quote} callback={(e) => setCallbackToast(e)} />
 									})}
 								</div>}
 					</div>

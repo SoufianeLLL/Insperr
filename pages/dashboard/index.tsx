@@ -36,7 +36,7 @@ const DashboardHome = () => {
     )
 
 	const [subs, setSubs] = useState(null)
-	const [Callback, setCallback] = useState({ status: null, text: null })
+	const [callbackToast, setCallbackToast] = useState({ status: null, text: null })
 
 
 	useEffect(() => {
@@ -65,8 +65,8 @@ const DashboardHome = () => {
 
 
 	return <>
-		{(Callback?.status && Callback?.text) && 
-			<ShowToast onClick={(e) => setCallback(e)} type={Callback?.status} text={Callback?.text} />}
+		{(callbackToast?.status && callbackToast?.text) && 
+			<ShowToast onClick={(e) => setCallbackToast(e)} type={callbackToast?.status} text={callbackToast?.text} />}
 		<section className="w-full h-screen relative overflow-hidden bg-white dark:bg-black">
 			<div className="w-full h-full max-w-7xl md:flex">
 				<div className="w-full h-full overflow-y-scroll">
@@ -91,7 +91,7 @@ const DashboardHome = () => {
 															}
 														})
 													}}
-													callback={(e) => setCallback(e)} />
+													callback={(e) => setCallbackToast(e)} />
 											})
 										})}
 									</div>

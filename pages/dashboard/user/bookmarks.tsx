@@ -12,11 +12,11 @@ const BookmarksPage = () => {
 
 	let { isValidating, data: CustomQuotes, mutate: mutateSaves } = useSWR(`/api/saves?action=Read`)
 
-	const [Callback, setCallback] = useState({ status: null, text: null })
+	const [callbackToast, setCallbackToast] = useState({ status: null, text: null })
 
 	return <>
-		{(Callback?.status && Callback?.text) && 
-			<ShowToast onClick={(e) => setCallback(e)} type={Callback?.status} text={Callback?.text} />}
+		{(callbackToast?.status && callbackToast?.text) && 
+			<ShowToast onClick={(e) => setCallbackToast(e)} type={callbackToast?.status} text={callbackToast?.text} />}
 		<section className="w-full max-w-6xl">
 			<div className="w-full">
 				<div className="w-full mb-8 text-base md:text-xl">
@@ -33,7 +33,7 @@ const BookmarksPage = () => {
 										id={i} 
 										quote={quote} 
 										mutate={(id) => mutateSaves()}
-										callback={(e) => setCallback(e)} />
+										callback={(e) => setCallbackToast(e)} />
 								})}
 							</div> : 
 						<div className="w-full text-center border border-slate-200 rounded-lg px-5 md:px-10 py-12 md:py-24">

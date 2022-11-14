@@ -14,7 +14,7 @@ const ShowToast = dynamic(() => import("@/components/ShowToast"))
 
 const UserProfile = ({ username }) => {
 
-	const [Callback, setCallback] = useState({ status: null, text: null })
+	const [callbackToast, setCallbackToast] = useState({ status: null, text: null })
 	const { ref, inView } = useInView()
 
 	let { isValidating, data: user } = useSWR(`/api/user/${username}`)
@@ -39,7 +39,7 @@ const UserProfile = ({ username }) => {
     )	
 
 	return <>
-		{(Callback?.status && Callback?.text) && <ShowToast onClick={(e) => setCallback(e)} type={Callback?.status} text={Callback?.text} />}
+		{(callbackToast?.status && callbackToast?.text) && <ShowToast onClick={(e) => setCallbackToast(e)} type={callbackToast?.status} text={callbackToast?.text} />}
 		<section className="w-full px-5 md:px-10 2xl:px-0 max-w-7xl mx-auto bg-white dark:bg-black">
 			<div className="heading w-full pb-10">
 				{ isValidating ? <Loading text="" scpace='0' borderWidth={2} width={30} height={30} /> : 
@@ -68,7 +68,7 @@ const UserProfile = ({ username }) => {
 										content: quote?.content,
 										status: quote?.tweet_metadata?.status,
 										tweet_id: quote?.tweet_metadata?.tweet_id,
-									}} callback={(e) => setCallback(e)} />
+									}} callback={(e) => setCallbackToast(e)} />
 								})
 							})}
 						</div>
