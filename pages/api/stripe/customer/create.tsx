@@ -10,7 +10,10 @@ export default async function handler(req, res) {
 	const customer = await stripe.customers.create({
 		email: req.body.record.email,
 		name: req.body.record.fullname,
-		description: `User with the ID: ${req.body.record.id}`
+		// description: `User with the ID: ${req.body.record.id}`,
+		metadata: {
+			user_id: req.body.record.id
+		}
 	})
 
 	await supabaseAdmin

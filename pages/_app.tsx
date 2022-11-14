@@ -1,5 +1,4 @@
 import { SWRConfig } from 'swr'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { ThemeProvider } from 'next-themes'
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query'
@@ -14,8 +13,6 @@ import 'tailwindcss/tailwind.css'
 
 const MyApp = ({ Component, pageProps }) => {
 	
-	const router = useRouter()
-
 	const [supabaseClient] = useState(() =>
 		createBrowserSupabaseClient()
 	)
@@ -65,11 +62,7 @@ const MyApp = ({ Component, pageProps }) => {
 	useEffect(() => {
 		const { data: { subscription } } = supabaseClient.auth.onAuthStateChange(
 		async (event, session) => {
-			console.log(event)
-			if (event === 'SIGNED_OUT') {
-				router.push('/access?op=signin')
-			}
-			else if (!session) {
+			if (!session) {
 				await supabaseClient.auth.refreshSession()
 			}
 		})
