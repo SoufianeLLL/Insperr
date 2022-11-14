@@ -141,6 +141,7 @@ export const useSignOutMutation = () => {
 		{
 			async onSuccess() {
 				await queryClient.resetQueries()
+				window.location.href = '/access?op=signin'
 			},
 		}
 	)

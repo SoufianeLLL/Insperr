@@ -7,15 +7,10 @@ export default async function handler(req, res) {
 		return res.status(401).send("You are not authorized to call this API");
 	}
 
-	await supabaseAdmin
-		.from('logs')
-		.insert({
-			log: JSON.stringify(req.body.record)
-		})
-
 	const customer = await stripe.customers.create({
 		email: req.body.record.email,
-		name: req.body.record.raw_user_meta_data.full_name
+		name: req.body.record.fullname,
+		description: `User with the ID: ${req.body.record.id}`
 	})
 
 	await supabaseAdmin
