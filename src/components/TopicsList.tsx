@@ -1,4 +1,4 @@
-import useSWR, { useSWRConfig } from 'swr'
+import useSWR from 'swr'
 import Link from 'next/link'
 import { capitalizer, sluging } from '@/lib/validation'
 import Loading from "@/components/Loading"
@@ -7,9 +7,7 @@ import Loading from "@/components/Loading"
 const TopicList = () => {
 
 	// get topics list
-	// const { data: Topics } = useSWR(`/api/topic`)
-	const { cache } = useSWRConfig()
-	let TopicsURI = `/api/topic`, Topics = cache.get(TopicsURI) && useSWR(TopicsURI)?.data
+	let { data: Topics } = useSWR(`/api/topic`)
 
 	return <>
 		<div className="w-full mt-12 topics-list">

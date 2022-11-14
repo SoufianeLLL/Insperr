@@ -1,13 +1,13 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import Link from 'next/link'
-import { useSessionContext } from '@supabase/auth-helpers-react'
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import AvatarContainer from '@/components/Containers/AvatarContainer'
 import { useSignOutMutation } from "@/lib/api/auth"
 
 
 const UserNav = ({ user, isAuthPage=false }) => {
 
-	const { supabaseClient } = useSessionContext()
+	const [supabaseClient] = useState(() => createBrowserSupabaseClient())
 	const { mutate: signOut } = useSignOutMutation()
 	
 	const onSignOut = useCallback(() => {

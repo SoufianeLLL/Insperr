@@ -6,6 +6,7 @@ import { Tooltip } from "flowbite-react"
 import { useEffect, useState } from "react"
 // import { useSignOutMutation } from '@/lib/api/auth'
 import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { checkEmailValidation, checkPasswordValidation, checkUsernameValidation } from "@/lib/validation"
 import Loading from '@/components/Loading'
 import BlueButton from "@/components/BlueButton"
@@ -18,7 +19,8 @@ const UserAccount = ({ q_screen, q_errors }) => {
 
 	const user = useUser()
 	const router = useRouter()
-	const { isLoading, supabaseClient } = useSessionContext()
+	const [supabaseClient] = useState(() => createBrowserSupabaseClient())
+	const { isLoading } = useSessionContext()
 
 	// const { mutate: signOut } = useSignOutMutation()
 

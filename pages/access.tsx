@@ -2,7 +2,8 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import Head from "next/head"
 import { useRouter } from "next/router"
-import { useSessionContext, useUser } from '@supabase/auth-helpers-react'
+import { useUser } from '@supabase/auth-helpers-react'
+import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs"
 import Logo from "@/components/Logo"
 import Loading from "@/components/Loading"
 import BlueButton from "@/components/BlueButton"
@@ -12,9 +13,9 @@ import BlueButton from "@/components/BlueButton"
 const UserAccess = ({ op, redirect }) => {
 
 	const user = useUser()
-	const { supabaseClient } = useSessionContext()
-
 	const router = useRouter()
+
+	const [supabaseClient] = useState(() => createBrowserSupabaseClient())
 	const [fetching, setFetching] = useState(false)
 
 	useEffect(() => {

@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react'
 import Link from "next/link"
+import { useRouter } from 'next/router'
 import { Modal } from "flowbite-react"
-import { useSessionContext } from "@supabase/auth-helpers-react"
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useSignOutMutation } from "@/lib/api/auth"
 import AvatarContainer from '@/components/Containers/AvatarContainer'
 import GenerateTweet from '@/components/Containers/GenerateTweet'
@@ -9,10 +10,11 @@ import BlueButton from "@/components/BlueButton"
 import Logo from '@/components/Logo'
 
 
-const Aside = ({ user, router }) => {
+const Aside = ({ user }) => {
 	
-	const { supabaseClient } = useSessionContext()
+	const router = useRouter()
 
+	const [supabaseClient] = useState(() => createBrowserSupabaseClient())
 	const [showGenerator, setShowGenerator] = useState(false)
 	const [toggleUserMenu, setToggleUserMenu] = useState(false)
 	const { mutate: signOut } = useSignOutMutation()

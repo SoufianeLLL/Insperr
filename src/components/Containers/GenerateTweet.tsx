@@ -1,4 +1,4 @@
-import useSWR, { useSWRConfig } from "swr"
+import useSWR from "swr"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { Settings } from "@/utils/settings"
@@ -22,8 +22,7 @@ const GenerateTweet = ({ user }) => {
 	const router = useRouter()
 
 	// Get Topics list
-	const { cache } = useSWRConfig()
-	let TopicsURI = `/api/topic`, Topics = cache.get(TopicsURI) ?? useSWR(TopicsURI)?.data
+	let { data: Topics } = useSWR(`/api/topic`)
 
 	let { isValidating: isCheckingSubscription, data: userData } = useSWR(`/api/user?action=getUserData`)
 

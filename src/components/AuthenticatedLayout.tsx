@@ -85,7 +85,7 @@ const AuthenticatedLayout = ({ children, padding=true, title="Insperr – The Mo
 				<>
 					<div className="w-full flex">
 						<div className="flex-none h-screen w-3 w-24 md:w-72 overflow-hidden">
-							<Aside router={router} user={user} />
+							<Aside user={user} />
 						</div>
 						<div className="ml-auto w-full flex-auto">
 							<main className={`w-full ${padding ? 'p-5 md:p-10' : 'p-0'}`}>
