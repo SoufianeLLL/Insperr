@@ -44,7 +44,7 @@ const UserProfile = ({ username }) => {
 			<div className="heading w-full pb-10">
 				{ isValidating ? <Loading text="" scpace='0' borderWidth={2} width={30} height={30} /> : 
 					<div className="w-full">
-						<div className="w-full text-3xl fontRobotoBold md:text-4xl lg:text-5xl">{user?.fullname}</div>
+						<div className="w-full text-3xl fontBold md:text-4xl lg:text-5xl">{user?.fullname}</div>
 						<div className="w-full mt-3 text-sm md:text-base font-semibold">@{username}</div>
 					</div>}
 			</div>
