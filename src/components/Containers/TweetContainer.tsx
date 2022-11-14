@@ -1,12 +1,13 @@
 import { useState } from "react"
 import { useRouter } from "next/router"
+import dynamic from "next/dynamic"
 import Link from "next/link"
 import { Dropdown, Modal, Tooltip } from "flowbite-react"
 import { timeAgo, topic } from "@/lib/validation"
 import BlueButton from "@/components/BlueButton"
-import Loading from "@/components/Loading"
 import AvatarContainer from "@/components/Containers/AvatarContainer"
 
+const Loading = dynamic(() => import("@/components/Loading"))
 
 
 const TweetContainer = ({ user, tweet, id, subscription=null, contentWithLink=true, callback=null, changeTweet=null }) => {

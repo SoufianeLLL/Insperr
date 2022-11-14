@@ -1,6 +1,6 @@
 import Head from "next/head"
 import Link from "next/link"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useTheme } from "next-themes"
 import { useUser } from '@supabase/auth-helpers-react'
 import UserNav from "@/components/Auth/UserNav"
@@ -15,9 +15,10 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 	
 	const user = useUser()
 
+	const [mounted, setMounted] = useState(false)
+
 	useEffect(() => {
-		document.body.classList.add("bg-white")
-		document.body.classList.remove("bg-slate-100")
+		setMounted(true)
 	}, [])
 
 	return <>
@@ -123,7 +124,7 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 			</main>
 			<footer className="mt-12 mb-8 w-full max-w-7xl mx-auto px-10 2xl:px-0">
 				<div style={{ zIndex: 1006 }} className="fixed bottom-5 right-4">
-					{theme === 'light' ? 
+					{!mounted ? null : theme === 'light' ? 
 						<div onClick={() => setTheme('dark')} className="py-2 pl-3 pr-5 rounded-full bg-slate-900 shadow text-white cursor-pointer flex items-center gap-3 text-sm">
 							<svg className="w-6 h-6" width="24" height="24" viewBox="0 0 24 24"><path stroke="currentColor" strokeLinejoin="round" strokeWidth="2" d="M9.874 5.008c2.728-1.68 6.604-1.014 8.25.197-2.955.84-5.11 3.267-5.242 6.415-.18 4.28 3.006 6.588 5.24 7.152-1.964 1.343-4.36 1.293-5.235 1.172-3.568-.492-6.902-3.433-7.007-7.711-.106-4.278 2.573-6.35 3.994-7.225z"></path></svg>
 							Dark
@@ -132,7 +133,8 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 						<div onClick={() => setTheme('light')} className="py-2 pl-3 pr-5 rounded-full bg-white shadow text-black cursor-pointer flex items-center gap-3 text-sm">
 							<svg className="w-6 h-6" width="24" height="24" viewBox="0 0 24 24"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.657-5.657L19.07 4.93M4.93 19.07l1.414-1.414m0-11.314L4.93 4.93m14.14 14.14-1.414-1.414M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10z"></path></svg>
 							Light
-						</div>}
+						</div>
+					}
 				</div>
 				<div className="w-full">
 					<div className="w-full py-8 max-w-2xl text-sm">

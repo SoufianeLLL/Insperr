@@ -2,6 +2,7 @@ node_modules
 .next
 .env
 .env.local
+yarn-error.log
 # prisma/database
 # prisma/database/ins.db
 NOTE.md

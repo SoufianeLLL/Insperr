@@ -1,4 +1,5 @@
 import useSWR from "swr"
+import dynamic from "next/dynamic"
 import { useEffect, useState } from "react"
 import { useInfiniteQuery } from "react-query"
 import { useInView } from "react-intersection-observer"
@@ -9,9 +10,9 @@ import AuthenticatedLayout from "@/components/AuthenticatedLayout"
 import TweetsSidebarContainer from "@/components/Containers/TweetsSidebarContainer"
 import GenerateTweet from "@/components/Containers/GenerateTweet"
 import { TweetSkeleton } from "@/components/Skeleton"
-import ShowToast from "@/components/ShowToast"
 import Loading from "@/components/Loading"
 
+const ShowToast = dynamic(() => import("@/components/ShowToast"))
 
 
 const DashboardHome = () => {
@@ -39,7 +40,6 @@ const DashboardHome = () => {
 
 
 	useEffect(() => {
-		document.body.classList.remove("bg-slate-100")
 		if (inView && hasNextPage) {
 			fetchNextPage()
 		}
@@ -60,9 +60,6 @@ const DashboardHome = () => {
 					requests: filter?.requests
 				}
 			})
-		}
-		return () => {
-			document.body.classList.add("bg-slate-100")
 		}
 	}, [subs, inView])
 

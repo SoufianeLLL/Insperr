@@ -15,7 +15,7 @@ interface targetVars {
 	quota: Number;
 }
 
-
+let categoriesSelector = null
 
 const GenerateTweet = ({ user }) => {
 
@@ -80,6 +80,14 @@ const GenerateTweet = ({ user }) => {
 	}
 
 	useEffect(() => {
+		if (!categoriesSelector && Topics) {
+			categoriesSelector = <select onChange={(e) => setTarget({ ...target, category: e?.target?.value?.toLowerCase() })} className="rounded-full py-1 pl-2 pr-6 text-sm bg-transparent hover:bg-slate-50 dark:hover:bg-zinc-900 transition duration-200 text-slate-500 dark:text-zinc-500 focus:outline-none cursor-pointer focus:ring-0 border focus:border-slate-200 dark:focus:border-zinc-800 border-slate-200 dark:border-zinc-800" id="category" required={true}>
+				<option>Select category</option>
+				{Topics?.map ((topic, i) => {
+					return <option value={topic?.name?.toLowerCase()} key={i}>{topic?.name}</option>
+				})}
+			</select>
+		}
 		if (isCheckingSubscription && !subs) {
 			let filter
 			if (userData?.subscription)
@@ -100,10 +108,11 @@ const GenerateTweet = ({ user }) => {
 		}
 	}, [subs])
 
-	return <>
-		{isCheckingSubscription && !userData ? 
-			<div className="text-center mt-4 w-full"><Loading text="null" width={50} height={50} /></div> : 
-		<>
+	// if (isCheckingSubscription && !userData) {
+	// 	return <div className="text-center mt-4 w-full"><Loading text="null" width={50} height={50} /></div>
+	// }
+	// else {
+		return <>
 			{parseInt(userData?.generatedQuotes?.toLocaleString(), 10) >= subs?.quotes ? 
 				<div className="flex items-center gap-4 w-full py-2 px-4 md:py-3 md:px-5 bg-red-100 text-red-500 dark:bg-opacity-20 rounded-xl text-base">
 					<svg className="hidden md:block w-20 h-20" width="25" height="25" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M12 17v2m0-9v6m0-13L2 22h20L12 3z"></path></svg>
@@ -139,12 +148,7 @@ const GenerateTweet = ({ user }) => {
 										<option value="Thread" disabled>Thread</option>
 										<option value="Poll" disabled>Poll</option>
 									</select>
-									<select onChange={(e) => setTarget({ ...target, category: e?.target?.value?.toLowerCase() })} className="rounded-full py-1 pl-2 pr-6 text-sm bg-transparent hover:bg-slate-50 dark:hover:bg-zinc-900 transition duration-200 text-slate-500 dark:text-zinc-500 focus:outline-none cursor-pointer focus:ring-0 border focus:border-slate-200 dark:focus:border-zinc-800 border-slate-200 dark:border-zinc-800" id="category" required={true}>
-										<option>Select category</option>
-										{Topics?.map ((topic, i) => {
-											return <option value={topic?.name?.toLowerCase()} key={i}>{topic?.name}</option>
-										})}
-									</select>
+									{categoriesSelector}
 								</div>
 							</div>
 						</div>
@@ -154,8 +158,8 @@ const GenerateTweet = ({ user }) => {
 					</>}
 				</div>
 			</>}
-		</>}
-	</>
+		</>
+	// }
 }
 
 export default GenerateTweet

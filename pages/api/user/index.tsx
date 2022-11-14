@@ -96,7 +96,7 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 
 			// Get user data
 			else if (action === 'getUserData') {
-				const { count: quotes } = await supabase
+				const { count: quotes, error: err } = await supabase
 					.from('quotes')
 					.select('*', { count: 'exact', head: true })
 					.eq('user_id', user?.id)
@@ -128,7 +128,7 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 			}
 		}
 
-		return res.status(401).json('Unauthorized')
+		return res.status(200).json(null)
 	}
 	else {
 		res.setHeader('Allow', 'GET')

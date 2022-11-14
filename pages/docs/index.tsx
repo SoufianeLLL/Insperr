@@ -1,14 +1,7 @@
-import { useEffect } from "react"
 import AuthenticatedLayout from "@/components/AuthenticatedLayout"
 
 
 const Docs = () => {
-
-    useEffect(() => {
-		document.body.classList.remove("bg-slate-100")
-		return () => document.body.classList.add("bg-slate-100")
-	}, [])
-
     return <>
         <section className="w-full overflow-hidden">
             Documentation...

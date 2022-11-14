@@ -1,10 +1,10 @@
 import Head from "next/head"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { useTheme } from 'next-themes'
 import { useUser } from '@supabase/auth-helpers-react'
 import Loading from "@/components/Loading"
-import Aside from "./Auth/Aside"
+import Aside from "@/components/Auth/Aside"
 
 
 const isLoading = false
@@ -14,10 +14,17 @@ const AuthenticatedLayout = ({ children, padding=true, title="Insperr – The Mo
 	const { theme, setTheme } = useTheme()
 
 	const router = useRouter()
-	const user = useUser()	
+	const user = useUser()
 
-	useEffect(() => {        
-        document.body.classList.add("bg-slate-100")
+	const [mounted, setMounted] = useState(false)
+
+	useEffect(() => {
+		setMounted(true)
+		if ((router.pathname)?.replace(/^\/|\/$/g, '') === 'dashboard/analytics' || 
+			(router.pathname)?.replace(/^\/|\/$/g, '') === 'dashboard/bookmarks' || 
+			(router.pathname)?.replace(/^\/|\/$/g, '') === 'dashboard/collection') {
+			document.body.classList.add("bg-slate-100")
+		}
 		const keyDownHandler = (e) => {
 			if (e.shiftKey === true && router.pathname?.replace(/^\/|\/$/g, '') !== 'dashboard/user/account') {
 				switch (e?.key?.toLowerCase()) {
@@ -60,7 +67,10 @@ const AuthenticatedLayout = ({ children, padding=true, title="Insperr – The Mo
 			}
 		}
 		document.addEventListener("keydown", keyDownHandler)
-		return () => document.removeEventListener("keydown", keyDownHandler)
+		return () => {
+			document.body.classList.remove("bg-slate-100")
+			document.removeEventListener("keydown", keyDownHandler)
+		}
 	}, [])
 
 	
@@ -84,7 +94,7 @@ const AuthenticatedLayout = ({ children, padding=true, title="Insperr – The Mo
 						</div>
 					</div>
 					<div className="fixed bottom-5 right-4">
-						{theme === 'light' ? 
+						{!mounted ? null : theme === 'light' ? 
 							<div onClick={() => setTheme('dark')} className="py-2 pl-3 pr-5 rounded-full bg-slate-900 shadow text-white cursor-pointer flex items-center gap-3 text-sm">
 								<svg className="w-6 h-6" width="24" height="24" viewBox="0 0 24 24"><path stroke="currentColor" strokeLinejoin="round" strokeWidth="2" d="M9.874 5.008c2.728-1.68 6.604-1.014 8.25.197-2.955.84-5.11 3.267-5.242 6.415-.18 4.28 3.006 6.588 5.24 7.152-1.964 1.343-4.36 1.293-5.235 1.172-3.568-.492-6.902-3.433-7.007-7.711-.106-4.278 2.573-6.35 3.994-7.225z"></path></svg>
 								Dark

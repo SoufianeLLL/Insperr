@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import useSWR from "swr"
 import Link from "next/link"
+import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { Dropdown, Modal, Tooltip } from "flowbite-react"
 import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
@@ -8,8 +9,8 @@ import { topic } from '@/lib/validation'
 import { Settings } from "@/utils/settings"
 import AvatarContainer from "@/components/Containers/AvatarContainer"
 import BlueButton from "@/components/BlueButton"
-import Loading from "@/components/Loading"
 
+const Loading = dynamic(() => import("@/components/Loading"))
 
 
 const QuoteContainer = ({ id, quote, callback=null, mutate=null }) => {

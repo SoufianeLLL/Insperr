@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react"
 import useSWR from "swr"
 import Link from "next/link"
+import dynamic from "next/dynamic"
 import { Settings } from "@/utils/settings"
 import TweetContainer from "@/components/Containers/TweetContainer"
 import AuthenticatedLayout from "@/components/AuthenticatedLayout"
 import TweetsSidebarContainer from "@/components/Containers/TweetsSidebarContainer"
 import { TweetSkeleton } from "@/components/Skeleton"
-import ShowToast from "@/components/ShowToast"
 
+
+const ShowToast = dynamic(() => import("@/components/ShowToast"))
 
 
 const Status = ({ resultId }) => {
@@ -21,7 +23,6 @@ const Status = ({ resultId }) => {
 
 
 	useEffect(() => {
-		document.body.classList.remove("bg-slate-100")
 		if (isCheckingSubscription && !subs) {
 			let filter
 			if (userData?.subscription)
@@ -39,9 +40,6 @@ const Status = ({ resultId }) => {
 					requests: filter?.requests
 				}
 			})
-		}
-		return () => {
-			document.body.classList.add("bg-slate-100")
 		}
 	}, [subs])
 

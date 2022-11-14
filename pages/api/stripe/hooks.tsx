@@ -9,7 +9,7 @@ export const config = { api: { bodyParser: false } }
 export default async function handler(req, res) {
 
 	const signature = req.headers["stripe-signature"]
-	const signingSecret = process.env.STRIPE_SIGNING_SECRET_TEST
+	const signingSecret = process.env.NODE_ENV === 'development' ? process.env.STRIPE_SIGNING_SECRET_TEST : process.env.STRIPE_SIGNING_SECRET
 	const reqBuffer = await buffer(req)
 
 	let event

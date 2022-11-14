@@ -1,5 +1,5 @@
 const Stripe = require('stripe')
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY_TEST)
+const stripe = Stripe(process.env.NODE_ENV === 'development' ? process.env.STRIPE_SECRET_KEY_TEST : process.env.STRIPE_SECRET_KEY)
 
 export default stripe
 
@@ -9,7 +9,7 @@ export default stripe
 
 // const getStripe = () => {
 // 	if (!stripePromise) {
-// 		stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY_TEST!)
+// 		stripePromise = loadStripe(process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY_TEST : process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
 // 	}
 // 	return stripePromise
 // }

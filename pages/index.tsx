@@ -1,11 +1,12 @@
-import { useState } from "react"
 import useSWR from 'swr'
+import { useState } from "react"
+import Link from "next/link"
+import dynamic from 'next/dynamic'
 import UnauthenticatedLayout from "@/components/UnauthenticatedLayout"
 import QuoteContainer from '@/components/Containers/QuoteContainer'
-import ShowToast from '@/components/ShowToast'
 import { Skeleton } from '@/components/Skeleton'
-import Link from "next/link"
 
+const ShowToast = dynamic(() => import("@/components/ShowToast"))
 
 
 const IndexPage = () => {

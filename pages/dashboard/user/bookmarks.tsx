@@ -1,9 +1,11 @@
 import useSWR from "swr"
 import { useState } from "react"
+import dynamic from "next/dynamic"
 import { Skeleton } from "@/components/Skeleton"
-import ShowToast from "@/components/ShowToast"
 import AuthenticatedLayout from "@/components/AuthenticatedLayout"
 import QuoteContainer from "@/components/Containers/QuoteContainer"
+
+const ShowToast = dynamic(() => import("@/components/ShowToast"))
 
 
 const BookmarksPage = () => {

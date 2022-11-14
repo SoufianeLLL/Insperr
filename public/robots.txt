@@ -1,0 +1,18 @@
+# *
+User-agent: *
+Allow: /
+
+# *
+User-agent: *
+Disallow: /api/*
+Disallow: /dashboard/*
+Disallow: /payment/*
+Disallow: /server-sitemap.xml
+Disallow: /404
+
+# Host
+Host: https://insperr.com
+
+# Sitemaps
+Sitemap: https://insperr.com/sitemap.xml
+Sitemap: https://insperr.com/server-sitemap.xml

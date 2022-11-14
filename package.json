@@ -8,7 +8,8 @@
     "dev": "next dev -p 8088",
     "export": "next export",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@stripe/stripe-js": "^1.42.0",
@@ -21,6 +22,7 @@
     "flowbite-react": "^0.3.2",
     "micro": "^9.4.1",
     "next": "13.0.0",
+    "next-sitemap": "^3.1.31",
     "next-themes": "^0.2.1",
     "openai": "^3.0.0",
     "react": "^18.2.0",

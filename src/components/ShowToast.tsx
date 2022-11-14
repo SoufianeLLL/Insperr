@@ -1,6 +1,4 @@
 const ShowToast = ({ onClick, type, text }) => {
-
-
 	return <>
 		<div style={{ zIndex: 1000 }} className="max-w-xs w-full toast transition duration-200 fixed top-8 right-8 bg-white shadow-xl rounded-lg overflow-hidden px-4 py-3">
 			<div className="flex items-center w-full gap-3">

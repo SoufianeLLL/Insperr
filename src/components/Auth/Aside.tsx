@@ -85,13 +85,12 @@ const Aside = ({ user, router }) => {
 							</div>
 						</div>
 					</li>
-					<li className="block md:hidden">
-						<BlueButton text={
-							<div className="w-full flex items-center justify-center"><svg viewBox="0 0 24 24" height="25" width="25" className="text-white w-8 h-8"><path fill="none" stroke="currentColor" strokeWidth="2" d="M12 18V6m-6 6h12"></path></svg></div>
-						} smallSize={false} url="/dashboard/user/g" />
-					</li>
-					<li className="hidden md:block">
-						<div className="w-full rounded-full" onClick={() => setShowGenerator(true)}>
+					<li>
+						<div className="block md:hidden" onClick={() => setShowGenerator(true)}>
+							<BlueButton text={<div className="w-full flex items-center justify-center"><svg viewBox="0 0 24 24" height="25" width="25" className="text-white w-8 h-8"><path fill="none" stroke="currentColor" strokeWidth="2" d="M12 18V6m-6 6h12"></path></svg></div>} 
+								smallSize={false} isLink={false} />
+						</div>
+						<div className="hidden md:block w-full rounded-full" onClick={() => setShowGenerator(true)}>
 							<BlueButton text="Generate" smallSize={false} isLink={false} />
 						</div>
 						<Modal show={showGenerator} size="xl" popup={true} onClose={() => setShowGenerator(!showGenerator)}>

@@ -19,8 +19,6 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
                 .eq('id', quote_id)
                 .eq('user_id', user?.id)
 
-            console.log(error)
-
             if (!error) return res.status(200).json({ errro: false })
 		}
 

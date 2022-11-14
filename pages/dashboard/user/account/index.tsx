@@ -1,15 +1,17 @@
 import useSWR from 'swr'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { Tooltip } from "flowbite-react"
 import { useEffect, useState } from "react"
+// import { useSignOutMutation } from '@/lib/api/auth'
 import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
 import { checkEmailValidation, checkPasswordValidation, checkUsernameValidation } from "@/lib/validation"
 import Loading from '@/components/Loading'
-import ShowToast from "@/components/ShowToast"
 import BlueButton from "@/components/BlueButton"
 import AuthenticatedLayout from "@/components/AuthenticatedLayout"
-import { useSignOutMutation } from '@/lib/api/auth'
+
+const ShowToast = dynamic(() => import("@/components/ShowToast"))
 
 
 const UserAccount = ({ q_screen, q_errors }) => {
@@ -18,7 +20,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 	const router = useRouter()
 	const { isLoading, supabaseClient } = useSessionContext()
 
-	const { mutate: signOut } = useSignOutMutation()
+	// const { mutate: signOut } = useSignOutMutation()
 
 	let { isValidating: isCheckingSubscription, data: isSubscribed } = useSWR(`/api/user?action=checkUserSubscription`)
 	let { isValidating: isCheckingTwitterAccount, data: isTwitterAccountLinked } = useSWR(`/api/user?action=checkTwitterLinking`)
@@ -35,11 +37,9 @@ const UserAccount = ({ q_screen, q_errors }) => {
 
 	
 	useEffect(() => {
-		document.body.classList.remove("bg-slate-100")
 		setAutomation({ autoPostActive: checkAutoPost })
 		return () => {
 			setAutomation({ autoPostActive: false })
-			document.body.classList.add("bg-slate-100")
 		}
 	}, [])
 
@@ -237,7 +237,6 @@ const UserAccount = ({ q_screen, q_errors }) => {
 		const res = await fetch('/api/stripe/customer/portal')
 		const portal = await res?.json()
 		if (portal && !portal?.error) {
-			console.log(portal)
 			router.push(portal?.url)
 		}
 		else {
@@ -364,12 +363,13 @@ const UserAccount = ({ q_screen, q_errors }) => {
 								<>
 									<Btn 
 										title="Username" 
-										description={`@${user?.user_metadata?.user_name}`}
-										onClick={() => handleScreenChange({ name: 'change-username', title: 'Change your username' })} />
+										description={`@${user?.user_metadata?.user_name}`} />
+									<Btn 
+										title="Full Name" 
+										description={user?.user_metadata?.full_name} />
 									<Btn 
 										title="Email" 
-										description={user?.email}
-										onClick={() => handleScreenChange({ name: 'change-email', title: 'Change your email' })} />
+										description={user?.email} />
 									<Btn 
 										title="Automation" 
 										description="Manage your automated account."
@@ -467,7 +467,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 	</>;
 }
 
-const Btn = ({ title, description, icon=null, onClick }) => {
+const Btn = ({ title, description, icon=null, onClick=null }) => {
 	return <>
 		<button onClick={onClick} className="w-full transition duration-200 hover:bg-slate-50 dark:hover:bg-zinc-900 rounded-xl py-5 px-4 flex items-center gap-10">
 			{icon && <div className="flex-none">{icon}</div>}
@@ -475,9 +475,10 @@ const Btn = ({ title, description, icon=null, onClick }) => {
 				<div className="w-full text-base font-semibold">{title}</div>
 				<div className="w-full text-sm text-slate-500 dark:text-zinc-400">{description}</div>
 			</div>
+			{onClick && 
 			<div className="flex-none">
 				<svg className="w-7 h-7 text-slate-500 dark:text-zinc-400" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="m9 6 6 6-6 6"></path></svg>
-			</div>
+			</div>}
 		</button>
 	</>
 }

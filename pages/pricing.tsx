@@ -1,7 +1,7 @@
 import useSWR from "swr"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { loadStripe } from "@stripe/stripe-js"
+import { loadStripe } from "@stripe/stripe-js/pure"
 import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
 import stripe from "@/utils/stripejs"
 import { Settings } from "@/utils/settings"
@@ -33,7 +33,7 @@ const PricingPage = ({ plans, price_id }) => {
 		const res = await result?.json()
 		if (res?.id) {
 			setLoadingStripe(false)
-			const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY_TEST)
+			const stripe = await loadStripe(process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY_TEST : process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
 			await stripe.redirectToCheckout({ sessionId: res?.id })
 		}
 	}

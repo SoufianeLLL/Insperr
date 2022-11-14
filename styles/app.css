@@ -1,4 +1,5 @@
 @font-face {
+	font-display: swap;
     font-family: "Amsi Pro Normal";
     src: url(../public/assets/fonts/amsi-pro-normal-regular.eot);
     src: url(../public/assets/fonts/amsi-pro-normal-regular.eot?#iefix) format("embedded-opentype"), url(../public/assets/fonts/amsi-pro-normal-regular.woff) format("woff"), url(../public/assets/fonts/amsi-pro-normal-regular.ttf) format("truetype");
@@ -6,6 +7,7 @@
     font-weight: 400
 }
 @font-face {
+	font-display: swap;
     font-family: "Amsi Pro Semibold";
     src: url(../public/assets/fonts/amsi-pro-normal-semibold.eot);
     src: url(../public/assets/fonts/amsi-pro-normal-semibold.eot?#iefix) format("embedded-opentype"), url(../public/assets/fonts/amsi-pro-normal-semibold.woff) format("woff"), url(../public/assets/fonts/amsi-pro-normal-semibold.ttf) format("truetype");
@@ -13,6 +15,7 @@
     font-weight: 500
 }
 @font-face {
+	font-display: swap;
     font-family: "Amsi Pro Bold";
     src: url(../public/assets/fonts/amsi-pro-normal-bold.eot);
     src: url(../public/assets/fonts/amsi-pro-normal-bold.eot?#iefix) format("embedded-opentype"), url(../public/assets/fonts/amsi-pro-normal-bold.woff) format("woff"), url(../public/assets/fonts/amsi-pro-normal-bold.ttf) format("truetype");
@@ -20,6 +23,7 @@
     font-weight: 600
 }
 @font-face {
+	font-display: swap;
     font-family: "Amsi Pro Black";
     src: url(../public/assets/fonts/amsi-pro-normal-black.eot);
     src: url(../public/assets/fonts/amsi-pro-normal-black.eot?#iefix) format("embedded-opentype"), url(../public/assets/fonts/amsi-pro-normal-black.woff) format("woff"), url(../public/assets/fonts/amsi-pro-normal-black.ttf) format("truetype");
@@ -27,6 +31,7 @@
     font-weight: 800
 }
 @font-face {
+	font-display: swap;
     font-family: "Amsi Pro Ultra";
     src: url(../public/assets/fonts/amsi-pro-normal-ultra.eot);
     src: url(../public/assets/fonts/amsi-pro-normal-ultra.eot?#iefix) format("embedded-opentype"), url(../public/assets/fonts/amsi-pro-normal-ultra.woff) format("woff"), url(../public/assets/fonts/amsi-pro-normal-ultra.ttf) format("truetype");

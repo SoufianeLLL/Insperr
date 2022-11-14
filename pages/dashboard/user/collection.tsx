@@ -1,14 +1,16 @@
 import useSWR from "swr"
 import Link from "next/link"
+import dynamic from "next/dynamic"
 import { useEffect, useState } from "react"
 import { useInfiniteQuery } from "react-query"
 import { useInView } from "react-intersection-observer"
 import AuthenticatedLayout from "@/components/AuthenticatedLayout"
 import QuoteContainer from "@/components/Containers/QuoteContainer"
 import BlueButton from "@/components/BlueButton"
-import ShowToast from "@/components/ShowToast"
 import { Skeleton } from "@/components/Skeleton"
 import Loading from "@/components/Loading"
+
+const ShowToast = dynamic(() => import("@/components/ShowToast"))
 
 
 const CollectionsPage = () => {
