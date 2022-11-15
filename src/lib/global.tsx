@@ -1,5 +1,5 @@
 import Link from "next/link"
-import requestIp from 'request-ip'
+// import requestIp from 'request-ip'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
@@ -28,7 +28,8 @@ const searchForAuthors = async (e, authors) => {
 }
 
 const getIPAddressHash = (request) => {
-    const ip = requestIp.getClientIp(request)
+    // const ip = requestIp.getClientIp(request)
+    const ip = null
     return ip
 }
 

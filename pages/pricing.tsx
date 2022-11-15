@@ -84,8 +84,8 @@ const PricingPage = ({ plans, price_id }) => {
 															<button onClick={() => runStripe(plan?.price_id)} className={`${i===1 ? 'bg-primary-500 text-white' : 'hover:text-white text-primary-500'} border-2 border-primary-500 hover:bg-primary-600 hover:border-primary-600 transition duration-200 text-base cursor-pointer rounded-lg w-full text-center py-2 px-4`}>
 																Upgrade to {plan?.name}</button>
 														:
-														<Link href={`/access?op=signin&redirect=${process.env.NEXT_PUBLIC_URL_HOME}/pricing?p=${plan?.price_id}`} className={`${i===1 ? 'bg-primary-500 text-white' : 'hover:text-white text-primary-500'} border-2 border-primary-500 hover:bg-primary-600 hover:border-primary-600 transition duration-200 text-base cursor-pointer rounded-lg w-full inline-block text-center py-2 px-4`}>
-															Sign in</Link>
+														<Link href={`/access?op=signup&redirect=${process.env.NEXT_PUBLIC_URL_HOME}/pricing?p=${plan?.price_id}`} className={`${i===1 ? 'bg-primary-500 text-white' : 'hover:text-white text-primary-500'} border-2 border-primary-500 hover:bg-primary-600 hover:border-primary-600 transition duration-200 text-base cursor-pointer rounded-lg w-full inline-block text-center py-2 px-4`}>
+															Create new account</Link>
 														}
 													</div>
 												:
@@ -195,7 +195,8 @@ export async function getServerSideProps({ query }) {
 	return {
 		props: {
 			price_id: query?.p ?? null,
-			plans: plans.sort((a, b) => a.created - b.created)
+			plans
+			// plans: plans.sort((a, b) => a.created - b.created)
 		}
 	}
 }

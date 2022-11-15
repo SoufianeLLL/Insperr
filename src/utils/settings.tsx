@@ -19,7 +19,7 @@ const Settings = {
 		{
 			id: "prod_MnzOyzn6WfqPbq",
 			name: 'Pro',
-			quotes: 400,
+			quotes: 500,
 			autoPost: true,
 			priority_support: true,
 			api: true,
@@ -43,12 +43,12 @@ const Settings = {
 		{
 			id: "prod_MnzNF8dbncBGOD",
 			name: 'Entreprise',
-			quotes: 10000,
+			quotes: 2000,
 			autoPost: true,
 			priority_support: true,
 			api: true,
 			requests: {
-				create: 40000,
+				create: 10000,
 				read: 200000
 			},
 		}

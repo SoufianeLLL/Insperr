@@ -50,10 +50,10 @@ const DashboardAnalytics = () => {
 		{subs && <Sidebar title={subs?.name} state={userAccountHelper} callback={(e) => setUserAccountHelper(e)}>
 			{subs && <pre>{JSON.stringify((subs), null, 3)?.replaceAll(/['"]+/g, '')}</pre>}
 		</Sidebar>}
-		<div className="bg-slate-100 w-full p-5 md:p-10">
+		<div className="dark:bg-transparent bg-slate-100 w-full p-5 md:p-10">
 			<section className="w-full overflow-hidden max-w-7xl">
 				<div className="w-full mb-8 text-base md:text-xl">
-					👋  You Analytics for this month, <span className="font-semibold">{user?.user_metadata?.full_name}</span>!
+					👋  You Analytics for this month, <span className="font-semibold">{user?.user_metadata?.fullname}</span>!
 				</div>
 				{parseInt(userData?.generatedQuotes?.toLocaleString(), 10) >= subs?.quotes && 
 					<div className="flex items-center gap-4 w-full py-2 px-4 md:py-3 md:px-5 bg-red-100 text-red-500 dark:bg-opacity-20 rounded-xl text-base">

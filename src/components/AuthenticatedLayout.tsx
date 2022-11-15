@@ -33,7 +33,7 @@ const AuthenticatedLayout = ({ children, padding=true, title="Insperr – The Mo
 						router?.push('/dashboard/user/collection')
 						break;
 					case 'm':
-						router?.push(`/user/@${user?.user_metadata?.user_name}`)
+						router?.push(`/user/@${user?.user_metadata?.username}`)
 						break;
 					// case 'a':
 					// 	router?.push('/dashboard/user/api')

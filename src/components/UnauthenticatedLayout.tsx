@@ -54,7 +54,7 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 							{user ? 
 								<UserNav user={{
 									id: user?.id,
-									fullname: user?.user_metadata?.full_name,
+									fullname: user?.user_metadata?.fullname,
 									email: user?.email,
 									avatar: user?.user_metadata?.avatar_url
 								}} isAuthPage={true} />

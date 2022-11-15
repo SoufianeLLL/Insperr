@@ -1,5 +1,7 @@
 import { NextApiHandler } from 'next'
+import supabaseAdmin from '@/utils/supabase-admin'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+
 
 const ProtectedRoute: NextApiHandler = async (req, res) => {
 	if (req.method === 'POST') {
@@ -16,8 +18,27 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 					.eq('id', user?.id)
 	
 				if (!error) {
-					await supabase.auth.admin.updateUserById(
+					await supabaseAdmin.auth.admin.updateUserById(
 						user?.id, { user_metadata: { ...params?.user_metadata, username: params?.username } }
+					)
+					return res.status(200).json({ 
+						error: null,
+						message: null
+					})
+				}
+			}
+		}
+	
+		else if (action === 'changeFullname') {
+			if (user?.id && params?.fullname) {
+				const { error } = await supabase
+					.from('users')
+					.update({ fullname: params?.fullname })
+					.eq('id', user?.id)
+	
+				if (!error) {
+					await supabaseAdmin.auth.admin.updateUserById(
+						user?.id, { user_metadata: { ...params?.user_metadata, fullname: params?.fullname } }
 					)
 					return res.status(200).json({ 
 						error: null,
@@ -35,7 +56,7 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 					.eq('id', user?.id)
 	
 				if (!error) {
-					await supabase.auth.admin.updateUserById(
+					await supabaseAdmin.auth.admin.updateUserById(
 						user?.id, { email: params?.email }
 					)
 					return res.status(200).json({ 

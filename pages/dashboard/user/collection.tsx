@@ -46,7 +46,7 @@ const CollectionsPage = () => {
 	return <>
 		{(callbackToast?.status && callbackToast?.text) && 
 			<ShowToast onClick={(e) => setCallbackToast(e)} type={callbackToast?.status} text={callbackToast?.text} />}
-		<div className="bg-slate-100 w-full p-5 md:p-10">
+		<div className="dark:bg-transparent bg-slate-100 w-full p-5 md:p-10">
 			<section className="w-full max-w-6xl">
 				<div className="w-full mb-8">
 					<div className="heading w-full bg-slate-900 text-white p-5 md:p-10 rounded-xl">

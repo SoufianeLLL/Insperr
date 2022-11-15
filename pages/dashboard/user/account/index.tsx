@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { Tooltip } from "flowbite-react"
 import { useEffect, useState } from "react"
-// import { useSignOutMutation } from '@/lib/api/auth'
+import { useSignOutMutation } from '@/lib/api/auth'
 import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { checkEmailValidation, checkPasswordValidation, checkUsernameValidation } from "@/lib/validation"
@@ -15,6 +15,7 @@ import AuthenticatedLayout from "@/components/AuthenticatedLayout"
 const ShowToast = dynamic(() => import("@/components/ShowToast"))
 
 
+
 const UserAccount = ({ q_screen, q_errors }) => {
 
 	const user = useUser()
@@ -22,7 +23,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 	const [supabaseClient] = useState(() => createBrowserSupabaseClient())
 	const { isLoading } = useSessionContext()
 
-	// const { mutate: signOut } = useSignOutMutation()
+	const { mutate: signOut } = useSignOutMutation()
 
 	let { isValidating: isCheckingSubscription, data: isSubscribed } = useSWR(`/api/user?action=checkUserSubscription`)
 	let { isValidating: isCheckingTwitterAccount, data: isTwitterAccountLinked } = useSWR(`/api/user?action=checkTwitterLinking`)
@@ -91,6 +92,9 @@ const UserAccount = ({ q_screen, q_errors }) => {
 
 	const handleChange = ({ name, params }) => {
 		switch (name) {
+			case 'changeFullname':
+				setError((params?.target && params?.target?.length > 6 && params?.target?.length < 20) ? null : 'Your fullname must be between 6 and 20 characters.')
+				break;
 			case 'changeUsername':
 				setError(checkUsernameValidation(params?.target))
 				break;
@@ -131,7 +135,6 @@ const UserAccount = ({ q_screen, q_errors }) => {
 				}
 			}
 		}
-		{/*
 		else if (!error && action?.name) {
 			let _continue = true
 			setAction({ ...action, isLoading: true })
@@ -210,6 +213,35 @@ const UserAccount = ({ q_screen, q_errors }) => {
 						setCallbackToast({ status: 'error', text: e })
 					}
 				}
+				else if (action?.name === 'changeFullname') {
+					try {
+						const result = await fetch('/api/user/update', {
+							method: 'POST',
+							headers: {
+								'Accept': 'application/json',
+								'Content-Type': 'application/json'
+							},
+							body: JSON.stringify({
+								action: action?.name,
+								user_id: user?.id,
+								params: {
+									user_metadata: user?.user_metadata,
+									fullname: action?.params?.target
+								}
+							})
+						})
+						const { error } = await result?.json()
+						if (!error) {							
+							setAction({ name: null, params: null, isLoading: false, password: null })
+							// must LogOut to set the new Email
+							signOut({ supabaseClient })
+						}
+					}
+					catch (e) {
+						setAction({ name: null, params: null, isLoading: false, password: null })
+						setCallbackToast({ status: 'error', text: e })
+					}
+				}
 				else if (action?.name === 'changePassword') {
 					try {
 						const { error } = await supabaseClient.auth.updateUser({
@@ -231,7 +263,6 @@ const UserAccount = ({ q_screen, q_errors }) => {
 				setCallbackToast({ status: 'success', text: 'Your information was updated.' })
 			}
 		}
-		*/}
 	}
 
 	const loadPortal = async () => {
@@ -271,13 +302,13 @@ const UserAccount = ({ q_screen, q_errors }) => {
 								icon={
 									<div><svg className="text-slate-500 dark:text-zinc-400 w-6 h-6" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m12 19-2 3-3-1-.5-3.5L3 17l-1-3 3-2-3-2 1-3 3.5-.5L7 3l3-1 2 3 2-3 3 1 .5 3.5L21 7l1 3-3 2 3 2-1 3-3.5.5L17 21l-3 1-2-3zm0-3a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path></svg></div>
 								} />
-							{/* <Btn 
+							<Btn 
 								title="Change your password" 
 								description="Change your password at any time."
 								onClick={() => handleScreenChange({ name: 'change-password', title: 'Change your password' })}
 								icon={
 									<div><svg className="text-slate-500 dark:text-zinc-400 w-6 h-6" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M10 13v3h3v3h3v2l2 2h5v-4L12.74 8.74C12.91 8.19 13 7.6 13 7c0-3.31-2.69-6-6-6S1 3.69 1 7a6.005 6.005 0 0 0 8.47 5.47L10 13zM6 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"></path></svg></div>
-								} /> */}
+								} />
 							<Btn 
 								title="Payments and subscription" 
 								description="See your payments and cancel or change your subscription."
@@ -365,26 +396,29 @@ const UserAccount = ({ q_screen, q_errors }) => {
 								<>
 									<Btn 
 										title="Username" 
-										description={`@${user?.user_metadata?.user_name}`} />
+										description={`@${user?.user_metadata?.username}`} 
+										onClick={() => handleScreenChange({ name: 'change-username', title: 'Change your username' })} />
 									<Btn 
 										title="Full Name" 
-										description={user?.user_metadata?.full_name} />
+										description={user?.user_metadata?.fullname} 
+										onClick={() => handleScreenChange({ name: 'automation', title: 'Change your fullname' })} />
 									<Btn 
 										title="Email" 
-										description={user?.email} />
+										description={user?.email} 
+										onClick={() => handleScreenChange({ name: 'change-email', title: 'Change your email address' })} />
 									<Btn 
 										title="Automation" 
 										description="Manage your automated account."
 										onClick={() => handleScreenChange({ name: 'automation', title: 'Manage your automated account' })} />
 								</>
 							: 
-							screen?.name === '!!change-username' ? 
+							screen?.name === 'change-username' ? 
 								<>
-									{/* <div className="relative z-0">
+									<div className="relative z-0">
 										<input onChange={(e) => setAction({ ...action, password: e?.target?.value })} type="password" id="current_password" name="current_password" className="peer block w-full appearance-none border border-slate-300 dark:border-zinc-700 dark:text-zinc-500 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" placeholder=" " />
 										<label htmlFor="current_password" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 dark:text-zinc-600 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
 											Current Password</label>
-									</div> */}
+									</div>
 									<div className="mt-4 relative z-0">
 										<input onChange={(e) => handleChange({
 											name: 'changeUsername',
@@ -392,7 +426,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 												target: e?.target?.value
 											}
 										})} type="text" id="username" name="username" className="peer block w-full appearance-none border border-slate-300 dark:border-zinc-700 dark:text-zinc-500 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" 
-											placeholder=" " defaultValue={user?.user_metadata?.user_name} />
+											placeholder=" " defaultValue={user?.user_metadata?.username} />
 										<label htmlFor="username" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 dark:text-zinc-600 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
 											Username</label>
 									</div>
@@ -406,13 +440,41 @@ const UserAccount = ({ q_screen, q_errors }) => {
 									</div>
 								</>
 							:
-							screen?.name === '!!change-email' ? 
+							screen?.name === 'change-fullname' ? 
 								<>
-									{/* <div className="relative z-0">
+									<div className="relative z-0">
 										<input onChange={(e) => setAction({ ...action, password: e?.target?.value })} type="password" id="current_password" name="current_password" className="peer block w-full appearance-none border border-slate-300 dark:border-zinc-700 dark:text-zinc-500 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" placeholder=" " />
 										<label htmlFor="current_password" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 dark:text-zinc-600 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
 											Current Password</label>
-									</div> */}
+									</div>
+									<div className="mt-4 relative z-0">
+										<input onChange={(e) => handleChange({
+											name: 'changeFullname',
+											params: {
+												target: e?.target?.value
+											}
+										})} type="text" id="fullname" name="fullname" className="peer block w-full appearance-none border border-slate-300 dark:border-zinc-700 dark:text-zinc-500 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" 
+											placeholder=" " defaultValue={user?.user_metadata?.fullname} />
+										<label htmlFor="fullname" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 dark:text-zinc-600 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
+											Fullname</label>
+									</div>
+									{error && <div className="mt-3 w-full text-red-500 text-base">{error}</div>}
+									<div className="mt-4 text-base">
+										<span className="font-semibold">NB:</span> You'll be logged out to set your new fullname, so make sure you log in again with your new credentials.
+									</div>
+									<div className="flex w-full mt-4 justify-end">
+										<div onClick={() => newRequest()} className={`${error ? 'opacity-40' : 'opacity-100'} rounded-full overflow-hidden cursor-pointer`}>
+												<BlueButton isLink={false} text="Save" /></div>
+									</div>
+								</>
+							:
+							screen?.name === 'change-email' ? 
+								<>
+									<div className="relative z-0">
+										<input onChange={(e) => setAction({ ...action, password: e?.target?.value })} type="password" id="current_password" name="current_password" className="peer block w-full appearance-none border border-slate-300 dark:border-zinc-700 dark:text-zinc-500 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" placeholder=" " />
+										<label htmlFor="current_password" className="absolute top-6 left-2 -z-10 origin-[0] -translate-y-6 scale-75 transform text-base text-slate-500 dark:text-zinc-600 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-primary-600">
+											Current Password</label>
+									</div>
 									<div className="mt-4 relative z-0">
 										<input onChange={(e) => handleChange({
 											name: 'changeEmail',
@@ -426,7 +488,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 									</div>
 									{error && <div className="mt-3 w-full text-red-500 text-base">{error}</div>}
 									<div className="mt-4 text-base">
-										<span className="font-semibold">NB:</span> You'll be logged out to set your new username, so make sure you log in again with your new credentials.
+										<span className="font-semibold">NB:</span> You'll be logged out to set your new email, so make sure you log in again with your new credentials.
 									</div>
 									<div className="flex w-full mt-4 justify-end">
 										<div onClick={() => newRequest()} className={`${error ? 'opacity-40' : 'opacity-100'} rounded-full overflow-hidden cursor-pointer`}>
@@ -434,7 +496,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 									</div>
 								</>
 							:
-							screen?.name === '!!change-password' &&  
+							screen?.name === 'change-password' &&  
 								<>
 									<div className="relative z-0">
 										<input onChange={(e) => setAction({ ...action, password: e?.target?.value })} type="password" id="current_password" name="current_password" className="peer block w-full appearance-none border border-slate-300 dark:border-zinc-700 dark:text-zinc-500 rounded-lg bg-transparent pt-6 pb-2.5 px-2 text-slate-900 focus:border-primary-600 focus:outline-none focus:ring-0" placeholder=" " />
@@ -453,7 +515,7 @@ const UserAccount = ({ q_screen, q_errors }) => {
 									</div>
 									{error && <div className="mt-3 w-full text-red-500 text-base">{error}</div>}
 									<div className="mt-4 text-base">
-										<span className="font-semibold">NB:</span> You'll be logged out to set your new username, so make sure you log in again with your new credentials.
+										<span className="font-semibold">NB:</span> You'll be logged out to set your new password, so make sure you log in again with your new credentials.
 									</div>
 									<div className="flex w-full mt-4 justify-end">
 										<div onClick={() => newRequest()} className={`${error || !action?.password ? 'opacity-40' : 'opacity-100'} rounded-full overflow-hidden cursor-pointer`}>

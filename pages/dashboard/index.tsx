@@ -96,8 +96,8 @@ const DashboardHome = () => {
 												})
 											}
 											else {
-												return <div className="w-full text-base p-4 md:p-6">
-													Hey there, try to generate your first quotes on <span className="font-semibold">Insperr</span>.
+												return <div className="w-full text-base text-center p-4 md:p-6">
+													Hey there, try to generate more <span className="font-semibold">Quotes</span>.
 												</div>
 											}
 										})}
