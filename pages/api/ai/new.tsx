@@ -13,7 +13,7 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 
 	const supabase = createServerSupabaseClient({ req, res }) // Create authenticated Supabase Client
 	const { data: { session } } = await supabase.auth.getSession() // Check if we have a session
-	const { phrase, category, characters, action } = req?.body
+	const { phrase, category, characters } = req?.body
 
 	if (!session)
 		return res.status(401).json({
@@ -29,12 +29,13 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 		const { data: subscription, error } = await supabase
 			.from('subscriptions')
 			.select('is_subscribed, product_id')
-			.single()
 
-		if (!error && subscription) {
+		if (!error) {
 			// check the user's quota
 			var xd = new Date(); xd.setDate(1); xd.setHours(-1);
-			const check_quota = Settings?.products.find((itm) => { return subscription?.product_id === itm.id })
+			const check_quota = subscription?.length === 0 ? Settings?.products.find((itm) => { return 'free' === itm.id }) 
+				: Settings?.products.find((itm) => { return subscription[0]?.product_id === itm.id })
+			
 			const { count } = await supabase
 				.from('quotes')
 				.select('*', { count: 'exact', head: true })
@@ -94,16 +95,16 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 				}
 			}
 			else {
-				return res.status(401).json({
-					status: 401,
-					message: 'Unauthorized, the request has not been completed because your account has reached 100% of your quota.'
+				return res.status(200).json({
+					status: 200,
+					message: 'The request has not been completed because your account has reached 100% of your quota.'
 				})
 			}
 		}
 		else {
-			return res.status(401).json({
-				status: 401,
-				message: 'Unauthorized, the request has not been completed because you don\'t have a valid subscription.'
+			return res.status(200).json({
+				status: 200,
+				message: 'The request has not been completed because you don\'t have a valid subscription.'
 			})
 		}
 	}

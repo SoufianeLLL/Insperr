@@ -55,7 +55,7 @@ const CollectionsPage = () => {
 						{isCheckingSubscription ? <div className="w-full mt-4"><Loading text="" scpace='0' borderWidth={2} width={25} height={25} /></div> :
 						<>
 							<div className="text-base md:text-lg mt-4 w-full text-slate-500">
-								{!isSubscribed ? <>Get <span className="font-semibold text-white">Premium Collection for $8</span> to</> 
+								{!isSubscribed ? <>Get <span className="font-semibold text-white">Premium Collection</span> to</> 
 									: <>As a subscriber, you can now</>} access loads of Quotes created by our users. 
 									New Quotes & Tweets getting added by the second. Free collection just has a few hundred in it.
 							</div>
@@ -67,10 +67,10 @@ const CollectionsPage = () => {
 					</div>
 				</div>
 				<div className="w-full">
-					<div className="w-full mb-8 text-base md:text-xl">
+					<div className="w-full text-base md:text-xl">
 						🤖 Have a look at these interesting Quotes
 					</div>
-					<div className="mt-8 w-full">
+					<div className="mt-4 w-full">
 						{isLoading ? 
 							<div className="w-full columns-1 lg:columns-2 gap-6 py-2"><Skeleton /></div> 
 						:

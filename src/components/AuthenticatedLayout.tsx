@@ -65,7 +65,7 @@ const AuthenticatedLayout = ({ children, padding=true, title="Insperr – The Mo
 		return () => {
 			document.removeEventListener("keydown", keyDownHandler)
 		}
-	}, [])
+	}, [mounted])
 
 	
 	return <>

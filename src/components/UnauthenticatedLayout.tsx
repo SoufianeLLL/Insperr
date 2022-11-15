@@ -19,7 +19,7 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 
 	useEffect(() => {
 		setMounted(true)
-	}, [])
+	}, [mounted])
 
 	return <>
 		<Head>

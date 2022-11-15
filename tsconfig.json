@@ -36,7 +36,7 @@
     "next.config.js",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "netlify/functions/schedule_tweets.js"  ],
   "exclude": [
     "node_modules"
   ]

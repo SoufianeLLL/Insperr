@@ -13,13 +13,19 @@ const TweetsSidebarContainer = ({ children=null }) => {
                             <div className="w-full">
                                 <ul className="list-disc list-inside space-y-2 text-slate-500 dark:text-zinc-400">
                                     <li className="w-full">
-                                        AutoPost will post your quote to your Twitter's account, if you turned AutoPost ON within the first 5 min from creating the quote.
+                                        Only one keyword allowed at a time.
                                     </li>
                                     <li className="w-full">
-                                        You can't edit quote after post it on Twitter.
+                                        To generate the quote you must select a category.
                                     </li>
                                     <li className="w-full">
-                                        You can't retweet untweeted quote, unless the owner tweet the quote first.
+                                        AutoPost would post your quote to your Twitter account if you turned AutoPost ON within the first 5 minutes of creating the quote.
+                                    </li>
+                                    <li className="w-full">
+                                        You can't edit a quote after posting it on Twitter.
+                                    </li>
+                                    <li className="w-full">
+                                        You can't retweet the untweeted quote unless the owner tweets the quote first.
                                     </li>
                                 </ul>
                             </div>

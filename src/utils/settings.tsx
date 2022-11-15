@@ -17,7 +17,7 @@ const Settings = {
 			priority_support: false
 		},
 		{
-			id: "prod_MeLd38T9HtjbzY",
+			id: "prod_MnzOyzn6WfqPbq",
 			name: 'Pro',
 			quotes: 400,
 			autoPost: true,
@@ -29,7 +29,7 @@ const Settings = {
 			},
 		},
 		{
-			id: "prod_MeLesTbqyESA2B",
+			id: "prod_MnzOqIzvijapTp",
 			name: 'Elite',
 			quotes: 1000,
 			autoPost: true,
@@ -41,7 +41,7 @@ const Settings = {
 			},
 		},
 		{
-			id: "prod_MeLfJlsElKrjs9",
+			id: "prod_MnzNF8dbncBGOD",
 			name: 'Entreprise',
 			quotes: 10000,
 			autoPost: true,

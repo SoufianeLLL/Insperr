@@ -240,6 +240,6 @@ const DashboardAnalytics = () => {
 }
 
 
-DashboardAnalytics.getLayout = (page) => <AuthenticatedLayout>{page}</AuthenticatedLayout>
+DashboardAnalytics.getLayout = (page) => <AuthenticatedLayout padding={false}>{page}</AuthenticatedLayout>
 
 export default DashboardAnalytics

@@ -27,10 +27,10 @@ const BookmarksPage = () => {
 		<div className="bg-slate-100 w-full p-5 md:p-10">
 			<section className="w-full max-w-6xl">
 				<div className="w-full">
-					<div className="w-full mb-8 text-base md:text-xl">
+					<div className="w-full text-base md:text-xl">
 						✨ Recent Quotes added to your Bookmarks
 					</div>
-					<div className="mt-8 w-full">
+					<div className="mt-4 w-full">
 						{isValidating ? 
 							<div className="w-full columns-1 md:columns-2 gap-6 py-2"><Skeleton /></div> :
 							(CustomQuotes && CustomQuotes?.length > 0) ? 
