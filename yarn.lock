@@ -501,13 +501,13 @@ at-least-node@^1.0.0:
   resolved "https://registry.yarnpkg.com/at-least-node/-/at-least-node-1.0.0.tgz#602cd4b46e844ad4effc92a8011a3c46e0238dc2"
   integrity sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==
 
-autoprefixer@^10.4.8:
-  version "10.4.12"
-  resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-10.4.12.tgz#183f30bf0b0722af54ee5ef257f7d4320bb33129"
-  integrity sha512-WrCGV9/b97Pa+jtwf5UGaRjgQIg7OK3D06GnoYoZNcG1Xb8Gt3EfuKjlhh9i/VtT16g6PYjZ69jdJ2g8FxSC4Q==
+autoprefixer@^10.4.13:
+  version "10.4.13"
+  resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-10.4.13.tgz#b5136b59930209a321e9fa3dca2e7c4d223e83a8"
+  integrity sha512-49vKpMqcZYsJjwotvt4+h/BCjJVnhGwcLpDt5xkcaOG3eLrG/HUYLagrihYsQ+qrIBgIzX1Rw7a6L8I/ZA1Atg==
   dependencies:
     browserslist "^4.21.4"
-    caniuse-lite "^1.0.30001407"
+    caniuse-lite "^1.0.30001426"
     fraction.js "^4.2.0"
     normalize-range "^0.1.2"
     picocolors "^1.0.0"
@@ -631,10 +631,10 @@ camelcase-css@^2.0.1:
   resolved "https://registry.npmjs.org/camelcase-css/-/camelcase-css-2.0.1.tgz"
   integrity sha512-QOSvevhslijgYwRx6Rv7zKdMF8lbRmx+uQGx2+vDc+KI/eBnsy9kit5aj23AgGu3pa4t9AgwbnXWqS+iOY+2aA==
 
-caniuse-lite@^1.0.30001400, caniuse-lite@^1.0.30001407:
-  version "1.0.30001423"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001423.tgz#57176d460aa8cd85ee1a72016b961eb9aca55d91"
-  integrity sha512-09iwWGOlifvE1XuHokFMP7eR38a0JnajoyL3/i87c8ZjRWRrdKo1fqjNfugfBD0UDBIOz0U+jtNhJ0EPm1VleQ==
+caniuse-lite@^1.0.30001400, caniuse-lite@^1.0.30001426:
+  version "1.0.30001431"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001431.tgz#e7c59bd1bc518fae03a4656be442ce6c4887a795"
+  integrity sha512-zBUoFU0ZcxpvSt9IU66dXVT/3ctO1cy4y9cscs1szkPlcWb6pasYM144GqrUygUbT+k7cmUCW61cvskjcv0enQ==
 
 caniuse-lite@^1.0.30001406:
   version "1.0.30001427"
@@ -1935,11 +1935,6 @@ remove-accents@0.4.2:
   version "0.4.2"
   resolved "https://registry.npmjs.org/remove-accents/-/remove-accents-0.4.2.tgz"
   integrity sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==
-
-request-ip@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/request-ip/-/request-ip-3.3.0.tgz#863451e8fec03847d44f223e30a5d63e369fa611"
-  integrity sha512-cA6Xh6e0fDBBBwH77SLJaJPBmD3nWVAcF9/XAcsrIHdjhFzFiB5aNQFytdjCGPezU3ROwrR11IddKAM08vohxA==
 
 require-from-string@^2.0.2:
   version "2.0.2"
