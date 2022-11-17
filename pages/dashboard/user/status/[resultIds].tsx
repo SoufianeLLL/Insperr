@@ -12,14 +12,14 @@ import { TweetSkeleton } from "@/components/Skeleton"
 const ShowToast = dynamic(() => import("@/components/ShowToast"))
 
 
-const Status = ({ resultId }) => {
+const Status = ({ resultIds }) => {
 
-	const { data: quote, error } = useSWR(`/api/ai/result/${resultId}`)
+	const { data: quotes, error } = useSWR(`/api/ai/result/${resultIds}`)
 	let { isValidating: isCheckingSubscription, data: userData } = useSWR(`/api/user?action=getUserData`)
 	
 	const [subs, setSubs] = useState(null)
 	const [callbackToast, setCallbackToast] = useState({ status: null, text: null })
-	const isCheckingData = !quote && !error
+	const isCheckingData = !quotes?.result && !error
 
 
 	useEffect(() => {
@@ -63,19 +63,29 @@ const Status = ({ resultId }) => {
 					</div>
 					<div className="w-full">
 						{isCheckingData ? <TweetSkeleton count={1} /> : 
-							<div className="w-full">
+							quotes?.result?.length > 0 ? 
 								<div className="w-full">
-									<TweetContainer id={quote?.result?.id} 
-										subscription={subs}
-										user={userData} 
-										contentWithLink={false}
-										tweet={quote?.result} 
-										changeTweet={(content) => {
-											quote.result.content = content
-										}}
-										callback={(e) => setCallbackToast(e)} />
+									{quotes?.result?.map((quote, i) => {
+										return <div className={`w-full ${(quotes?.result?.length > 1 && i+1 !== quotes?.result?.length) 
+											? 'border-b border-slate-200 dark:border-zinc-800' : ''}`}>
+											<TweetContainer key={i} id={quote?.id} 
+												subscription={subs}
+												user={userData} 
+												contentWithLink={false}
+												tweet={quote} 
+												changeTweet={(content) => {
+													quotes.result[i].content = content
+												}}
+												callback={(e) => setCallbackToast(e)} />
+										</div>
+									})}
 								</div>
-							</div>}
+							:
+								<div className="w-full text-center px-5 md:px-10 py-12 md:py-24">
+									<svg width="80" height="80" viewBox="0 0 24 24" className="dark:text-zinc-800 text-slate-200 mx-auto mb-4 w-32 h-32"><path fill="none" stroke="currentColor" strokeWidth="2" d="M10 4a2 2 0 1 1 4 0v6h6v4H4v-4h6V4zM4 14h16v8H4v-8zm12 8v-5.635M8 22v-5.635M12 22v-5.635"></path></svg>
+									The quote you're looking for is not found or deleted!
+								</div>
+							}
 					</div>
 				</div>
 				<TweetsSidebarContainer />
@@ -85,14 +95,14 @@ const Status = ({ resultId }) => {
 }
 
 
-export const getServerSideProps = async ({ res, 'query': {resultId} }) => { 
+export const getServerSideProps = async ({ res, query: {resultIds} }) => { 
 	res.setHeader(
 		'Cache-Control',
 		'public, s-maxage=10, stale-while-revalidate=59'
 	)
 	return { 
 		props: {
-			resultId
+			resultIds
 		}
 	}
 }

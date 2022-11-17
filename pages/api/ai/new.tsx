@@ -13,7 +13,7 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 
 	const supabase = createServerSupabaseClient({ req, res }) // Create authenticated Supabase Client
 	const { data: { session } } = await supabase.auth.getSession() // Check if we have a session
-	const { phrase, category, characters } = req?.body
+	const { phrase, category, characters, quota=1 } = req?.body
 
 	if (!session)
 		return res.status(401).json({
@@ -22,7 +22,7 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 			message: 'The user does not have an active session or is not authenticated',
 		})
 
-	let resultId = []
+	let resultIds = []
 
 	if (phrase && phrase?.length >= 6 && category && characters && session?.user) {
 		// Check user subscription and quota
@@ -45,53 +45,55 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 			
 			// If the user's quotes allowed is less than the stored in the database in the last month
 			if (check_quota?.quotes > count) {
-				// OpenAi generate/clone new Quote
-				try {
-					let result = await openai.createCompletion({
-						model: "text-davinci-002",
-						prompt: `Generate a new quote from scratch about ${category} contains the prompt '${phrase}'`,
-						temperature: 0.8,
-						max_tokens: parseInt(characters) <= Settings?.quote?.max_characters ? parseInt(characters) : Settings?.quote?.max_characters,
-						top_p: 1,
-						frequency_penalty: 1,
-						presence_penalty: 1,
-					})
-
-					const response = result?.data?.choices[0]?.text ?? null
-					// Insert output into database
-					if (response) {
-						const correction = response?.replace(/\r?\n|\r/gi, '')
-						const { data: { id } } = await supabase
-							.from('quotes')
-							.insert({
-								content: correction,
-								user_id: session?.user?.id,
-								type: 'custom',
-								topics: category,
-								keyword: phrase
+				for (let g=0; g < quota; g++) {
+					// OpenAi generate/clone new Quote
+					try {
+						let result = await openai.createCompletion({
+							model: "text-davinci-002",
+							prompt: `Generate a new quote from scratch about ${category} contains the prompt '${phrase}'`,
+							temperature: 0.8,
+							max_tokens: parseInt(characters) <= Settings?.quote?.max_characters ? parseInt(characters) : Settings?.quote?.max_characters,
+							top_p: 1,
+							frequency_penalty: 1,
+							presence_penalty: 1,
+						})
+	
+						const response = result?.data?.choices[0]?.text ?? null
+						// Insert output into database
+						if (response) {
+							const correction = response?.replace(/\r?\n|\r/gi, '')
+							const { data: { result_id } } = await supabase
+								.from('quotes')
+								.insert({
+									content: correction,
+									user_id: session?.user?.id,
+									type: 'custom',
+									topics: category,
+									keyword: phrase
+								})
+								.select('result_id')
+								.single()
+							
+							resultIds.push(result_id)
+						}
+					}
+					catch (error) {
+						if (error.response) {
+							return res.status(400).json({
+								status: error?.response?.status,
+								message: error?.response?.data
 							})
-							.select('id')
-							.single()
-						
-						resultId = id
+						}
+						else {
+							return res.status(400).json({
+								status: 400,
+								message: error?.message
+							})
+						}
 					}
 				}
-				catch (error) {
-					if (error.response) {
-						return res.status(400).json({
-							status: error?.response?.status,
-							message: error?.response?.data
-						})
-					}
-					else {
-						return res.status(400).json({
-							status: 400,
-							message: error?.message
-						})
-					}
-				}
-				if (resultId) {
-					return res.status(200).json({resultId})
+				if (resultIds?.length > 0) {
+					return res.status(200).json({resultIds})
 				}
 			}
 			else {

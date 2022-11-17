@@ -4,9 +4,11 @@ import { useRouter } from 'next/router'
 import { Modal } from "flowbite-react"
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useSignOutMutation } from "@/lib/api/auth"
+import { randomID } from '@/lib/global'
 import AvatarContainer from '@/components/Containers/AvatarContainer'
 import GenerateTweet from '@/components/Containers/GenerateTweet'
 import BlueButton from "@/components/BlueButton"
+import Loading from '@/components/Loading'
 import Logo from '@/components/Logo'
 
 
@@ -15,15 +17,82 @@ const Aside = ({ user }) => {
 	const router = useRouter()
 
 	const [supabaseClient] = useState(() => createBrowserSupabaseClient())
+	const [changingAvatar, setChangingAvatar] = useState({ isUploading: false, askForSignout: false })
 	const [showGenerator, setShowGenerator] = useState(false)
 	const [toggleUserMenu, setToggleUserMenu] = useState(false)
 	const { mutate: signOut } = useSignOutMutation()
-	
+
+	const uploadAvatar = async (e) => {
+		setChangingAvatar({ isUploading: true, askForSignout: false })
+		let file;
+		if (e.target.files) file = e.target.files[0]
+		const imageName = randomID(12)
+		const ext = (file?.name).split('.').pop()
+		const { error } = await supabaseClient.storage
+			.from('avatars')
+			.upload(`public/${imageName}.${ext}`, file as File)
+
+		// Get the stored avatar image
+		if (!error) {
+			const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/public/${imageName}.${ext}`
+			// update userData
+			try {
+				const result = await fetch('/api/user/update', {
+					method: 'POST',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						action: 'changeAvatar',
+						params: {
+							user_metadata: user?.user_metadata,
+							avatar: imageUrl
+						}
+					})
+				})
+				const { error } = await result?.json()
+				if (!error) {
+					setChangingAvatar({ isUploading: true, askForSignout: true })
+					// window.location.reload()
+				}
+			}
+			catch (e) {
+				setChangingAvatar({ isUploading: false, askForSignout: false })
+			}
+		}
+	}
+
+	const changeAvatar = async () => {
+		let element: HTMLElement = document.getElementById('avatarupload') as HTMLElement
+		element.click()
+	}
+
 	const onSignOut = useCallback(() => {
 		signOut({ supabaseClient })
 	}, [])
 
 	return <>
+		<Modal show={changingAvatar?.isUploading} size="xl" popup={true} onClose={() => setChangingAvatar({ isUploading: false, askForSignout: false })}>
+			<div className="dark:bg-zinc-800 bg-white">
+				<Modal.Header />
+				<Modal.Body>
+					{changingAvatar?.askForSignout ? 
+					<div className="text-center w-full">
+						<svg className="w-24 h-24 text-slate-200 dark:text-zinc-900 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+						<div className="mb-5 text-lg md:text-xl font-normal">
+							You must signout and signin again to set your new avatar properly!
+						</div>
+						<div className="flex justify-center">
+							<div onClick={() => onSignOut()} className="rounded-full">
+								<BlueButton fullWidth={false} text="Yes, do it now" isLink={false} /></div>
+						</div>
+					</div>
+					: 
+						<div className="w-full mx-auto text-center"><Loading text='Uploading your avatar ...' width={50} height={50} /></div>}
+				</Modal.Body>
+			</div>
+		</Modal>
 		<aside className="fixed bg-white dark:text-white dark:bg-black dark:border-zinc-900 z-10 top-0 py-3 px-5 flex flex-none flex-col justify-between h-screen border-r border-slate-100 w-24 md:w-72 overflow-hidden">
 			<div>
 				<div>
@@ -113,6 +182,10 @@ const Aside = ({ user }) => {
 					<div style={{ boxShadow: '0 0 12px 3px rgba(0, 0, 0, 0.1)', zIndex: 1002 }} className="text-base py-2 fixed lg:absolute left-4 lg:left-0 bottom-20 w-60 max-w-full bg-white dark:bg-zinc-900 rounded-lg">
 						<Link href="/dashboard/user/account" className="hover:bg-slate-50 dark:hover:bg-zinc-900 transition-all py-3 px-5 w-full inline-block">
 							Account Settings</Link>
+						<button onClick={() => changeAvatar()} className="ring-0 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-all py-3 px-5 w-full inline-block border-t dark:border-black border-slate-100 text-left">
+							Change your avatar
+							<input className="hidden" onChange={(e) => uploadAvatar(e)} id="avatarupload" type="file" accept="image/*" />
+						</button>
 						<button onClick={() => onSignOut()} className="ring-0 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-all py-3 px-5 w-full inline-block border-t dark:border-black border-slate-100 text-left">
 							Log Out @{user?.user_metadata?.username}</button>
 					</div>

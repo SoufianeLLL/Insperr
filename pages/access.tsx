@@ -7,6 +7,7 @@ import { useUser } from '@supabase/auth-helpers-react'
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs"
 import { checkEmailValidation, checkPasswordValidation, checkUsernameValidation } from "@/lib/validation"
 import { useForgotPasswordMutation, useSignInMutation, useSignUpMutation } from "@/lib/api/auth"
+import { generateRandomAvatar, randomID } from "@/lib/global"
 import Logo from "@/components/Logo"
 import Loading from "@/components/Loading"
 import BlueButton from "@/components/BlueButton"
@@ -55,12 +56,24 @@ const UserAccess = ({ op, redirect, p }) => {
 				})
 				if (!errors?.fullname && !errors?.username && !errors?.email && !errors?.password && !errors?.password2) {
 					setFetching({ isLoading: true, text })
+					let imageUrl
+					const avatarFile = await generateRandomAvatar(userData?.fullname)
+					const imageName = randomID(12)
+					const { error } = await supabaseClient.storage
+						.from('avatars')
+						.upload(`public/${imageName}.png`, avatarFile)
+
+					// Get the stored avatar image
+					if (!error) {
+						imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/public/${imageName}.png`
+					}
 					signUp(
 						{
 							username: (userData?.username).toString(),
 							name: (userData?.fullname).toString(),
 							email: (userData?.email).toString(),
 							password: (userData?.password).toString(),
+							avatar_url: userData?.fullname ? imageUrl : null,
 							supabaseClient
 						},
 						{
@@ -129,7 +142,8 @@ const UserAccess = ({ op, redirect, p }) => {
 							setFetching({ isLoading: false, text: null })
 						},
 						onSuccess() {
-							router.push('/dashboard')
+							window.location.href = '/dashboard'
+							// router.push('/dashboard')
 						},
 					}
 				)

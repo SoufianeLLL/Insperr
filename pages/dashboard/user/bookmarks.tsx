@@ -15,7 +15,7 @@ const BookmarksPage = () => {
 	const [callbackToast, setCallbackToast] = useState({ status: null, text: null })
 
 	useEffect(() => {
-		document.body.classList.remove("bg-slate-100")
+		document.body.classList.add("bg-slate-100")
 		return () => {
 			document.body.classList.remove("bg-slate-100")
 		}
@@ -44,8 +44,8 @@ const BookmarksPage = () => {
 											callback={(e) => setCallbackToast(e)} />
 									})}
 								</div> : 
-							<div className="w-full text-center border border-slate-200 rounded-lg px-5 md:px-10 py-12 md:py-24">
-								<svg width="80" height="80" viewBox="0 0 24 24" className="text-slate-200 mx-auto mb-4 w-32 h-32"><path fill="none" stroke="currentColor" strokeWidth="2" d="M10 4a2 2 0 1 1 4 0v6h6v4H4v-4h6V4zM4 14h16v8H4v-8zm12 8v-5.635M8 22v-5.635M12 22v-5.635"></path></svg>
+							<div className="w-full text-center border dark:border-zinc-900 border-slate-200 rounded-lg px-5 md:px-10 py-12 md:py-24">
+								<svg width="80" height="80" viewBox="0 0 24 24" className="dark:text-zinc-800 text-slate-200 mx-auto mb-4 w-32 h-32"><path fill="none" stroke="currentColor" strokeWidth="2" d="M10 4a2 2 0 1 1 4 0v6h6v4H4v-4h6V4zM4 14h16v8H4v-8zm12 8v-5.635M8 22v-5.635M12 22v-5.635"></path></svg>
 								You don't have any Quotes saved on bookmarks.
 							</div>}
 					</div>

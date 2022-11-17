@@ -76,30 +76,23 @@ const DashboardHome = () => {
 					<div className="w-full">
 						{isCheckingTwitterData && !Pagination ? <TweetSkeleton /> : 
 							<div className="w-full">
-								{Pagination && Pagination?.pages && Pagination?.pages?.length > 0 ? <>
+								{Pagination && Pagination?.pages && Pagination?.pages[0]?.tweets?.length > 0 ? <>
 									<div className="w-full">
 										{Pagination?.pages?.map((page, i) => {
-											if (page?.tweets && page?.tweets?.length > 0) {
-												return page?.tweets?.map((tweet, i) => {
-													return <TweetContainer key={i} id={i} 
-														subscription={subs}
-														user={userData} 
-														tweet={tweet} 
-														changeTweet={(content) => {
-															page?.tweets.forEach((item, i) => {
-																if (item?.id == tweet?.id) {
-																	page.tweets[i].content = content
-																}
-															})
-														}}
-														callback={(e) => setCallbackToast(e)} />
-												})
-											}
-											else {
-												return <div className="w-full text-base text-center p-4 md:p-6">
-													Hey there, try to generate more <span className="font-semibold">Quotes</span>.
-												</div>
-											}
+											return page?.tweets?.map((tweet, i) => {
+												return <TweetContainer key={i} id={i} 
+													subscription={subs}
+													user={userData} 
+													tweet={tweet} 
+													changeTweet={(content) => {
+														page?.tweets.forEach((item, i) => {
+															if (item?.id == tweet?.id) {
+																page.tweets[i].content = content
+															}
+														})
+													}}
+													callback={(e) => setCallbackToast(e)} />
+											})
 										})}
 									</div>
 									<div className="pagination my-4 text-base text-center">
@@ -108,7 +101,7 @@ const DashboardHome = () => {
 									</div>
 								</>
 								: <div className="w-full text-base p-4 md:p-6">
-									Hey there, try to generate your first quotes on <span className="font-semibold">Insperr</span>.
+									Hey <span className="font-semibold">{user?.user_metadata?.fullname}</span>., you can now start generating your first <span className="font-semibold">Quotes</span>.
 								</div>}
 							</div>
 						}

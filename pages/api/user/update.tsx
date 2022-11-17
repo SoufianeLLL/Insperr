@@ -29,6 +29,25 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 			}
 		}
 	
+		else if (action === 'changeAvatar') {
+			if (user?.id && params?.avatar && params?.user_metadata) {
+				const { error } = await supabase
+					.from('users')
+					.update({ avatar: params?.avatar })
+					.eq('id', user?.id)
+				
+				if (!error) {
+					await supabaseAdmin.auth.admin.updateUserById(
+						user?.id, { user_metadata: { ...params?.user_metadata, avatar_url: params?.avatar } }
+					)
+					return res.status(200).json({ 
+						error: null,
+						message: null
+					})
+				}
+			}
+		}
+	
 		else if (action === 'changeFullname') {
 			if (user?.id && params?.fullname) {
 				const { error } = await supabase
@@ -72,7 +91,7 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 
 		return res.status(401).json({ 
 			error: 'NOT_ALLOWED',
-			message: 'You not allowed to update your username',
+			message: 'You not allowed to update your data',
 		})
 	}
 	else {

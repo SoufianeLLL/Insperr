@@ -5,7 +5,9 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 	
 	const supabase = createServerSupabaseClient({ req, res }) // Create authenticated Supabase Client
 	const { data: { session } } = await supabase.auth.getSession() // Check if we have a session
-	const { result_id } = req?.query
+	const { result_ids } = req?.query
+
+	const IDs = (result_ids)?.toLocaleString()?.split(',') ?? null
 
 	if (!session)
 		return res.status(401).json({
@@ -13,16 +15,15 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
 			error: 'not_authenticated',
 			message: 'The user does not have an active session or is not authenticated',
 		})
-  
+
 	// Run queries with RLS on the server
 	// get Quote result by ID
-	if (result_id) {
+	if (IDs?.length > 0) {
 		const { data: result, error } = await supabase
 			.from('quotes')
 			.select('*, quotes_satisfaction(satisfaction)')
-			.eq('id', result_id)
 			.eq('user_id', session?.user?.id)
-			.single()
+			.in('result_id', IDs)
 	
 		if (!error) {
 			return res.status(200).json({

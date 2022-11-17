@@ -67,16 +67,17 @@ export const useSignInMutation = () => {
 
 /* Sign Up */
 type SignUpData = { session: Session | null; user: User | null }
-type SignUpVariables = { username: string; name: string; email: string; password: string; supabaseClient }
+type SignUpVariables = { username: string; name: string; avatar_url: string; email: string; password: string; supabaseClient }
 
-export async function signUp({ username, name, email, password, supabaseClient }: SignUpVariables) {
+export async function signUp({ username, name, avatar_url, email, password, supabaseClient }: SignUpVariables) {
 	const { error, data: { session, user } } = await supabaseClient.auth.signUp({
 		email,
 		password,
 		options: {
 			data: {
 				username: username,
-				fullname: name
+				fullname: name,
+				avatar_url
 			}
 		}
 	})
@@ -89,7 +90,7 @@ export async function signUp({ username, name, email, password, supabaseClient }
 export const useSignUpMutation = () => {
 	const queryClient = useQueryClient()
 	return useMutation<SignUpData, PostgrestError, SignUpVariables>(
-		({ username, name, email, password, supabaseClient }) => signUp({ username, name, email, password, supabaseClient }),
+		({ username, name, avatar_url, email, password, supabaseClient }) => signUp({ username, name, avatar_url, email, password, supabaseClient }),
 		{
 			onSuccess: async () => {
 				await queryClient.resetQueries()

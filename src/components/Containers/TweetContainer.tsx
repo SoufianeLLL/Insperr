@@ -235,7 +235,7 @@ const TweetContainer = ({ user, tweet, id, subscription=null, contentWithLink=tr
 						{!contentWithLink ? 
 							<div className="w-full text-base">{tweet?.content}</div>
 						:
-							<Link href={`/dashboard/user/status/${tweet?.id}`}>
+							<Link href={`/dashboard/user/status/${tweet?.result_id}`}>
 								<div className="w-full text-base">{tweet?.content}</div>
 							</Link>}
 						{topics && 

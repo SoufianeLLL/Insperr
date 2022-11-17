@@ -69,10 +69,10 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 					{home &&
 					<div className="w-full">
 						<h1 className="text-3xl md:text-5xl lg:text-6xl leading-tight normal-case fontBold w-full mt-8 md:mt-20 text-center mx-auto max-w-3xl md:px-10 px-0">
-							Intelligent GPT-3 <span className="fontUltra text-primary-400">Quotes</span> generator
+							Intelligent AI <span className="fontUltra text-primary-400">Quotes</span> generator
 						</h1>
 						<div className="w-full mt-4 text-base sm:text-xl text-center px-0 md:px-10 max-w-3xl mx-auto">
-							With just lines of content in your style, Insperr leverages state-of-the-art language model GPT-3 to create human-like Insperr-Quotes in your writing style
+							With just lines of content in your style, Insperr leverages state-of-the-art language model to create human-like Insperr-Quotes in your writing style
 						</div>
 						<div className="w-full md:overflow-hidden relative">
 							<div className="sm:mt-12 py-8 w-full flex justify-center opacity-100 md:opacity-0">

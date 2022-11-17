@@ -54,7 +54,8 @@ const GenerateTweet = ({ user }) => {
 				body: JSON.stringify({
 					phrase: target?.phrase ?? null,
 					category: target?.category ?? null,
-					characters: 250,
+					quota: target?.quota ?? 1,
+					characters: 250
 				})
 			})
 			.then(async (res) => { return await res?.json() })
@@ -62,13 +63,13 @@ const GenerateTweet = ({ user }) => {
 				if (res?.status) {
 					setError(res?.message)
 				}
-				else if(res?.resultId) {
+				else if(res?.resultIds) {
 					setError(null)
 					// const res = {
-					// 	resultId: "86329475-156f-4445-b248-eeb90d3a85c9"
+					// 	resultIds: ['86329475-156f-4445-b248-eeb90d3a85c9', '6a5c5038-c80c-4a4f-b7c6-26aefbd49fe1', '2bd0d111-4d32-4c27-b9fe-69309a64188e']
 					// }
 					// Redirect after quote created
-					router?.push(`/dashboard/user/status/${res?.resultId}`)
+					router?.push(`/dashboard/user/status/${res?.resultIds}`)
 				}
 				setGeneratorStatus({ isLoading: false, text: null })
 			}
@@ -147,10 +148,17 @@ const GenerateTweet = ({ user }) => {
 											return <option value={topic?.name?.toLowerCase()} key={i}>{topic?.name}</option>
 										})}
 									</select>}
+									<select onChange={(e) => setTarget({ ...target, type: e?.target?.value?.toLowerCase() })} className="rounded-full py-1 pl-2 pr-6 text-sm bg-transparent hover:bg-slate-50 dark:hover:bg-zinc-900 transition duration-200 text-slate-500 dark:text-zinc-500 outline-none cursor-pointer focus:ring-0 border focus:border-slate-200 dark:focus:border-zinc-800 border-slate-200 dark:border-zinc-800" id="quota" required={true}>
+										<option value="1">1 quote</option>
+										<option disabled={subs?.quotes - parseInt(userData?.generatedQuotes?.toLocaleString(), 10) >= 2 ? false : true} value="2">2 quotes</option>
+										<option disabled={subs?.quotes - parseInt(userData?.generatedQuotes?.toLocaleString(), 10) >= 3 ? false : true} value="3">3 quotes</option>
+										<option disabled={subs?.quotes - parseInt(userData?.generatedQuotes?.toLocaleString(), 10) >= 4 ? false : true} value="4">4 quotes</option>
+										<option disabled={subs?.quotes - parseInt(userData?.generatedQuotes?.toLocaleString(), 10) >= 5 ? false : true} value="5">5 quotes</option>
+									</select>
 								</div>
 							</div>
 						</div>
-						<div className="flex justify-end w-full mt-1">
+						<div className="flex justify-end w-full mt-2">
 							<div onClick={() => runGenerator()} className="rounded-full"><BlueButton fullWidth={false} text="Generate" isLink={false} /></div>
 						</div>
 					</>}
