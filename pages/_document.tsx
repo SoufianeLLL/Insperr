@@ -1,4 +1,3 @@
-// import Script from 'next/script'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 
 class MyDocument extends Document {
@@ -8,7 +7,6 @@ class MyDocument extends Document {
 			<Html dir="ltr" lang="en">
 				<Head>
 					<meta charSet="UTF-8" />
-					{/* <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://www.google.com" /> */}
 					<meta name="environment" content="production" />
 					<meta content="IE=edge" httpEquiv="X-UA-Compatible" />
 					<meta content="#ffffff" name="theme-color" />
@@ -24,8 +22,6 @@ class MyDocument extends Document {
 				</Head>
 				<body className="bg-white text-black dark:bg-black dark:text-white">
 					<Main />
-					{/* <Script dangerouslySetInnerHTML={{ __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PQ79D8C')` }}></Script> */}
-					{/* <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PQ79D8C" height="0" width="0" style={{ display: 'none', visibility: 'hidden' }}></iframe></noscript> */}
 					<NextScript />
 				</body>
 			</Html>

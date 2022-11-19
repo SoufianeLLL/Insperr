@@ -1,5 +1,7 @@
 import useSWR from 'swr'
 import { useState } from "react"
+import Head from 'next/head'
+import Script from "next/script"
 import Link from "next/link"
 import dynamic from 'next/dynamic'
 import UnauthenticatedLayout from "@/components/UnauthenticatedLayout"
@@ -13,17 +15,110 @@ const IndexPage = () => {
 
 	const [callbackToast, setCallbackToast] = useState({ status: null, text: null })
 	let { isValidating, data: CustomQuotes } = useSWR(`/api/quote?number=${20}&action=getRandomCustomQuotes`)
-	
-	/**
-	 * Using cache supafast
-	 * 
-	 * const { cache } = useSWRConfig()
-	 * 
-	 * let RealQuotesURI = `/api/quote?number=${20}&target=database&action=getRandomCustomQuotes`, 
-	 * RealQuotes = cache.get(RealQuotesURI) ?? useSWR(RealQuotesURI)?.data
-	 */
 
 	return <>
+		<Head>
+			<meta name="description" content="Insperr is a simple online tool with which you can generate thousands of quotes sorted by category. You can choose from different categories." />
+			<meta property="og:site_name" content="Insperr" />
+			<meta property="og:title" content="Insperr" />
+			<meta property="og:description" content="Insperr is a simple online tool with which you can generate thousands of quotes sorted by category. You can choose from different categories." />
+			<meta property="og:image" content="https://bgrlgcryhzmokadamxuz.supabase.co/storage/v1/object/public/structured-data/home.png" />
+			<meta property="og:type" content="website" />
+			<meta property="og:url" content="https://insperr.com" />
+			<meta name="twitter:card" content="summary" />
+			<meta name="twitter:title" content="Insperr" />
+			<meta name="twitter:description" content="Insperr is a simple online tool with which you can generate thousands of quotes sorted by category. You can choose from different categories." />
+			<meta name="twitter:url" content="https://insperr.com" />
+			<meta name="twitter:image" content="https://bgrlgcryhzmokadamxuz.supabase.co/storage/v1/object/public/structured-data/home.png" />
+			<link rel="canonical" href="https://insperr.com" />
+			<Script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(
+					{
+						"@context": "http://schema.org",
+						"@graph": [
+							{
+								"@type": "WebApplication",
+								"@id": "insperr",
+								"applicationCategory": "BusinessApplication",
+								"name": "Insperr",
+								"description": "Insperr is a simple online tool with which you can generate thousands of quotes sorted by category. You can choose from different categories.",
+								"operatingSystem": "all",
+								"browserRequirements": "Requires Javascript and HTML5 support",
+								"url": "https://insperr.com",
+								"screenshot": "https://bgrlgcryhzmokadamxuz.supabase.co/storage/v1/object/public/structured-data/home.png",
+								"offers": {
+									"@type": "AggregateOffer",
+									"offeredBy": {
+										"@type": "Organization",
+										"name":"Insperr"
+									},
+									"highPrice": "29.99",
+									"lowPrice": "0",
+									"offerCount": "9999",
+									"priceCurrency": "USD",
+									"priceSpecification": [
+										{
+											"@type": "UnitPriceSpecification",
+											"price": "0.00",
+											"priceCurrency": "USD",
+											"name": "Free"
+										},
+										{
+											"@type": "UnitPriceSpecification",
+											"price": "8.99",
+											"priceCurrency": "USD",
+											"name": "Pro",
+											"referenceQuantity": {
+												"@type": "QuantitativeValue",
+												"value": "1",
+												"unitCode": "MON"
+											}
+										},
+										{
+											"@type": "UnitPriceSpecification",
+											"price": "14.99",
+											"priceCurrency": "USD",
+											"name": "Elite",
+											"referenceQuantity": {
+												"@type": "QuantitativeValue",
+												"value": "1",
+												"unitCode": "MON"
+											}
+										},
+										{
+											"@type": "UnitPriceSpecification",
+											"price": "29.99",
+											"priceCurrency": "USD",
+											"name": "Entreprise",
+											"referenceQuantity": {
+												"@type": "QuantitativeValue",
+												"value": "1",
+												"unitCode": "MON"
+											}
+										}
+									]
+								},
+								"creator": {
+									"@type": "Person",
+									"@id": "#insperr",
+									"url": "https://loudaini.dev",
+									"name": "Soufiane Loudaini",
+									"email": "cm@loudaini.dev",
+								}
+							},
+							{
+								"@type": "Organization",
+								"name": "Insperr",
+								"url" : "https://insperr.com",
+								"logo": "https://bgrlgcryhzmokadamxuz.supabase.co/storage/v1/object/public/structured-data/insperr_avatar.png",
+								"email": "support(at)insperr.com",
+								"description": "Insperr is a simple online tool with which you can generate thousands of quotes sorted by category. You can choose from different categories.",
+							}
+						]
+					}
+				) }} />
+		</Head>
 		{(callbackToast?.status && callbackToast?.text) && 
 			<ShowToast onClick={(e) => setCallbackToast(e)} type={callbackToast?.status} text={callbackToast?.text} />}
 		<section className="w-full relative bg-white dark:bg-zinc-900">

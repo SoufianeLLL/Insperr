@@ -1,10 +1,13 @@
 import { SWRConfig } from 'swr'
+import Script from 'next/script'
 import { useEffect, useState } from 'react'
 import { ThemeProvider } from 'next-themes'
+import { useRouter } from "next/router"
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query'
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NotFoundError, UnauthenticatedError } from '@/lib/api/utils'
+import * as gtag from "@/lib/gtag"
 import { fetcher } from "@/lib/global"
 
 import '../styles/app.css'
@@ -12,6 +15,8 @@ import 'tailwindcss/tailwind.css'
 
 
 const MyApp = ({ Component, pageProps }) => {
+
+	const router = useRouter()
 	
 	const [supabaseClient] = useState(() =>
 		createBrowserSupabaseClient()
@@ -66,11 +71,15 @@ const MyApp = ({ Component, pageProps }) => {
 				await supabaseClient.auth.refreshSession()
 			}
 		})
-	
+		const handleRouteChange = (url) => {
+			gtag.pageview(url)
+		}
+		router.events.on("routeChangeComplete", handleRouteChange)
 		return () => {
 			if (subscription) subscription.unsubscribe()
+			router.events.off("routeChangeComplete", handleRouteChange)
 		}
-	}, [])
+	}, [router.events])
   
 	const getLayout = Component.getLayout ?? ((page) => page)
 
@@ -80,6 +89,23 @@ const MyApp = ({ Component, pageProps }) => {
 				<QueryClientProvider client={queryClient}>
 					<Hydrate state={pageProps.dehydratedState}>
 						<SWRConfig value={{ provider: typeof window !== 'undefined' && localStorageProvider, fetcher }}>
+							<Script
+								strategy="afterInteractive"
+								src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+							/>
+							<Script
+								strategy="afterInteractive"
+								dangerouslySetInnerHTML={{
+									__html: `
+										window.dataLayer = window.dataLayer || [];
+										function gtag(){dataLayer.push(arguments);}
+										gtag('js', new Date());
+										gtag('config', '${gtag.GA_TRACKING_ID}', {
+										page_path: window.location.pathname,
+										});
+									`,
+								}}
+							/>
 							{getLayout(<Component {...pageProps} />)}
 						</SWRConfig>
 					</Hydrate>

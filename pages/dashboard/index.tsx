@@ -1,5 +1,6 @@
 import useSWR from "swr"
 import dynamic from "next/dynamic"
+import Head from "next/head"
 import { useEffect, useState } from "react"
 import { useInfiniteQuery } from "react-query"
 import { useInView } from "react-intersection-observer"
@@ -65,6 +66,9 @@ const DashboardHome = () => {
 
 
 	return <>
+		<Head>
+            <link rel="canonical" href="https://insperr.com/dashboard" />
+        </Head>
 		{(callbackToast?.status && callbackToast?.text) && 
 			<ShowToast onClick={(e) => setCallbackToast(e)} type={callbackToast?.status} text={callbackToast?.text} />}
 		<section className="w-full h-screen relative overflow-hidden bg-white dark:bg-black">

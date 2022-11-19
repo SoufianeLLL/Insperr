@@ -1,3 +1,5 @@
+import Head from "next/head"
+import Script from "next/script"
 import ContentContainer from "@/components/Containers/ContentContainer"
 import UnauthenticatedLayout from "@/components/UnauthenticatedLayout"
 
@@ -5,6 +7,42 @@ import UnauthenticatedLayout from "@/components/UnauthenticatedLayout"
 const TermsOfUse = () => {
 
 	return <>
+		<Head>
+            <link rel="canonical" href="https://insperr.com/terms" />
+			<Script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(
+					{
+						"@context": "https://schema.org",
+						"@type": "NewsArticle",
+						"headline": "Insperr Terms and Conditions",
+						"description": "These Terms of Use constitute a legally binding agreement made between you, whether personally or on behalf of an entity (“you”) and Insperr...",
+						"datePublished": "2022-11-18T08:00:00+08:00",
+						"dateModified": "2022-11-18T09:20:00+08:00",
+						"publisher": {
+							"@type": "Organization",
+							"name": "Insperr",
+							"logo": {
+								"@type": "ImageObject",
+								"url": false
+							}
+						},
+						"mainEntityOfPage":{
+							"@type": "WebPage",
+							"@id": "https://insperr.com"
+						},
+						"author":{
+							"@type": "Person",
+							"name": "Soufiane Loudaini"
+						},
+						"image":{
+							"@type": "ImageObject",
+							"url": "https://bgrlgcryhzmokadamxuz.supabase.co/storage/v1/object/public/structured-data/home.png"
+						}
+					}
+				)}}
+			/>
+        </Head>
 		<ContentContainer title="Terms & Conditions">
 			<div className="w-full my-6 text-sm text-slate-">Last update: Thursday, November 2022</div>
 			<div className="w-full text-base normal-case">

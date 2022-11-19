@@ -1,5 +1,7 @@
 import useSWR from "swr"
 import Link from "next/link"
+import Head from "next/head"
+import Script from "next/script"
 import { useEffect, useState } from "react"
 import { loadStripe } from "@stripe/stripe-js/pure"
 import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
@@ -39,6 +41,84 @@ const PricingPage = ({ plans, price_id }) => {
 	}
 
 	return <>
+		<Head>
+            <link rel="canonical" href="https://insperr.com/pricing" />
+			<Script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(
+					{
+						"@type": "WebApplication",
+						"@id": "insperr",
+						"applicationCategory": "BusinessApplication",
+						"name": "Insperr",
+						"description": "Insperr is a simple online tool with which you can generate thousands of quotes sorted by category. You can choose from different categories.",
+						"operatingSystem": "all",
+						"browserRequirements": "Requires Javascript and HTML5 support",
+						"url": "https://insperr.com",
+						"screenshot": "https://bgrlgcryhzmokadamxuz.supabase.co/storage/v1/object/public/structured-data/home.png",
+						"offers": {
+							"@type": "AggregateOffer",
+							"offeredBy": {
+								"@type": "Organization",
+								"name":"Insperr"
+							},
+							"highPrice": "29.99",
+							"lowPrice": "0",
+							"offerCount": "9999",
+							"priceCurrency": "USD",
+							"priceSpecification": [
+								{
+									"@type": "UnitPriceSpecification",
+									"price": "0.00",
+									"priceCurrency": "USD",
+									"name": "Free"
+								},
+								{
+									"@type": "UnitPriceSpecification",
+									"price": "8.99",
+									"priceCurrency": "USD",
+									"name": "Pro",
+									"referenceQuantity": {
+										"@type": "QuantitativeValue",
+										"value": "1",
+										"unitCode": "MON"
+									}
+								},
+								{
+									"@type": "UnitPriceSpecification",
+									"price": "14.99",
+									"priceCurrency": "USD",
+									"name": "Elite",
+									"referenceQuantity": {
+										"@type": "QuantitativeValue",
+										"value": "1",
+										"unitCode": "MON"
+									}
+								},
+								{
+									"@type": "UnitPriceSpecification",
+									"price": "29.99",
+									"priceCurrency": "USD",
+									"name": "Entreprise",
+									"referenceQuantity": {
+										"@type": "QuantitativeValue",
+										"value": "1",
+										"unitCode": "MON"
+									}
+								}
+							]
+						},
+						"creator": {
+							"@type": "Person",
+							"@id": "#insperr",
+							"url": "https://loudaini.dev",
+							"name": "Soufiane Loudaini",
+							"email": "cm@loudaini.dev",
+						}
+					}
+				)}}
+			/>
+        </Head>
 		<section className="w-full px-5 md:px-10 2xl:px-0 max-w-7xl mx-auto">
 			<div className="w-full my-10 overflow-hidden">
 				<div className="heading w-full">

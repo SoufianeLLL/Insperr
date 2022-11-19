@@ -24,8 +24,8 @@ const Settings = {
 			priority_support: true,
 			api: true,
 			requests: {
-				create: 800,
-				read: 20000
+				create: 300,
+				read: 1000
 			},
 		},
 		{
@@ -36,8 +36,8 @@ const Settings = {
 			priority_support: true,
 			api: true,
 			requests: {
-				create: 2000,
-				read: 20000
+				create: 700,
+				read: 5000
 			},
 		},
 		{
@@ -48,7 +48,7 @@ const Settings = {
 			priority_support: true,
 			api: true,
 			requests: {
-				create: 10000,
+				create: 1200,
 				read: 200000
 			},
 		}

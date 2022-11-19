@@ -160,6 +160,7 @@ const UserAccess = ({ op, redirect, p }) => {
 
 	return <>
 		<Head>
+            <link rel="canonical" href="https://insperr.com/access" />
 			<title>Insperr – The Most Advanced Quotes Generator</title>
 		</Head>
 		<div className="flex flex-wrap min-h-screen w-full content-center justify-center bg-slate-200 dark:bg-black px-5 py-10">

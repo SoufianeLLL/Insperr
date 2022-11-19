@@ -1,3 +1,5 @@
+import Head from "next/head"
+import Script from "next/script"
 import ContentContainer from "@/components/Containers/ContentContainer"
 import UnauthenticatedLayout from "@/components/UnauthenticatedLayout"
 
@@ -5,6 +7,42 @@ import UnauthenticatedLayout from "@/components/UnauthenticatedLayout"
 const OurRoadMap = () => {
 
 	return <>
+		<Head>
+            <link rel="canonical" href="https://insperr.com/roadmap" />
+			<Script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(
+					{
+						"@context": "https://schema.org",
+						"@type": "NewsArticle",
+						"headline": "Insperr Roadmap",
+						"description": "Insperr roadmap is our vision, direction, priorities, and progress of the product.",
+						"datePublished": "2022-11-18T08:00:00+08:00",
+						"dateModified": "2022-11-18T09:20:00+08:00",
+						"publisher": {
+							"@type": "Organization",
+							"name": "Insperr",
+							"logo": {
+								"@type": "ImageObject",
+								"url": false
+							}
+						},
+						"mainEntityOfPage":{
+							"@type": "WebPage",
+							"@id": "https://insperr.com"
+						},
+						"author":{
+							"@type": "Person",
+							"name": "Soufiane Loudaini"
+						},
+						"image":{
+							"@type": "ImageObject",
+							"url": "https://bgrlgcryhzmokadamxuz.supabase.co/storage/v1/object/public/structured-data/home.png"
+						}
+					}
+				)}}
+			/>
+        </Head>
 		<ContentContainer title="Our Roadmap">
 			<div className="w-full px-5 md:px-10 py-14 border-l border-slate-200 dark:border-zinc-700">
 				<div className="relative w-full my-12">
