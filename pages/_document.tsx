@@ -1,3 +1,4 @@
+import Script from 'next/script'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 
 class MyDocument extends Document {
@@ -23,6 +24,22 @@ class MyDocument extends Document {
 				<body className="bg-white text-black dark:bg-black dark:text-white">
 					<Main />
 					<NextScript />
+					<Script
+						strategy="afterInteractive"
+						src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`} />
+					<Script
+						strategy="afterInteractive"
+						dangerouslySetInnerHTML={{
+							__html: `
+								window.dataLayer = window.dataLayer || [];
+								function gtag(){dataLayer.push(arguments);}
+								gtag('js', new Date());
+								gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+								page_path: window.location.pathname,
+								});
+							`,
+						}}
+					/>
 				</body>
 			</Html>
 		)
