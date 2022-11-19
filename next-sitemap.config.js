@@ -22,7 +22,6 @@ module.exports = {
 					'/api/*',
 					'/dashboard/*',
 					'/payment/*',
-					'/server-sitemap.xml',
 					'/404'
 				],
 			},
