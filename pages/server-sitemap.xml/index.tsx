@@ -9,6 +9,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const newsSitemaps = usernames.map((item) => ({
 		loc: `${siteUrl}/user/@${item?.username}`,
 		lastmod: new Date().toISOString(),
+		changefreq: 'daily',
+		priority: 0.7
 	}))
 
 	const fields = [...newsSitemaps]
