@@ -1,7 +1,6 @@
 import useSWR from 'swr'
 import { useState } from "react"
 import Head from 'next/head'
-import Script from "next/script"
 import Link from "next/link"
 import dynamic from 'next/dynamic'
 import UnauthenticatedLayout from "@/components/UnauthenticatedLayout"
@@ -31,7 +30,7 @@ const IndexPage = () => {
 			<meta name="twitter:url" content="https://insperr.com" />
 			<meta name="twitter:image" content="https://bgrlgcryhzmokadamxuz.supabase.co/storage/v1/object/public/structured-data/home.png" />
 			<link rel="canonical" href="https://insperr.com" />
-			<Script
+			<script
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(
 					{
