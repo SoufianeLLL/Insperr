@@ -1,7 +1,6 @@
 import useSWR from "swr"
 import Link from "next/link"
 import Head from "next/head"
-import Script from "next/script"
 import { useEffect, useState } from "react"
 import { loadStripe } from "@stripe/stripe-js/pure"
 import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
@@ -43,7 +42,7 @@ const PricingPage = ({ plans, price_id }) => {
 	return <>
 		<Head>
             <link rel="canonical" href="https://insperr.com/pricing" />
-			<Script
+			<cript
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(
 					{

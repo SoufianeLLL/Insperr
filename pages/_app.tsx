@@ -83,36 +83,35 @@ const MyApp = ({ Component, pageProps }) => {
   
 	const getLayout = Component.getLayout ?? ((page) => page)
 
-	return (
+	return <>
+		<Script
+			strategy="afterInteractive"
+			src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`} />
+		<Script
+			strategy="afterInteractive"
+			dangerouslySetInnerHTML={{
+				__html: `
+					window.dataLayer = window.dataLayer || [];
+					function gtag(){dataLayer.push(arguments);}
+					gtag('js', new Date());
+					gtag('config', '${gtag.GA_TRACKING_ID}', {
+					page_path: window.location.pathname,
+					});
+				`,
+			}}
+		/>
 		<ThemeProvider attribute="class">
 			<SessionContextProvider supabaseClient={supabaseClient} initialSession={pageProps.initialSession}>
 				<QueryClientProvider client={queryClient}>
 					<Hydrate state={pageProps.dehydratedState}>
 						<SWRConfig value={{ provider: typeof window !== 'undefined' && localStorageProvider, fetcher }}>
-							<Script
-								strategy="afterInteractive"
-								src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
-							/>
-							<Script
-								strategy="afterInteractive"
-								dangerouslySetInnerHTML={{
-									__html: `
-										window.dataLayer = window.dataLayer || [];
-										function gtag(){dataLayer.push(arguments);}
-										gtag('js', new Date());
-										gtag('config', '${gtag.GA_TRACKING_ID}', {
-										page_path: window.location.pathname,
-										});
-									`,
-								}}
-							/>
 							{getLayout(<Component {...pageProps} />)}
 						</SWRConfig>
 					</Hydrate>
 				</QueryClientProvider>
 			</SessionContextProvider>
 		</ThemeProvider>
-	)
+	</>
 }
 
 export default MyApp

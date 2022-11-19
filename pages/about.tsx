@@ -1,5 +1,4 @@
 import Head from "next/head"
-import Script from "next/script"
 import ContentContainer from "@/components/Containers/ContentContainer"
 import UnauthenticatedLayout from "@/components/UnauthenticatedLayout"
 
@@ -9,7 +8,7 @@ const Aboutus = () => {
 	return <>
 		<Head>
 			<link rel="canonical" href="https://insperr.com/about" />
-			<Script
+			<script
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(
 					{
