@@ -42,7 +42,7 @@ const PricingPage = ({ plans, price_id }) => {
 	return <>
 		<Head>
             <link rel="canonical" href="https://insperr.com/pricing" />
-			<cript
+			<script
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(
 					{
