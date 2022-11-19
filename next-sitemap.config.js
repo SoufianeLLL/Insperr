@@ -4,11 +4,11 @@ module.exports = {
 	siteUrl,
 	generateRobotsTxt: true,
 	exclude: [
-		'/api/*',
 		'/dashboard/*',
 		'/payment/*',
 		'/server-sitemap.xml',
-		'/404'
+		// '/api/*',
+		// '/404'
 	],
 	robotsTxtOptions: {
 		policies: [
@@ -16,15 +16,15 @@ module.exports = {
 				userAgent: '*',
 				allow: '/',
 			},
-			{
-				userAgent: '*',
-				disallow: [
-					'/api/*',
-					'/dashboard/*',
-					'/payment/*',
-					'/404'
-				],
-			},
+			// {
+			// 	userAgent: '*',
+			// 	disallow: [
+			// 		'/api/*',
+			// 		'/dashboard/*',
+			// 		'/payment/*',
+			// 		'/404'
+			// 	],
+			// },
 		],
 		additionalSitemaps: [
 			`${siteUrl}/server-sitemap.xml`,
