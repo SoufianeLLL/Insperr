@@ -56,6 +56,8 @@ const UserAccess = ({ op, redirect, p }) => {
 				})
 				if (!errors?.fullname && !errors?.username && !errors?.email && !errors?.password && !errors?.password2) {
 					setFetching({ isLoading: true, text })
+					// Set tour guide to 'True'
+					window.localStorage.setItem('tour', 'true')
 					let imageUrl
 					const avatarFile = await generateRandomAvatar(userData?.fullname)
 					const imageName = randomID(12)

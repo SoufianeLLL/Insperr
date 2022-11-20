@@ -9,9 +9,11 @@ import { Settings } from "@/utils/settings"
 import TweetContainer from "@/components/Containers/TweetContainer"
 import AuthenticatedLayout from "@/components/AuthenticatedLayout"
 import TweetsSidebarContainer from "@/components/Containers/TweetsSidebarContainer"
+import TourContainer from "@/components/Containers/TourContainer"
 import GenerateTweet from "@/components/Containers/GenerateTweet"
 import { TweetSkeleton } from "@/components/Skeleton"
 import Loading from "@/components/Loading"
+
 
 const ShowToast = dynamic(() => import("@/components/ShowToast"))
 
@@ -36,11 +38,15 @@ const DashboardHome = () => {
 		}
     )
 
+	const [tour, setTour] = useState(false)
 	const [subs, setSubs] = useState(null)
 	const [callbackToast, setCallbackToast] = useState({ status: null, text: null })
 
 
 	useEffect(() => {
+		// if (window.localStorage.getItem('tour') === 'true') {
+			setTour(true)
+		// }
 		if (inView && hasNextPage) {
 			fetchNextPage()
 		}
@@ -69,6 +75,7 @@ const DashboardHome = () => {
 		<Head>
             <link rel="canonical" href="https://insperr.com/dashboard" />
         </Head>
+		{tour && <TourContainer show={tour} callback={(e) => {setTour(e); window.localStorage.removeItem('tour')}} />}
 		{(callbackToast?.status && callbackToast?.text) && 
 			<ShowToast onClick={(e) => setCallbackToast(e)} type={callbackToast?.status} text={callbackToast?.text} />}
 		<section className="w-full h-screen relative overflow-hidden bg-white dark:bg-black">
