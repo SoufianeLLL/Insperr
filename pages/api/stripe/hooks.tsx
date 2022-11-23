@@ -1,5 +1,6 @@
 import { buffer } from "micro"
 import stripe from "@/utils/stripejs"
+import sendEmail from "@/utils/sendgrid"
 import supabaseAdmin from "@/utils/supabase-admin"
 import { timestampToDate } from "@/lib/validation"
 
@@ -51,13 +52,13 @@ export default async function handler(req, res) {
 		// Create new subscription
 		case "customer.subscription.created":
 			// Get user ID by customer ID
-			const { data: { id } } = await supabaseAdmin
+			const { data: { id, email, fullname } } = await supabaseAdmin
 				.from('users')
-				.select('id')
+				.select('id, email, fullname')
 				.eq('stripe_customer_id', event?.data?.object?.customer)
 				.single()
 
-			if (id) {
+			if (id && email) {
 				await supabaseAdmin
 					.from('subscriptions')
 					.insert({
@@ -78,6 +79,16 @@ export default async function handler(req, res) {
 						price_id: event?.data?.object?.items.data[0].plan.id ?? null,
 						product_id: event?.data?.object?.items.data[0].plan.product ?? null
 					})
+				
+				// Send Email
+				await sendEmail({
+					to: email,
+					templateId: 'd-352a1be3bca2459ba4fe2e0e2f903bfd',
+					extraData: {
+						amount: event?.data?.object?.currency ?? '' + event?.data?.object?.items?.data[0]?.plan?.amount ?? '',
+						name: fullname?.replace(/(\w+\s+)(\w+\s+)(\w+)/, '$1'),
+					}
+				})
 			} 
 			else {
 				return res.status(400).send(`An error was occured, please contact support.`)

@@ -8,9 +8,11 @@ import { useSignOutMutation } from '@/lib/api/auth'
 import { useSessionContext, useUser } from "@supabase/auth-helpers-react"
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { checkEmailValidation, checkPasswordValidation, checkUsernameValidation } from "@/lib/validation"
+import sendEmail from '@/utils/sendgrid'
 import Loading from '@/components/Loading'
 import BlueButton from "@/components/BlueButton"
 import AuthenticatedLayout from "@/components/AuthenticatedLayout"
+
 
 const ShowToast = dynamic(() => import("@/components/ShowToast"))
 
@@ -60,6 +62,16 @@ const UserAccount = ({ q_screen, q_errors }) => {
 			})
 			const res = await result?.json()
 			if (res) {
+				// Send Email
+				await sendEmail({
+					to: user?.email,
+					templateId: 'd-f91852a478354813a817901d80e72c64',
+					extraData: {
+						title: '🎉 Gongrats',
+						name: user?.user_metadata?.fullname?.replace(/(\w+\s+)(\w+\s+)(\w+)/, '$1'),
+						status: 'connected'
+					}
+				})
 				router?.push(res?.url)
 			}
 		}
@@ -75,6 +87,16 @@ const UserAccount = ({ q_screen, q_errors }) => {
 			const result = await fetch(`${process.env.NEXT_PUBLIC_URL_HOME}/api/auth/twitter/logout`)
 			const res = await result?.json()
 			if (!res) {
+				// Send Email
+				await sendEmail({
+					to: user?.email,
+					templateId: 'd-f91852a478354813a817901d80e72c64',
+					extraData: {
+						title: 'Thank you',
+						name: user?.user_metadata?.fullname?.replace(/(\w+\s+)(\w+\s+)(\w+)/, '$1'),
+						status: 'disconnected'
+					}
+				})
 				router?.push(`${process.env.NEXT_PUBLIC_URL_HOME}/dashboard`)
 			}
 		}
@@ -127,11 +149,23 @@ const UserAccount = ({ q_screen, q_errors }) => {
 						.eq('id', user?.id)
 					
 					if (error) {
-						setAutomation({ autoPostActive: val })
+						setAutomation({ autoPostActive: !val })
+					}
+					else {
+						// Send Email
+						await sendEmail({
+							to: user?.email,
+							templateId: 'd-1727b6155d554d2a84aa3b883aaa1088',
+							extraData: {
+								name: user?.user_metadata?.fullname?.replace(/(\w+\s+)(\w+\s+)(\w+)/, '$1'),
+								target: 'AutoTweet status',
+								value: 'to ON, from now on your generated quotes will be scheduled to be tweeted automatically within the first 5 minutes from the date of creation'
+							}
+						})
 					}
 				}
 				else {
-					setAutomation({ autoPostActive: val })
+					setAutomation({ autoPostActive: !val })
 				}
 			}
 		}
@@ -176,6 +210,16 @@ const UserAccount = ({ q_screen, q_errors }) => {
 						const { error } = await result?.json()
 						if (!error) {							
 							setAction({ name: null, params: null, isLoading: false, password: null })
+							// Send Email
+							await sendEmail({
+								to: user?.email,
+								templateId: 'd-1727b6155d554d2a84aa3b883aaa1088',
+								extraData: {
+									name: user?.user_metadata?.fullname?.replace(/(\w+\s+)(\w+\s+)(\w+)/, '$1'),
+									target: 'username',
+									value: `to ${action?.params?.target}. Please use your new information to login to your account`
+								}
+							})
 							// must LogOut to set the new Username
 							signOut({ supabaseClient })
 						}
@@ -204,6 +248,16 @@ const UserAccount = ({ q_screen, q_errors }) => {
 						const { error } = await result?.json()
 						if (!error) {							
 							setAction({ name: null, params: null, isLoading: false, password: null })
+							// Send Email
+							await sendEmail({
+								to: user?.email,
+								templateId: 'd-1727b6155d554d2a84aa3b883aaa1088',
+								extraData: {
+									name: user?.user_metadata?.fullname?.replace(/(\w+\s+)(\w+\s+)(\w+)/, '$1'),
+									target: 'email address',
+									value: `to ${action?.params?.target}. Please use your new information to login to your account`
+								}
+							})
 							// must LogOut to set the new Email
 							signOut({ supabaseClient })
 						}
@@ -233,6 +287,16 @@ const UserAccount = ({ q_screen, q_errors }) => {
 						const { error } = await result?.json()
 						if (!error) {							
 							setAction({ name: null, params: null, isLoading: false, password: null })
+							// Send Email
+							await sendEmail({
+								to: user?.email,
+								templateId: 'd-1727b6155d554d2a84aa3b883aaa1088',
+								extraData: {
+									name: user?.user_metadata?.fullname?.replace(/(\w+\s+)(\w+\s+)(\w+)/, '$1'),
+									target: 'fullname',
+									value: `to ${action?.params?.target}.`
+								}
+							})
 							// must LogOut to set the new Email
 							signOut({ supabaseClient })
 						}
@@ -249,6 +313,16 @@ const UserAccount = ({ q_screen, q_errors }) => {
 						})
 						if (!error) {							
 							setAction({ name: null, params: null, isLoading: false, password: null })
+							// Send Email
+							await sendEmail({
+								to: user?.email,
+								templateId: 'd-1727b6155d554d2a84aa3b883aaa1088',
+								extraData: {
+									name: user?.user_metadata?.fullname?.replace(/(\w+\s+)(\w+\s+)(\w+)/, '$1'),
+									target: 'password',
+									value: `. Please use your new information to login to your account`
+								}
+							})
 							// must LogOut to set the new Password
 							signOut({ supabaseClient })
 						}

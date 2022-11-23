@@ -38,14 +38,14 @@ const DashboardHome = () => {
 		}
     )
 
-	const [tour, setTour] = useState(false)
+	// const [tour, setTour] = useState(false)
 	const [subs, setSubs] = useState(null)
 	const [callbackToast, setCallbackToast] = useState({ status: null, text: null })
 
 
 	useEffect(() => {
 		// if (window.localStorage.getItem('tour') === 'true') {
-			setTour(true)
+			// setTour(true)
 		// }
 		if (inView && hasNextPage) {
 			fetchNextPage()
@@ -75,7 +75,7 @@ const DashboardHome = () => {
 		<Head>
             <link rel="canonical" href="https://insperr.com/dashboard" />
         </Head>
-		{tour && <TourContainer show={tour} callback={(e) => {setTour(e); window.localStorage.removeItem('tour')}} />}
+		{/* {tour && <TourContainer show={tour} callback={(e) => {setTour(e); window.localStorage.removeItem('tour')}} />} */}
 		{(callbackToast?.status && callbackToast?.text) && 
 			<ShowToast onClick={(e) => setCallbackToast(e)} type={callbackToast?.status} text={callbackToast?.text} />}
 		<section className="w-full h-screen relative overflow-hidden bg-white dark:bg-black">

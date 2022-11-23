@@ -8,6 +8,7 @@ import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs"
 import { checkEmailValidation, checkPasswordValidation, checkUsernameValidation } from "@/lib/validation"
 import { useForgotPasswordMutation, useSignInMutation, useSignUpMutation } from "@/lib/api/auth"
 import { generateRandomAvatar, randomID } from "@/lib/global"
+import sendEmail from "@/utils/sendgrid"
 import Logo from "@/components/Logo"
 import Loading from "@/components/Loading"
 import BlueButton from "@/components/BlueButton"
@@ -95,6 +96,14 @@ const UserAccess = ({ op, redirect, p }) => {
 										await stripe.redirectToCheckout({ sessionId: res?.id })
 									}
 								}
+								// Send Email
+								await sendEmail({
+									to: userData?.email,
+									templateId: 'd-45ac67b991044746a87063a6b7eafaac',
+									extraData: {
+										name: (userData?.fullname).toString()?.replace(/(\w+\s+)(\w+\s+)(\w+)/, '$1')
+									}
+								})
 								// setFetching({ isLoading: false, text: null })
 								router.push('/dashboard')
 							},
@@ -180,7 +189,7 @@ const UserAccess = ({ op, redirect, p }) => {
 					<div className="w-full">
 						{op === 'signup' || op === 'register' || op === 'new' ?
 							<>
-								<small className="text-slate-400">Welcome dear! Please enter your details</small>
+								<small className="dark:text-zinc-900 text-slate-400">Welcome dear! Please enter your details</small>
 								{errors?.error && <div className="text-red-500 mt-2 text-base">{errors?.error}</div>}
 								<div className="mt-6">
 									<div className="mb-6">
@@ -190,7 +199,7 @@ const UserAccess = ({ op, redirect, p }) => {
 											setUser({ ...userData, username: e?.target?.value })
 											setErrors({ ...errors, username: null })
 										}}
-										defaultValue={userData?.username ?? null} placeholder="Enter your username" className="bg-transparent text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
+										defaultValue={userData?.username ?? null} placeholder="Enter your username" className="bg-transparent text-base block w-full border-0 border-b-2 dark:border-zinc-700 dark:focus:border-primary-500 dark:text-zinc-400 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 										{errors?.username && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.username}</span>}
 									</div>
 									<div className="mb-6">
@@ -200,7 +209,7 @@ const UserAccess = ({ op, redirect, p }) => {
 											setUser({ ...userData, fullname: e?.target?.value })
 											setErrors({ ...errors, fullname: null })
 										}}
-										defaultValue={userData?.fullname ?? null} placeholder="Enter your full name" className="bg-transparent text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
+										defaultValue={userData?.fullname ?? null} placeholder="Enter your full name" className="bg-transparent text-base block w-full border-0 border-b-2 dark:border-zinc-700 dark:focus:border-primary-500 dark:text-zinc-400 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 										{errors?.fullname && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.fullname}</span>}
 									</div>
 									<div className="mb-6">
@@ -210,7 +219,7 @@ const UserAccess = ({ op, redirect, p }) => {
 											setUser({ ...userData, email: e?.target?.value })
 											setErrors({ ...errors, email: null })
 										}}
-										defaultValue={userData?.email ?? null} placeholder="Enter your email" className="bg-transparent text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
+										defaultValue={userData?.email ?? null} placeholder="Enter your email" className="bg-transparent text-base block w-full border-0 border-b-2 dark:border-zinc-700 dark:focus:border-primary-500 dark:text-zinc-400 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 										{errors?.email && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.email}</span>}
 									</div>
 									<div className="mb-6">
@@ -220,7 +229,7 @@ const UserAccess = ({ op, redirect, p }) => {
 											setUser({ ...userData, password: e?.target?.value })
 											setErrors({ ...errors, password: null })
 										}}
-										placeholder="*****" className="bg-transparent text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
+										placeholder="*****" className="bg-transparent text-base block w-full border-0 border-b-2 dark:border-zinc-700 dark:focus:border-primary-500 dark:text-zinc-400 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 										{errors?.password && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.password}</span>}
 									</div>
 									<div className="mb-6">
@@ -230,7 +239,7 @@ const UserAccess = ({ op, redirect, p }) => {
 											setUser({ ...userData, password2: e?.target?.value })
 											setErrors({ ...errors, password2: null })
 										}}
-										placeholder="*****" className="bg-transparent text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
+										placeholder="*****" className="bg-transparent text-base block w-full border-0 border-b-2 dark:border-zinc-700 dark:focus:border-primary-500 dark:text-zinc-400 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 										{errors?.password2 && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.password2}</span>}
 									</div>
 									<div className="mt-8 mb-2">
@@ -240,7 +249,7 @@ const UserAccess = ({ op, redirect, p }) => {
 									</div>
 								</div>
 								<div className="text-center">
-									<span className="text-sm text-slate-400">You have an account?</span>
+									<span className="text-sm text-slate-400 dark:text-zinc-700">You have an account?</span>
 									<Link
 										href="/access?op=signin"
 										className="text-sm text-primary-500 hover:text-primary-700 transition-all ml-2">Sign in</Link>
@@ -248,7 +257,7 @@ const UserAccess = ({ op, redirect, p }) => {
 							</>
 						: (op === 'reset' || op === 'reset-password' || op === 'forget-password') ?
 							<>
-								<small className="text-slate-400">We're sorry! Please enter your email</small>
+								<small className="text-slate-400 dark:text-zinc-400">We're sorry! Please enter your email</small>
 								{errors?.error && <div className="text-red-500 mt-2 text-base">{errors?.error}</div>}
 								<div className="mt-6">
 									<div className="mb-6">
@@ -258,7 +267,7 @@ const UserAccess = ({ op, redirect, p }) => {
 											setUser({ ...userData, email: e?.target?.value })
 											setErrors({ ...errors, email: null })
 										}}
-										defaultValue={userData?.email ?? null} placeholder="Enter your email" className="bg-transparent text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
+										defaultValue={userData?.email ?? null} placeholder="Enter your email" className="bg-transparent text-base block w-full border-0 border-b-2 dark:border-zinc-700 dark:focus:border-primary-500 dark:text-zinc-400 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 										{errors?.email && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.email}</span>}
 									</div>
 									<div className="mt-8 mb-2">
@@ -268,7 +277,7 @@ const UserAccess = ({ op, redirect, p }) => {
 									</div>
 								</div>
 								<div className="text-center">
-									<span className="text-sm text-slate-400">Don't have account?</span>
+									<span className="text-sm text-slate-400 dark:text-zinc-700">Don't have account?</span>
 									<Link
 										href="/access?op=signin"
 										className="text-sm text-primary-500 hover:text-primary-700 transition-all ml-2">Sign in</Link>
@@ -276,7 +285,7 @@ const UserAccess = ({ op, redirect, p }) => {
 							</>
 						:
 							<>
-								<small className="text-slate-400">Welcome back! Please enter your details</small>
+								<small className="text-slate-400 dark:text-zinc-400">Welcome back! Please enter your details</small>
 								{errors?.error && <div className="text-red-500 mt-2 text-base">{errors?.error}</div>}
 								<div className="mt-6">
 									<div className="mb-6">
@@ -286,7 +295,7 @@ const UserAccess = ({ op, redirect, p }) => {
 											setUser({ ...userData, email: e?.target?.value })
 											setErrors({ ...errors, email: null })
 										}}
-										defaultValue={userData?.email ?? null} placeholder="Enter your email" className="bg-transparent text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
+										defaultValue={userData?.email ?? null} placeholder="Enter your email" className="bg-transparent text-base block w-full border-0 border-b-2 dark:border-zinc-700 dark:focus:border-primary-500 dark:text-zinc-400 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 										{errors?.email && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.email}</span>}
 									</div>
 									<div className="mb-6">
@@ -296,7 +305,7 @@ const UserAccess = ({ op, redirect, p }) => {
 											setUser({ ...userData, password: e?.target?.value })
 											setErrors({ ...errors, password: null })
 										}}
-										placeholder="*****" className="bg-transparent text-base block w-full border-0 border-b-2 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
+										placeholder="*****" className="bg-transparent text-base block w-full border-0 border-b-2 dark:border-zinc-700 dark:focus:border-primary-500 dark:text-zinc-400 border-slate-300 focus:border-primary-700 focus:outline-none focus:ring-0 py-1 px-1.5 text-slate-500" />
 										{errors?.password && <span className="mt-1 text-red-500 text-sm leading-tight inline-block w-full">{errors?.password}</span>}
 									</div>
 									<div className="mb-3 flex flex-wrap content-center">
@@ -311,7 +320,7 @@ const UserAccess = ({ op, redirect, p }) => {
 									</div>
 								</div>
 								<div className="text-center">
-									<span className="text-sm text-slate-400">Don't have account?</span>
+									<span className="text-sm text-slate-400 dark:text-zinc-700">Don't have account?</span>
 									<Link
 										href="/access?op=signup"
 										className="text-sm text-primary-500 hover:text-primary-700 transition-all ml-2">Sign up</Link>
