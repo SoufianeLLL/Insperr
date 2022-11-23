@@ -1,23 +1,18 @@
-import sgMail from '@sendgrid/mail'
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
-
 
 const sendEmail = async ({ to, from='support', templateId, extraData }) => {
-	try {
-		await sgMail.send({
+	await fetch(`/api/mail`, {
+		method: 'POST',
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
 			to,
-			from: `${from}@insperr.com`,
+			from,
 			templateId,
-			dynamicTemplateData: extraData,
+			extraData
 		})
-	}
-	catch (error) {
-		console.error(error)
-		if (error.response) {
-			console.error(error.response.body)
-		}
-	}
+	})
 }
 
 export default sendEmail
