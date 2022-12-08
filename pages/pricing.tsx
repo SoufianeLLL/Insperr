@@ -54,7 +54,7 @@ const PricingPage = ({ plans, price_id }) => {
 						"operatingSystem": "all",
 						"browserRequirements": "Requires Javascript and HTML5 support",
 						"url": "https://insperr.com",
-						"screenshot": "https://bgrlgcryhzmokadamxuz.supabase.co/storage/v1/object/public/structured-data/home.png",
+						"screenshot": "https://lbthopsukieuyitlwkmw.supabase.co/storage/v1/object/public/structured-data/home.png",
 						"offers": {
 							"@type": "AggregateOffer",
 							"offeredBy": {

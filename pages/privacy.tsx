@@ -36,7 +36,7 @@ const Privacy = () => {
 						},
 						"image":{
 							"@type": "ImageObject",
-							"url": "https://bgrlgcryhzmokadamxuz.supabase.co/storage/v1/object/public/structured-data/home.png"
+							"url": "https://lbthopsukieuyitlwkmw.supabase.co/storage/v1/object/public/structured-data/home.png"
 						}
 					}
 				)}}

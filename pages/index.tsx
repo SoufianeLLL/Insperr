@@ -21,14 +21,14 @@ const IndexPage = () => {
 			<meta property="og:site_name" content="Insperr" />
 			<meta property="og:title" content="Insperr" />
 			<meta property="og:description" content="Insperr is a simple online tool with which you can generate thousands of quotes sorted by category. You can choose from different categories." />
-			<meta property="og:image" content="https://bgrlgcryhzmokadamxuz.supabase.co/storage/v1/object/public/structured-data/home.png" />
+			<meta property="og:image" content="https://lbthopsukieuyitlwkmw.supabase.co/storage/v1/object/public/structured-data/home.png" />
 			<meta property="og:type" content="website" />
 			<meta property="og:url" content="https://insperr.com" />
 			<meta name="twitter:card" content="summary" />
 			<meta name="twitter:title" content="Insperr" />
 			<meta name="twitter:description" content="Insperr is a simple online tool with which you can generate thousands of quotes sorted by category. You can choose from different categories." />
 			<meta name="twitter:url" content="https://insperr.com" />
-			<meta name="twitter:image" content="https://bgrlgcryhzmokadamxuz.supabase.co/storage/v1/object/public/structured-data/home.png" />
+			<meta name="twitter:image" content="https://lbthopsukieuyitlwkmw.supabase.co/storage/v1/object/public/structured-data/home.png" />
 			<link rel="canonical" href="https://insperr.com" />
 			<script
 				type="application/ld+json"
@@ -45,7 +45,7 @@ const IndexPage = () => {
 								"operatingSystem": "all",
 								"browserRequirements": "Requires Javascript and HTML5 support",
 								"url": "https://insperr.com",
-								"screenshot": "https://bgrlgcryhzmokadamxuz.supabase.co/storage/v1/object/public/structured-data/home.png",
+								"screenshot": "https://lbthopsukieuyitlwkmw.supabase.co/storage/v1/object/public/structured-data/home.png",
 								"offers": {
 									"@type": "AggregateOffer",
 									"offeredBy": {
@@ -110,7 +110,7 @@ const IndexPage = () => {
 								"@type": "Organization",
 								"name": "Insperr",
 								"url" : "https://insperr.com",
-								"logo": "https://bgrlgcryhzmokadamxuz.supabase.co/storage/v1/object/public/structured-data/insperr_avatar.png",
+								"logo": "https://lbthopsukieuyitlwkmw.supabase.co/storage/v1/object/public/structured-data/insperr_avatar.png",
 								"email": "support(at)insperr.com",
 								"description": "Insperr is a simple online tool with which you can generate thousands of quotes sorted by category. You can choose from different categories.",
 							}

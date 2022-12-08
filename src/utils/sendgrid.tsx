@@ -1,6 +1,6 @@
 
 const sendEmail = async ({ to, from='support', templateId, extraData }) => {
-	await fetch(`/api/mail`, {
+	await fetch(`${process.env.NEXT_PUBLIC_URL_HOME}/api/mail`, {
 		method: 'POST',
 		headers: {
 			'Accept': 'application/json',

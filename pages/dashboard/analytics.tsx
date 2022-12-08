@@ -211,9 +211,6 @@ const DashboardAnalytics = () => {
 											<span className="inline-block bg-slate-100 dark:bg-zinc-800 py-1 px-2 rounded-full mr-2">⇧+U</span> User Account
 										</div>
 										<div className="w-full">
-											<span className="inline-block bg-slate-100 dark:bg-zinc-800 py-1 px-2 rounded-full mr-2">⇧+G</span> Generate new Quotes
-										</div>
-										<div className="w-full">
 											<span className="inline-block bg-slate-100 dark:bg-zinc-800 py-1 px-2 rounded-full mr-2">⇧+P</span> Our Pricing
 										</div>
 										<div className="w-full">

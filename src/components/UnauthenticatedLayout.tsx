@@ -62,7 +62,7 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 							<>
 								<Link href="/access?op=signin" className="transition duration-200 hover:text-slate-400 dark:hover:text-zinc-600 flex items-center gap-3">
 									<svg className="w-5 h-5 text-primary-500" width="25" height="25" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M9 15v7h13V2H9v7m9 3H0m13-5 5 5-5 5"></path></svg>
-									Signin</Link>
+									Signin or Create new account</Link>
 							</>}
 						</div>
 					</header>
@@ -78,7 +78,7 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 							<div className="sm:mt-12 py-8 w-full flex justify-center opacity-100 md:opacity-0">
 								<Quote quote={{
 									content: 'The tech industry is booming and there are many opportunities for those with the right skills!',
-									username: 'insperr',
+									username: 'insperrcom',
 									fullname: 'Insperr',
 									tags: ['Tech'],
 									avatar: require('../../public/images/insperr_avatar.png')
@@ -88,7 +88,7 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 								<div className="opacity-40 dark:opacity-60">
 									<Quote quote={{
 										content: 'If you\'re not using social media for marketing, you\'re missing out on a huge opportunity to reach potential customers.',
-										username: 'insperr',
+										username: 'insperrcom',
 										fullname: 'Insperr',
 										tags: ['Social Media', 'Internet'],
 										avatar: require('../../public/images/insperr_avatar.png')
@@ -96,7 +96,7 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 								</div>
 								<Quote quote={{
 									content: 'The tech industry is booming and there are many opportunities for those with the right skills!',
-									username: 'insperr',
+									username: 'insperrcom',
 									fullname: 'Insperr',
 									tags: ['Tech'],
 									avatar: require('../../public/images/insperr_avatar.png')
@@ -104,7 +104,7 @@ const UnauthenticatedLayout = ({ children, title="Insperr – The Most Advanced 
 								<div className="opacity-40 dark:opacity-60">
 									<Quote quote={{
 										content: 'Machine learning is one of the most fascinating and promising fields of technology. It has the potential to change the way ',
-										username: 'insperr',
+										username: 'insperrcom',
 										fullname: 'Insperr',
 										tags: ['Tech', 'Machine Learning'],
 										avatar: require('../../public/images/insperr_avatar.png')
